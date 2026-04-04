@@ -3,3 +3,5 @@
     ~ minishell should handle infinite many pipes
 
 ~ We should try to implement the command cat first. because it's literally just GNL i think. 
+~ For redirection < >, to t_cmd, fd_in defaults to STDIN_FILENO but changes if there is a < or <<
+    ~ Same for fd_out, defaults to STDOUT_FILENO but changes if there is > or >>
