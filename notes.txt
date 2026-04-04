@@ -1,0 +1,5 @@
+**04/04/26**
+~ need to use linked list where each node represents one pipe
+    ~ minishell should handle infinite many pipes
+
+~ We should try to implement the command cat first. because it's literally just GNL i think. 
