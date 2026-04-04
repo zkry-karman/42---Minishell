@@ -6,13 +6,16 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/04 12:18:38 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/04/04 13:25:40 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void    execution(t_cmd *command_list)
+void    execution(t_cmd *command_list, char **envp)
 {
-    
+    while (command_list)
+    {
+        
+    }
 }
