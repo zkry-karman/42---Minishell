@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
+/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/04 13:03:39 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/04/05 11:54:00 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@
 
 /*typedef struct s_cmd
 {
-    char    *cmd; // I dont know if the command and flag should be character pointers or not. I will leave them like this for now. 
-    char    *flag; // My logic is if you split them and pass them as strings, then i will get the path to the command when i execute it. 
+    char    **commands; // I dont know if the command and flag should be character pointers or not. I will leave them like this for now. My logic is if you split them and pass them as strings, then i will get the path to the command when i execute it. 
     t_cmd   *next;
 }   t_cmd ;*/
 
