@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:33:28 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/04/05 18:00:01 by cocozhu          ###   ########.fr       */
+/*   Updated: 2026/04/07 16:04:26 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,32 +34,54 @@ int	append_node(t_token **input_list, char *token)
 	return (0);
 }
 
-char	*extract_token(char *input, int *i)
+char	*extract_quote(char *input, int *i)
+{
+	int	start;
+	char quote_type;
+	char *token;
+	
+	quote_type = input[*i];
+	start = ++(*i);
+	while (input[*i] && (input[*i] != quote_type))
+		(*i)++;
+	if (input[*i] == '\0')
+		return (printf("error: unclosed quote\n"), NULL);
+	token = ft_substr(input, start, (*i) - start);
+	(*i)++;
+	return (token);
+}
+
+char	*extract_word(char *input, int *i)
 {
 	int start;
-	char quote_type;
-	char *cur_token;
-	
-	cur_token = NULL;
-	if (input[*i] == '\'' || input[*i] == '\"')
-	{
-		quote_type = input[*i];
-		start = ++(*i);
-		while (input[*i] && (input[*i] != quote_type))
-			(*i)++;
-		if (input[*i] == '\0')
-			return (printf("error: unclosed quote\n"), NULL);
-		cur_token = ft_substr(input, start, (*i) - start);
+
+	start = *i;
+	while (is_space(input[*i]) == 0 && input[*i] && input[*i] != '\'' && input[*i] != '\"' )
 		(*i)++;
-	}
-	else if (is_space(input[*i]) == 0)
+	return (ft_substr(input, start, (*i) - start));
+}
+
+char	*extract_token(char *input, int *i)
+{
+	char 	*cur_token;
+	char	*final_token;
+	char	*temp;
+	
+	final_token = ft_strdup("");
+	while (input[*i] && is_space(input[*i]) == 0)
 	{
-		start = *i;
-		while (!is_space(input[*i]) && input[*i] && input[*i] != '\'' && input[*i] != '\"' )
-			(*i)++;
-		cur_token = ft_substr(input, start, (*i) - start);
+		if (input[*i] == '\'' || input[*i] == '\"')
+			cur_token = extract_quote(input, i);
+		else
+			cur_token = extract_word(input, i);
+		if (cur_token == NULL)
+			return (free(final_token), NULL);
+		temp = ft_strjoin(final_token, cur_token);
+		free(final_token);
+		free(cur_token);
+		final_token = temp;
 	}
-	return (cur_token);
+	return (final_token);
 }
 
 int	build_token(t_token **input_list, char *input)
@@ -78,34 +100,6 @@ int	build_token(t_token **input_list, char *input)
 		if (cur_token == NULL)
 			return (1);
 		append_node(input_list, cur_token);
-	}
-	return (0);
-}
-
-int	main()
-{
-	char *input;
-	t_token *input_list;
-
-	printf("Welcome to the Parsing Test!\n");
-	printf("Type commands, use up/down arrows for history, or press Ctrl+D to exit.\n\n");
-	while (1)
-	{
-		input = readline("minishell> ");
-		if (input == NULL)
-		{
-			printf("exit\n");
-			break;
-		}
-		if (input[0] != '\0')
-		{
-			add_history(input);
-			printf("Ready to parse token: [%s]\n", input);
-		}
-		input_list = NULL;
-		if (build_token(&input_list, input) == 1)
-			free_tokens(&input_list);
-		free(input);
 	}
 	return (0);
 }
