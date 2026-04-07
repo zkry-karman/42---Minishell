@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   readline.c                                         :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/04 12:33:28 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/04/04 13:25:17 by kzhu@student.42.f###   ########.fr       */
+/*   Created: 2026/04/07 15:58:35 by kzhu@studen       #+#    #+#             */
+/*   Updated: 2026/04/07 16:04:38 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,39 @@
 
 int	main()
 {
-	char	*input;
-	
+	char *input;
+	t_token *input_list;
+	t_token	*temp;
+	int num;
+
 	printf("Welcome to the Parsing Test!\n");
-    printf("Type commands, use up/down arrows for history, or press Ctrl+D to exit.\n\n");
+	printf("Type commands, use up/down arrows for history, or press Ctrl+D to exit.\n\n");
 	while (1)
 	{
 		input = readline("minishell> ");
 		if (input == NULL)
 		{
 			printf("exit\n");
-			break ;
+			break;
 		}
 		if (input[0] != '\0')
-		{
 			add_history(input);
-			printf("Ready to parse token: [%s]\n", input);
+		input_list = NULL;
+		if (build_token(&input_list, input) == 1)
+		{
+			free_tokens(&input_list);
+			free(input);
+			continue;
 		}
+		num = 1;
+		temp = input_list;
+		while (temp != NULL)
+		{
+			printf("Token %i: [%s]\n", num, temp->value);
+			temp = temp->next;
+			num++;
+		}
+		free_tokens(&input_list);
 		free(input);
 	}
 	return (0);
