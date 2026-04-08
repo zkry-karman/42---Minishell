@@ -6,7 +6,7 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/05 12:08:45 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/08 18:28:25 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char    *env_path(char **envp)
     i = 0;
     while (envp[i])
     {
-        if (ft_strcmp(envp[i], "PATH=", 5) == 0)
+        if (ft_strncmp(envp[i], "PATH=", 5) == 0)
             return (envp[i] + 5);
         i++;
     }
@@ -46,7 +46,7 @@ char    *get_path(char *command, char **envp)
         temp = ft_strjoin(paths[i], "/");
         full_path = ft_strjoin(temp, command);
         free(temp);
-        if (acces(full_path, X_OK) == 0)
+        if (access(full_path, X_OK) == 0)
         {
             // Free paths;
             return (full_path);
@@ -65,40 +65,29 @@ void    execute_command(t_cmd *command_list, char **envp)
     path = get_path(command_list->commands[0], envp);
     if (!path)
     {
-        //exit error;
+        perror("Path not Found");
+        // need to review exit_program function
+        exit_program(command_list);
     }
     if (execve(path, command_list->commands, envp) == -1)
     {
-        //exit error;
+        perror("Execve Failure");
+        // need to review exit_program function
+        exit_program(command);
     }
 }
 
 void    pipe_process(t_cmd *command_list, char **envp, int curr_pipe[2], int last_pipe)
 {
-    pid_t   curr_reading;
-    pid_t   curr_writing;
 
-    pipe(curr_pipe);
-    curr_reading = fork();
-    if (curr_reading == 0)
-    {
+    if (last_pipe != -1)
+        dup2(last_pipe, STDIN_FILENO);
+    if (command_list->next)
         dup2(curr_pipe[1], STDOUT_FILENO);
-        close(curr_pipe[1]);
-        close(curr_pipe[0]);
-        // Need to execute function now.
-    }
-    curr_writing = fork();
-    if (curr_writing == 0)
-    {
-        dup2(curr_pipe[0], STDIN_FILENO);
-        close(curr_pipe[1]);
-        close(curr_pipe[0]);
-        // Need to execution function now. 
-    }
     close(curr_pipe[1]);
     close(curr_pipe[0]);
-    waitpid(curr_reading, NULL, 0);
-    waitpid(curr_writing, NULL, 0);
+    close(last_pipe);
+    execute_command(command_list, envp);
 }
 
 // Start of execution
@@ -106,6 +95,7 @@ void    reading_commands(t_cmd *command_list, char **envp)
 {
     int     last_pipe;
     int     curr_pipe[2];
+    pid_t   child;
     
     if (!command_list)
         return ;
@@ -113,6 +103,21 @@ void    reading_commands(t_cmd *command_list, char **envp)
     while (command_list)
     {
         if (command_list->next)
+            pipe(curr_pipe);
+        child = fork();
+        if (child == 0)
             pipe_process(command_list, envp, curr_pipe, last_pipe);
+        if (last_pipe != -1)
+            close(last_pipe);
+        if (command_list->next)
+        {
+            close(cur_token[1]);
+            last_pipe = curr_pipe[0];
+        }
+        else
+            last_pipe = -1;
+        command_list = command_list->next;
     }
+
+    // Need to wait for child processes to finish
 }
