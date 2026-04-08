@@ -5,3 +5,5 @@
 ~ We should try to implement the command cat first. because it's literally just GNL i think. 
 ~ For redirection < >, to t_cmd, fd_in defaults to STDIN_FILENO but changes if there is a < or <<
     ~ Same for fd_out, defaults to STDOUT_FILENO but changes if there is > or >>
+
+~ i called a function in my execution file called exit_program(). We should build it together so that way if any part of our code fails, we can call this function, and clear any standing memory in one go
