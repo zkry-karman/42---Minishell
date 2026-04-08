@@ -1,6 +1,11 @@
 *This project has been created as part of the 42 curriculum by <zkarman>, <kzhu>*
 
-	  1111111
+爸爸，我會把那些負擔全吞下去
+
+         ~
+         ~
+         ~
+	   1111111
      111111111
      111111111
      111111111
