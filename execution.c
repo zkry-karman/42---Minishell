@@ -6,7 +6,7 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/10 12:22:45 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/10 16:14:03 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,10 @@ void    execute_command(t_cmd *command_list, char **envp)
     path = get_path(command_list->commands[0], envp);
     if (!path)
     {
-        perror("Path not Found");
-        // need to review exit_program function
-        exit_program(command_list);
+        ft_putstr_fd(command_list->commands[0], 2);
+        ft_putstr_fd(": command not found\n", 2);
+        // i think i should still run exit_program here instead of exit(127) so i can free memory.
+        exit(127)
     }
     if (execve(path, command_list->commands, envp) == -1)
     {
@@ -84,8 +85,11 @@ void    pipe_process(t_cmd *command_list, char **envp, int curr_pipe[2], int las
         dup2(last_pipe, STDIN_FILENO);
     if (command_list->next)
         dup2(curr_pipe[1], STDOUT_FILENO);
-    close(curr_pipe[1]);
-    close(curr_pipe[0]);
+    if (command_list->next)
+    {
+        close(curr_pipe[1]);
+        close(curr_pipe[0]);
+    }
     close(last_pipe);
     execute_command(command_list, envp);
 }
@@ -95,30 +99,43 @@ void    reading_commands(t_cmd *command_list, char **envp)
 {
     int     last_pipe;
     int     curr_pipe[2];
-    pid_t   *child;
+    pid_t   *children;
+    int     i;
+    int     command_count;
     
     if (!command_list)
         return ;
     last_pipe = -1;
-    // Malloc pid_t array;
+    command_count = ft_lstsize(command_count);
+    children = malloc(sizeof(pid_t) * command_count + 1);
+    if (!children)
+    {
+        /*return or exit error ?*/
+    }
+    i = 0;
     while (command_list)
     {
         if (command_list->next)
             pipe(curr_pipe);
-        child = fork();
-        if (child == 0)
+        children[i] = fork();
+        if (children[i] == 0)
             pipe_process(command_list, envp, curr_pipe, last_pipe);
         if (last_pipe != -1)
             close(last_pipe);
         if (command_list->next)
         {
-            close(cur_token[1]);
+            close(curr_pipe[1]);
             last_pipe = curr_pipe[0];
         }
         else
             last_pipe = -1;
+        i++;
         command_list = command_list->next;
     }
-    
-    // Need to wait for child processes to finish
+    i = 0;
+    while (i < command_count)
+    {
+        waitpid(children[i], NULL, 0);
+        i++;
+    }
 }
