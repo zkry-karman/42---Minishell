@@ -6,7 +6,7 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 17:58:55 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/04/10 11:17:41 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/10 16:06:53 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	free_dbl_pointer(char **ptr)
 {
 	int		i;
 
+	if (!ptr || !*ptr)
+		return ;
 	i = 0;
 	while (ptr[i])
 	{
