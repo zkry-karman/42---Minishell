@@ -6,7 +6,7 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/08 18:28:25 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/10 11:41:49 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ char    *get_path(char *command, char **envp)
         free(temp);
         if (access(full_path, X_OK) == 0)
         {
-            // Free paths;
+            free_dbl_pointer(paths);
             return (full_path);
         }
         free(full_path);
         i++;
     }
-    // Free paths;
+    free_dbl_pointer(paths);
     return (NULL);
 }
 
@@ -118,6 +118,6 @@ void    reading_commands(t_cmd *command_list, char **envp)
             last_pipe = -1;
         command_list = command_list->next;
     }
-
+    
     // Need to wait for child processes to finish
 }
