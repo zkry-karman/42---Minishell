@@ -6,7 +6,7 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/10 11:41:49 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/10 12:22:45 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,11 +95,12 @@ void    reading_commands(t_cmd *command_list, char **envp)
 {
     int     last_pipe;
     int     curr_pipe[2];
-    pid_t   child;
+    pid_t   *child;
     
     if (!command_list)
         return ;
     last_pipe = -1;
+    // Malloc pid_t array;
     while (command_list)
     {
         if (command_list->next)
