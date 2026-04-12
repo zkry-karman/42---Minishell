@@ -6,7 +6,7 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/10 16:14:03 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/12 15:34:30 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,11 @@ char    *get_path(char *command, char **envp)
     return (NULL);
 }
 
-void    execute_command(t_cmd *command_list, char **envp)
+void    execute_command(t_cmd *command_list)
 {
     char    *path;
 
-    path = get_path(command_list->commands[0], envp);
+    path = get_path(command_list->commands[0], command_list->shell->envp_copy);
     if (!path)
     {
         ft_putstr_fd(command_list->commands[0], 2);
@@ -70,7 +70,7 @@ void    execute_command(t_cmd *command_list, char **envp)
         // i think i should still run exit_program here instead of exit(127) so i can free memory.
         exit(127)
     }
-    if (execve(path, command_list->commands, envp) == -1)
+    if (execve(path, command_list->commands, command_list->shell->envp_copy) == -1)
     {
         perror("Execve Failure");
         // need to review exit_program function
@@ -78,7 +78,7 @@ void    execute_command(t_cmd *command_list, char **envp)
     }
 }
 
-void    pipe_process(t_cmd *command_list, char **envp, int curr_pipe[2], int last_pipe)
+void    pipe_process(t_cmd *command_list, int curr_pipe[2], int last_pipe)
 {
 
     if (last_pipe != -1)
@@ -91,11 +91,11 @@ void    pipe_process(t_cmd *command_list, char **envp, int curr_pipe[2], int las
         close(curr_pipe[0]);
     }
     close(last_pipe);
-    execute_command(command_list, envp);
+    execute_command(command_list);
 }
 
 // Start of execution
-void    reading_commands(t_cmd *command_list, char **envp)
+void    reading_commands(t_cmd *command_list)
 {
     int     last_pipe;
     int     curr_pipe[2];
@@ -109,9 +109,7 @@ void    reading_commands(t_cmd *command_list, char **envp)
     command_count = ft_lstsize(command_count);
     children = malloc(sizeof(pid_t) * command_count + 1);
     if (!children)
-    {
-        /*return or exit error ?*/
-    }
+        return ;
     i = 0;
     while (command_list)
     {
@@ -119,7 +117,7 @@ void    reading_commands(t_cmd *command_list, char **envp)
             pipe(curr_pipe);
         children[i] = fork();
         if (children[i] == 0)
-            pipe_process(command_list, envp, curr_pipe, last_pipe);
+            pipe_process(command_list, curr_pipe, last_pipe);
         if (last_pipe != -1)
             close(last_pipe);
         if (command_list->next)
