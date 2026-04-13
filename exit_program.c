@@ -12,7 +12,10 @@
 
 #include "minishell.h"
 
-void    exit_program()
+void    exit_program(t_cmd *command_list, int exit_code)
 {
-    
+
+    if (command_list)
+        ft_lstclear(&command_list, del(void *));
+    exit (exit_code);
 }
