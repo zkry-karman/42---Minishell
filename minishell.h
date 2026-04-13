@@ -45,8 +45,9 @@ int	    append_node(t_token **input_list, char *token);
 char	*extract_token(char *input, int *i);
 char	*extract_word(char *input, int *i);
 char	*extract_quote(char *input, int *i);
-
+void    reading_commands(t_cmd *command_list);
 int 	is_space(char c);
 void    free_tokens(t_token **tokens);
+void    exit_program(t_cmd *command_list, int exit_code);
 
 #endif
