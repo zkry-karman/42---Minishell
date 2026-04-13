@@ -12,7 +12,15 @@
 
 #include "minishell.h"
 
-void    exit_program()
+void    exit_program(t_cmd *command_list, int exit_code)
 {
-    
+
+    if (command_list && command_list->shell)
+    {
+        if (command_list->shell->envp_copy)
+            free_dbl_pointer(command_list->shell->envp_copy);
+        ft_lstclear(&command_list->shell->command_list, del(void *));
+        free(command_list->shell);
+    }
+    exit (exit_code);
 }

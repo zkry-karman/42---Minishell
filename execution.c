@@ -67,14 +67,12 @@ void    execute_command(t_cmd *command_list)
     {
         ft_putstr_fd(command_list->commands[0], 2);
         ft_putstr_fd(": command not found\n", 2);
-        // i think i should still run exit_program here instead of exit(127) so i can free memory.
-        exit(127)
+        exit_program(command_list, 127);
     }
     if (execve(path, command_list->commands, command_list->shell->envp_copy) == -1)
     {
         perror("Execve Failure");
-        // need to review exit_program function
-        exit_program(command);
+        exit_program(command_list, 127);
     }
 }
 
@@ -90,7 +88,8 @@ void    pipe_process(t_cmd *command_list, int curr_pipe[2], int last_pipe)
         close(curr_pipe[1]);
         close(curr_pipe[0]);
     }
-    close(last_pipe);
+    if (last_pipe != -1)
+        close(last_pipe);
     execute_command(command_list);
 }
 
@@ -106,7 +105,7 @@ void    reading_commands(t_cmd *command_list)
     if (!command_list)
         return ;
     last_pipe = -1;
-    command_count = ft_lstsize(command_count);
+    command_count = ft_lstsize(command_list);
     children = malloc(sizeof(pid_t) * command_count + 1);
     if (!children)
         return ;
@@ -136,4 +135,5 @@ void    reading_commands(t_cmd *command_list)
         waitpid(children[i], NULL, 0);
         i++;
     }
+    free(children);
 }
