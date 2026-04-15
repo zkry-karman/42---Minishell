@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/15 13:50:55 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/15 14:01:31 by cocozhu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-typedef struct  s_shell
-{
-    char    **envp_copy;
-    t_cmd   *command_list; //pointer to the head of the list
-    int     last_exit_val;
-}   t_shell;
-
-typedef struct s_cmd
+//pour parsing
+typedef struct s_token
 {
     char    **commands;
     t_cmd   *next;
@@ -41,6 +35,11 @@ char	*extract_quote(char *input, int *i);
 void    reading_commands(t_cmd *command_list);
 int 	is_space(char c);
 void    free_tokens(t_token **tokens);
-void    exit_program(t_cmd *command_list, int exit_code);
 
+/*typedef struct s_cmd
+{
+    char    **commands; //Just split each command into a **arr instead of separate components. I need to pass a ** to execve to execute the function
+    t_cmd   *next;
+}   t_cmd ;
+*/
 #endif
