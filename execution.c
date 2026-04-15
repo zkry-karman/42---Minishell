@@ -6,7 +6,7 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/12 15:34:30 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/15 13:22:01 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ void    execute_command(t_cmd *command_list)
 {
     char    *path;
 
+    if (!command_list->commands || !command_list->commands[0])
+        return ;
     path = get_path(command_list->commands[0], command_list->shell->envp_copy);
     if (!path)
     {
@@ -72,7 +74,7 @@ void    execute_command(t_cmd *command_list)
     if (execve(path, command_list->commands, command_list->shell->envp_copy) == -1)
     {
         perror("Execve Failure");
-        exit_program(command_list, 127);
+        exit_program(command_list, -1);
     }
 }
 
@@ -106,7 +108,7 @@ void    reading_commands(t_cmd *command_list)
         return ;
     last_pipe = -1;
     command_count = ft_lstsize(command_list);
-    children = malloc(sizeof(pid_t) * command_count + 1);
+    children = malloc(sizeof(pid_t) * command_count);
     if (!children)
         return ;
     i = 0;
