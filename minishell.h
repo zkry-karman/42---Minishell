@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
+/*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/07 15:49:47 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/04/15 14:01:31 by cocozhu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-typedef struct s_cmd
 //pour parsing
 typedef struct s_token
 {
@@ -42,5 +41,5 @@ void    free_tokens(t_token **tokens);
     char    **commands; //Just split each command into a **arr instead of separate components. I need to pass a ** to execve to execute the function
     t_cmd   *next;
 }   t_cmd ;
-
+*/
 #endif
