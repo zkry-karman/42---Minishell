@@ -6,7 +6,7 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/15 13:22:01 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/15 15:58:31 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,45 +58,45 @@ char    *get_path(char *command, char **envp)
     return (NULL);
 }
 
-void    execute_command(t_cmd *command_list)
+void    execute_command(t_shell *shell)
 {
     char    *path;
 
-    if (!command_list->commands || !command_list->commands[0])
+    if (!shell->cmds || !shell->cmds->args[0])
         return ;
-    path = get_path(command_list->commands[0], command_list->shell->envp_copy);
+    path = get_path(shell->cmds->args[0], shell->env_list);
     if (!path)
     {
-        ft_putstr_fd(command_list->commands[0], 2);
+        ft_putstr_fd(shell->cmds->args[0], 2);
         ft_putstr_fd(": command not found\n", 2);
-        exit_program(command_list, 127);
+        exit_program(shell, 127);
     }
-    if (execve(path, command_list->commands, command_list->shell->envp_copy) == -1)
+    if (execve(path, shell->cmds->args, shell->env_list) == -1)
     {
         perror("Execve Failure");
-        exit_program(command_list, -1);
+        exit_program(shell, -1);
     }
 }
 
-void    pipe_process(t_cmd *command_list, int curr_pipe[2], int last_pipe)
+void    pipe_process(t_shell *shell, int curr_pipe[2], int last_pipe)
 {
 
     if (last_pipe != -1)
         dup2(last_pipe, STDIN_FILENO);
-    if (command_list->next)
+    if (shell->cmds->next)
         dup2(curr_pipe[1], STDOUT_FILENO);
-    if (command_list->next)
+    if (shell->cmds->next)
     {
         close(curr_pipe[1]);
         close(curr_pipe[0]);
     }
     if (last_pipe != -1)
         close(last_pipe);
-    execute_command(command_list);
+    execute_command(shell);
 }
 
 // Start of execution
-void    reading_commands(t_cmd *command_list)
+void    reading_commands(t_shell *shell)
 {
     int     last_pipe;
     int     curr_pipe[2];
@@ -104,24 +104,24 @@ void    reading_commands(t_cmd *command_list)
     int     i;
     int     command_count;
     
-    if (!command_list)
+    if (!shell)
         return ;
     last_pipe = -1;
-    command_count = ft_lstsize(command_list);
+    command_count = ft_lstsize(shell->cmds);
     children = malloc(sizeof(pid_t) * command_count);
     if (!children)
         return ;
     i = 0;
-    while (command_list)
+    while (shell->cmds)
     {
-        if (command_list->next)
+        if (shell->cmds->next)
             pipe(curr_pipe);
         children[i] = fork();
         if (children[i] == 0)
-            pipe_process(command_list, curr_pipe, last_pipe);
+            pipe_process(shell, curr_pipe, last_pipe);
         if (last_pipe != -1)
             close(last_pipe);
-        if (command_list->next)
+        if (shell->cmds->next)
         {
             close(curr_pipe[1]);
             last_pipe = curr_pipe[0];
@@ -129,7 +129,7 @@ void    reading_commands(t_cmd *command_list)
         else
             last_pipe = -1;
         i++;
-        command_list = command_list->next;
+        shell->cmds = shell->cmds->next;
     }
     i = 0;
     while (i < command_count)
