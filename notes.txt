@@ -7,3 +7,5 @@
     ~ Same for fd_out, defaults to STDOUT_FILENO but changes if there is > or >>
 
 ~ i called a function in my execution file called exit_program(). We should build it together so that way if any part of our code fails, we can call this function, and clear any standing memory in one go
+
+~ Do you think i can call just free_tokens() to free a double pointer instead of creating another function free_dbl_pointer() ?

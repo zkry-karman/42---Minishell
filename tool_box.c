@@ -3,14 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   tool_box.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 17:58:55 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/04/05 17:59:24 by cocozhu          ###   ########.fr       */
+/*   Updated: 2026/04/10 16:06:53 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	free_dbl_pointer(char **ptr)
+{
+	int		i;
+
+	if (!ptr || !*ptr)
+		return ;
+	i = 0;
+	while (ptr[i])
+	{
+		free(ptr[i]);
+		i++;
+	}
+	free(ptr);
+}
 
 void	free_tokens(t_token **tokens)
 {

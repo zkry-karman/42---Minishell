@@ -22,17 +22,17 @@
 //pour parsing
 typedef struct s_token
 {
-    char    *value;
-    int     type;
-    struct s_token  *next;
-}  t_token;
+    char    **commands;
+    t_cmd   *next;
+    t_shell     *shell;
+}   t_cmd;
 
 int 	build_token(t_token **input_list, char *input);
 int	    append_node(t_token **input_list, char *token);
 char	*extract_token(char *input, int *i);
 char	*extract_word(char *input, int *i);
 char	*extract_quote(char *input, int *i);
-
+void    reading_commands(t_cmd *command_list);
 int 	is_space(char c);
 void    free_tokens(t_token **tokens);
 

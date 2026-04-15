@@ -3,7 +3,12 @@ CC	= cc
 CFLAGS	= -Wall -Wextra -Werror
 RM	= rm -f
 
-SRCS =  main.c ini_token.c tool_box.c
+SRCS =  main.c \
+	    ini_token.c \
+		tool_box.c \
+		execution.c \
+		exit_program.c \
+		
 OBJS = $(SRCS:.c=.o)
 
 LIBFT = libft/libft.a
