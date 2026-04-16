@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   readline.c                                         :+:      :+:    :+:   */
+/*   ini_token_1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
+/*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:33:28 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/04/07 16:04:26 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/04/16 14:59:10 by cocozhu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	append_node(t_token **input_list, char *token)
 		return (1);
 	ft_memset(new_node, 0, sizeof(t_token));
 	new_node->value = token;
+	new_node->type = identify_type(new_node->value);
 	if (*input_list == NULL)
 	{
 		*input_list = new_node;
@@ -54,9 +55,11 @@ char	*extract_quote(char *input, int *i)
 char	*extract_word(char *input, int *i)
 {
 	int start;
-
+	
 	start = *i;
-	while (is_space(input[*i]) == 0 && input[*i] && input[*i] != '\'' && input[*i] != '\"' )
+	while (is_space(input[*i]) == 0 && input[*i]
+			&& input[*i] != '\'' && input[*i] != '\"'
+			&& input[*i] != '<' && input[*i] != '>' && input[*i] != '|')
 		(*i)++;
 	return (ft_substr(input, start, (*i) - start));
 }
@@ -68,7 +71,10 @@ char	*extract_token(char *input, int *i)
 	char	*temp;
 	
 	final_token = ft_strdup("");
-	while (input[*i] && is_space(input[*i]) == 0)
+	if (input[*i] == '<' || input[*i] == '>' || input[*i] == '|')
+		return (extract_operator(input, i));
+	while (input[*i] && is_space(input[*i]) == 0 &&
+		input[*i] != '<' && input[*i] != '>' && input[*i] != '|')
 	{
 		if (input[*i] == '\'' || input[*i] == '\"')
 			cur_token = extract_quote(input, i);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/15 15:24:54 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/16 14:19:02 by cocozhu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,11 @@ int	    append_node(t_token **input_list, char *token);
 char	*extract_token(char *input, int *i);
 char	*extract_word(char *input, int *i);
 char	*extract_quote(char *input, int *i);
+char	*extract_operator(char *input, int *i);
 void    reading_commands(t_cmd *command_list);
 int 	is_space(char c);
 void    free_tokens(t_token **tokens);
+
+t_token_type identify_type(char *value);
 
 #endif

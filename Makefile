@@ -4,10 +4,13 @@ CFLAGS	= -Wall -Wextra -Werror
 RM	= rm -f
 
 SRCS =  main.c \
-	    ini_token.c \
-		tool_box.c \
-		execution.c \
-		exit_program.c \
+	    ini_token_1.c \
+		ini_token_2.c \
+		ini_cmd.c \
+		tool_box_parsing.c \
+		ool_box_execution.c \
+ 		execution.c \
+ 		exit_program.c \
 		
 OBJS = $(SRCS:.c=.o)
 

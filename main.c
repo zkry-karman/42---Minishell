@@ -3,17 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:58:35 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/04/12 15:29:06 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/16 15:04:15 by cocozhu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(char **envp)
+int	main(int argc, char **argv, char **envp)
 {
+	(void)argc;
+	(void)argv;
+	(void)envp;
 	char *input;
 	t_token *input_list;
 	t_token	*temp;
@@ -26,7 +29,7 @@ int	main(char **envp)
 		input = readline("minishell> ");
 		if (input == NULL)
 		{
-			printf("exit\n");
+			printf("\nexit\n");
 			break;
 		}
 		if (input[0] != '\0')
