@@ -6,7 +6,7 @@
 /*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 11:45:04 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/04/19 18:39:17 by cocozhu          ###   ########.fr       */
+/*   Updated: 2026/04/19 22:41:41 by cocozhu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,11 @@
 
 char	*extract_env(t_env *env_list, int start, int *i)
 {
-	char *replace;
+	char	*replace;
+	int		i;
+
+	i = 0;
+	
 	
 	
 }
