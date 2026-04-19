@@ -6,7 +6,7 @@
 /*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:58:35 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/04/16 15:04:15 by cocozhu          ###   ########.fr       */
+/*   Updated: 2026/04/19 17:02:34 by cocozhu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@ int	main(int argc, char **argv, char **envp)
 {
 	(void)argc;
 	(void)argv;
-	(void)envp;
+
 	char *input;
 	t_token *input_list;
 	t_token	*temp;
+	t_env	*env;
 	int num;
 
 	printf("Welcome to the Parsing Test!\n");
@@ -35,7 +36,8 @@ int	main(int argc, char **argv, char **envp)
 		if (input[0] != '\0')
 			add_history(input);
 		input_list = NULL;
-		if (build_token(&input_list, input) == 1)
+		env = build_evnp(&envp);
+		if (build_token(&input_list, &env, input) == 1)
 		{
 			free_tokens(&input_list);
 			free(input);
