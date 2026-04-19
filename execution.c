@@ -6,7 +6,7 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/15 15:58:31 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/19 14:25:03 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,19 +61,24 @@ char    *get_path(char *command, char **envp)
 void    execute_command(t_shell *shell)
 {
     char    *path;
+    char    **envp_arr;
 
     if (!shell->cmds || !shell->cmds->args[0])
         return ;
-    path = get_path(shell->cmds->args[0], shell->env_list);
+    envp_arr = envp_list_to_arr(shell);
+    path = get_path(shell->cmds->args[0], envp_arr);
     if (!path)
     {
+        free(envp_arr);
         ft_putstr_fd(shell->cmds->args[0], 2);
         ft_putstr_fd(": command not found\n", 2);
         exit_program(shell, 127);
     }
-    if (execve(path, shell->cmds->args, shell->env_list) == -1)
+    if (execve(path, shell->cmds->args, envp_arr) == -1)
     {
+        free(envp_arr);
         perror("Execve Failure");
+        // Cannot use -1 here
         exit_program(shell, -1);
     }
 }
