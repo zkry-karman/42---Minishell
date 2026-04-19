@@ -6,7 +6,7 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 12:19:30 by karmanz           #+#    #+#             */
-/*   Updated: 2026/04/17 13:31:20 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/19 15:13:23 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char    **envp_list_to_arr(t_shell *shell)
 {
     char    **arr;
-    int     *curr;
+    t_env   *curr;
     int     i;
     char    *temp;
 

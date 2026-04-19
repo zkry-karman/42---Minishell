@@ -6,7 +6,7 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/19 15:06:04 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/19 15:35:49 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,46 +58,45 @@ char    *get_path(char *command, char **envp)
     return (NULL);
 }
 
-void    execute_command(t_shell *shell)
+void    execute_command(t_shell *shell, t_cmd *cmd)
 {
     char    *path;
     char    **envp_arr;
 
-    if (!shell->cmds || !shell->cmds->args[0])
+    if (!cmd || !cmd->args || !cmd->args[0])
         return ;
     envp_arr = envp_list_to_arr(shell);
-    path = get_path(shell->cmds->args[0], envp_arr);
+    path = get_path(cmd->args[0], envp_arr);
     if (!path)
     {
-        free(envp_arr);
-        ft_putstr_fd(shell->cmds->args[0], 2);
+        free_dbl_pointer(envp_arr);
+        ft_putstr_fd(cmd->args[0], 2);
         ft_putstr_fd(": command not found\n", 2);
         exit_program(shell, 127);
     }
-    if (execve(path, shell->cmds->args, envp_arr) == -1)
+    if (execve(path, cmd->args, envp_arr) == -1)
     {
-        free(envp_arr);
+        free_dbl_pointer(envp_arr);
         perror("Execve Failure");
-        // Cannot use -1 here
-        exit_program(shell, -1);
+        exit_program(shell, 1);
     }
 }
 
-void    pipe_process(t_shell *shell, int curr_pipe[2], int last_pipe)
+void    pipe_process(t_shell *shell, t_cmd *cmd, int curr_pipe[2], int last_pipe)
 {
 
     if (last_pipe != -1)
         dup2(last_pipe, STDIN_FILENO);
-    if (shell->cmds->next)
+    if (cmd->next)
         dup2(curr_pipe[1], STDOUT_FILENO);
-    if (shell->cmds->next)
+    if (cmd->next)
     {
         close(curr_pipe[1]);
         close(curr_pipe[0]);
     }
     if (last_pipe != -1)
         close(last_pipe);
-    execute_command(shell);
+    execute_command(shell, cmd);
 }
 
 // Start of execution
@@ -107,7 +106,7 @@ void    reading_commands(t_shell *shell)
     int     curr_pipe[2];
     pid_t   *children;
     int     i;
-    t_shell     curr_cmd;
+    t_cmd     *curr_cmd;
     
     if (!shell)
         return ;
@@ -123,7 +122,7 @@ void    reading_commands(t_shell *shell)
             pipe(curr_pipe);
         children[i] = fork();
         if (children[i] == 0)
-            pipe_process(shell, curr_pipe, last_pipe);
+            pipe_process(shell, curr_cmd, curr_pipe, last_pipe);
         if (last_pipe != -1)
             close(last_pipe);
         if (curr_cmd->next)
@@ -137,7 +136,7 @@ void    reading_commands(t_shell *shell)
         curr_cmd = curr_cmd->next;
     }
     i = 0;
-    while (i < command_count)
+    while (i < ft_lstsize(shell->cmds))
     {
         waitpid(children[i], NULL, 0);
         i++;
