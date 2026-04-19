@@ -6,7 +6,7 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/19 14:25:03 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/19 15:06:04 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,26 +107,26 @@ void    reading_commands(t_shell *shell)
     int     curr_pipe[2];
     pid_t   *children;
     int     i;
-    int     command_count;
+    t_shell     curr_cmd;
     
     if (!shell)
         return ;
+    curr_cmd = shell->cmds;
     last_pipe = -1;
-    command_count = ft_lstsize(shell->cmds);
-    children = malloc(sizeof(pid_t) * command_count);
+    children = malloc(sizeof(pid_t) * ft_lstsize(shell->cmds));
     if (!children)
         return ;
     i = 0;
-    while (shell->cmds)
+    while (curr_cmd)
     {
-        if (shell->cmds->next)
+        if (curr_cmd->next)
             pipe(curr_pipe);
         children[i] = fork();
         if (children[i] == 0)
             pipe_process(shell, curr_pipe, last_pipe);
         if (last_pipe != -1)
             close(last_pipe);
-        if (shell->cmds->next)
+        if (curr_cmd->next)
         {
             close(curr_pipe[1]);
             last_pipe = curr_pipe[0];
@@ -134,7 +134,7 @@ void    reading_commands(t_shell *shell)
         else
             last_pipe = -1;
         i++;
-        shell->cmds = shell->cmds->next;
+        curr_cmd = curr_cmd->next;
     }
     i = 0;
     while (i < command_count)
