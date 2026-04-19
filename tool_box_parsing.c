@@ -6,7 +6,7 @@
 /*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 17:58:55 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/04/16 13:33:15 by cocozhu          ###   ########.fr       */
+/*   Updated: 2026/04/19 22:33:31 by cocozhu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,13 @@ void	free_tokens(t_token **tokens)
 		current = next;
 	}
 	*tokens = NULL;
+}
+
+int is_for_envp(char c)
+{
+	if (('0' <=c && c <= '9') || (ft_isalpha(c) == 1) || c == '_')
+		return (1);
+	return (0);
 }
 
 int	is_space(char c)

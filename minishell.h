@@ -6,7 +6,7 @@
 /*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/19 18:36:42 by cocozhu          ###   ########.fr       */
+/*   Updated: 2026/04/19 22:34:12 by cocozhu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,10 @@ void    free_tokens(t_token **tokens);
 t_token_type identify_type(char *value);
 
 char	*find_env_value(t_env *env_list, char *replace);
-int	find_sep(char *cur);
+int	    find_sep(char *cur);
 t_env	*creat_envp_node(char *envp_str);
 t_env	*build_envp(char **envp);
 char	*extract_env(t_env *env_list, int start, int *i);
+int     is_for_envp(char c);
 
 #endif
