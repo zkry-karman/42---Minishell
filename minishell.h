@@ -6,7 +6,7 @@
 /*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/16 14:19:02 by cocozhu          ###   ########.fr       */
+/*   Updated: 2026/04/19 18:36:42 by cocozhu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,21 @@ typedef struct s_shell
     int     exit_status;
 }   t_shell;
 
-int 	build_token(t_token **input_list, char *input);
+int 	build_token(t_token **input_list, t_env **envp, char *input);
 int	    append_node(t_token **input_list, char *token);
-char	*extract_token(char *input, int *i);
-char	*extract_word(char *input, int *i);
-char	*extract_quote(char *input, int *i);
+char	*extract_token(char *input, t_env **envp, int *i);
+char	*extract_word(char *input, t_env **envp, int *i);
+char	*extract_quote(char *input, t_env **envp, int *i);
 char	*extract_operator(char *input, int *i);
 void    reading_commands(t_cmd *command_list);
 int 	is_space(char c);
 void    free_tokens(t_token **tokens);
-
 t_token_type identify_type(char *value);
+
+char	*find_env_value(t_env *env_list, char *replace);
+int	find_sep(char *cur);
+t_env	*creat_envp_node(char *envp_str);
+t_env	*build_envp(char **envp);
+char	*extract_env(t_env *env_list, int start, int *i);
 
 #endif
