@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ini_token_1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:33:28 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/04/19 18:51:35 by cocozhu          ###   ########.fr       */
+/*   Updated: 2026/04/20 17:36:30 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,11 @@ int	append_node(t_token **input_list, char *token)
 	return (0);
 }
 
-char	*extract_quote(char *input, t_env **envp, int *i)
+char	*extract_quote(t_shell *shell, char *input, int *i)
 {
 	int	start;
 	char quote_type;
 	char *token;
-	char *env_replace;
 	
 	quote_type = input[*i];
 	start = ++(*i);
@@ -57,33 +56,39 @@ char	*extract_quote(char *input, t_env **envp, int *i)
 	{
 		while (input[*i] && (input[*i] != quote_type) && input[*i] != '$')
 			(*i)++;
-		
 	}
 	return (token);
 }
 
-char	*extract_word(char *input, t_env **envp, int *i)
+char	*extract_word(t_shell *shell, char *input, int *i)
 {
 	int start;
 	char *final;
-	char *dup;
-	
-	start = *i;
-	while (is_space(input[*i]) == 0 && input[*i]
-			&& input[*i] != '\'' && input[*i] != '\"'
-			&& input[*i] != '<' && input[*i] != '>' && input[*i] != '|')
-		(*i)++;
-	final = ft_substr(input, start, (*i) - start);
-	dup = ft_strdup(final);
-	while (ft_strrchr(dup, '$') != NULL)
+	char *chunk;
+	char *temp;
+
+	final = ft_strdup("");
+	while (input[*i] && !is_delimiter(input[*i]))
 	{
-		extract_env(envp, dup);
+		if (input[*i] == '$')
+			chunk = extract_env(shell, input, i);
+		else
+		{
+			start = *i;
+			while (input[*i] != '$' && input[*i] &&
+				!is_delimiter(input[*i]))
+				(*i)++;
+			chunk = ft_substr(input, start, (*i) - start);
+		}
+		temp = ft_strjoin(final, chunk);
+		free (chunk);
+		free (final);
+		final = temp;
 	}
-	free (dup);
 	return (final);
 }
 
-char	*extract_token(char *input, t_env **envp, int *i)
+char	*extract_token(t_shell *shell, char *input, int *i)
 {
 	char 	*cur_token;
 	char	*final_token;
@@ -96,9 +101,9 @@ char	*extract_token(char *input, t_env **envp, int *i)
 		input[*i] != '<' && input[*i] != '>' && input[*i] != '|')
 	{
 		if (input[*i] == '\'' || input[*i] == '\"')
-			cur_token = extract_quote(input, envp, i);
+			cur_token = extract_quote(shell, input, i);
 		else
-			cur_token = extract_word(input, envp, i);
+			cur_token = extract_word(shell, input, i);
 		if (cur_token == NULL)
 			return (free(final_token), NULL);
 		temp = ft_strjoin(final_token, cur_token);
@@ -109,7 +114,7 @@ char	*extract_token(char *input, t_env **envp, int *i)
 	return (final_token);
 }
 
-int	build_token(t_token **input_list, t_env **envp, char *input)
+int	build_token(t_shell *shell, char *input)
 {
 	int		i;
 	char	*cur_token;
@@ -121,10 +126,10 @@ int	build_token(t_token **input_list, t_env **envp, char *input)
 			i++;
 		if (input[i] == '\0')
 			break ; 
-		cur_token = extract_token(input, envp, &i);
+		cur_token = extract_token(shell, input, &i);
 		if (cur_token == NULL)
 			return (1);
-		append_node(input_list, cur_token);
+		append_node(&(shell->input_list), cur_token);
 	}
 	return (0);
 }
