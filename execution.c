@@ -6,7 +6,7 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/19 15:35:49 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/20 12:54:15 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,16 @@ void    pipe_process(t_shell *shell, t_cmd *cmd, int curr_pipe[2], int last_pipe
         dup2(last_pipe, STDIN_FILENO);
     if (cmd->next)
         dup2(curr_pipe[1], STDOUT_FILENO);
+    if (cmd->infile != STDIN_FILENO)
+    {
+        dup2(cmd->infile, STDIN_FILENO);
+        close(cmd->infile);
+    }
+    if (cmd->outfile != STDOUT_FILENO)
+    {
+        dup2(cmd->outfile, STDOUT_FILENO);
+        close(cmd->outfile);
+    }
     if (cmd->next)
     {
         close(curr_pipe[1]);
