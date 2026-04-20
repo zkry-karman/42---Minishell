@@ -3,20 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   ini_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 11:45:04 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/04/19 18:39:17 by cocozhu          ###   ########.fr       */
+/*   Updated: 2026/04/20 17:36:01 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*extract_env(t_env *env_list, int start, int *i)
+char	*get_value(t_shell *shell, char *final, int *i)
 {
+	int start;
 	char *replace;
+	char *result;
+
+	start = *i;
+	while (ft_isdigit(final[*i]) || ft_isalpha(final[*i]) ||
+			final[*i] == '_')
+		(*i)++;
+	replace = ft_substr(final, start, (*i) - start);
+	result = find_env_value(shell->env_list, replace);
+	free(replace);
+	return (result);
+}
+
+char	*extract_env(t_shell *shell, char *final, int *i)
+{
+	(*i)++;
 	
-	
+	if (final[*i] == ' ' || final[*i] == '\0' ||
+		final[*i] == '\"')
+		return (ft_strdup("$"));
+	if (final[*i] == '?')
+	{
+		(*i)++;
+		return (ft_itoa(shell->exit_status));
+	}
+	if (ft_isdigit(final[*i]))
+	{
+		(*i)++;
+		return (ft_strdup(""));
+	}
+	if (ft_isalpha(final[*i]) || final[*i] == '_')
+		return (get_value(shell, final, i));
+    return (ft_strdup("$"));
 }
 
 char	*find_env_value(t_env *env_list, char *replace)
@@ -33,19 +64,6 @@ char	*find_env_value(t_env *env_list, char *replace)
 		cur = cur->next;
 	}
 	return (ft_strdup(""));
-}
-int	find_sep(char *cur)
-{
-	int i;
-
-	i = 0;
-	while (cur[i])
-	{
-		if (cur[i] == '=')
-			return (i);
-		i++;
-	}
-	return (0);
 }
 
 t_env	*creat_envp_node(char *envp_str)
