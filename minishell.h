@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
+/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/20 17:29:56 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/04/21 14:08:31 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ typedef struct s_token
 typedef struct s_cmd
 {
     char    **args;
-    int     infile;
-    int     outfile;
+    int     infile // Initialize as 1;
+    int     outfile // Initialize as 0;
     struct s_cmd *next;
 }   t_cmd;
 
