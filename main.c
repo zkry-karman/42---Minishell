@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:58:35 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/04/16 15:04:15 by cocozhu          ###   ########.fr       */
+/*   Updated: 2026/04/20 15:18:29 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ int	main(int argc, char **argv, char **envp)
 {
 	(void)argc;
 	(void)argv;
-	(void)envp;
-	char *input;
-	t_token *input_list;
+
+	char	*input;
+	t_shell shell;
 	t_token	*temp;
-	int num;
+	int		i;
 
 	printf("Welcome to the Parsing Test!\n");
-	printf("Type commands, use up/down arrows for history, or press Ctrl+D to exit.\n\n");
+	ini_shell(&shell, envp);
 	while (1)
 	{
 		input = readline("minishell> ");
@@ -34,22 +34,22 @@ int	main(int argc, char **argv, char **envp)
 		}
 		if (input[0] != '\0')
 			add_history(input);
-		input_list = NULL;
-		if (build_token(&input_list, input) == 1)
+		shell.input_list = NULL;
+		if (build_token(&shell, input) == 1)
 		{
-			free_tokens(&input_list);
+			free_tokens(&(shell.input_list));
 			free(input);
 			continue;
 		}
-		num = 1;
-		temp = input_list;
+		i = 1;
+		temp = shell.input_list;
 		while (temp != NULL)
 		{
-			printf("Token %i: [%s]\n", num, temp->value);
+			printf("Token %i: [%s]\n", i, temp->value);
 			temp = temp->next;
-			num++;
+			i++;
 		}
-		free_tokens(&input_list);
+		free_tokens(&(shell.input_list));
 		free(input);
 	}
 	return (0);

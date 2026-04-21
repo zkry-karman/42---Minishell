@@ -8,10 +8,10 @@ SRCS =  main.c \
 		ini_token_2.c \
 		ini_cmd.c \
 		tool_box_parsing.c \
-		ool_box_execution.c \
- 		execution.c \
- 		exit_program.c \
-		
+		tool_box_execution.c \
+        execution.c \
+        exit_program.c \
+	
 OBJS = $(SRCS:.c=.o)
 
 LIBFT = libft/libft.a
