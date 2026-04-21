@@ -6,7 +6,7 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/20 12:54:15 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/21 13:58:17 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,8 @@ void    reading_commands(t_shell *shell)
         }
         else
             last_pipe = -1;
+        close (curr_cmd->infile);
+        close(curr_cmd->outfile);
         i++;
         curr_cmd = curr_cmd->next;
     }
