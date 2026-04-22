@@ -6,7 +6,7 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/21 14:08:31 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/22 15:18:41 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_cmd
     char    **args;
     int     infile // Initialize as 1;
     int     outfile // Initialize as 0;
+    char    *limiter;
     struct s_cmd *next;
 }   t_cmd;
 
