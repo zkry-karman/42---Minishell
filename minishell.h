@@ -46,8 +46,9 @@ typedef struct s_token
 typedef struct s_cmd
 {
     char    **args;
-    int     infile;
-    int     outfile;
+    int     infile // Initialize as 1;
+    int     outfile // Initialize as 0;
+    char    *limiter;
     struct s_cmd *next;
 }   t_cmd;
 
