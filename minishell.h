@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
+/*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/20 17:29:56 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/04/22 17:27:34 by cocozhu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,15 +65,17 @@ int 	build_token(t_shell *shell, char *input);
 char	*extract_token(t_shell *shell, char *input, int *i);
 char	*extract_word(t_shell *shell, char *input, int *i);
 char	*extract_quote(t_shell *shell, char *input, int *i);
+char	*extract_d_quote(t_shell *shell, char *input, int *i);
 char	*extract_operator(char *input, int *i);
 int	    append_node(t_token **input_list, char *token);
+char	*join_and_free(char *s1, char *s2);
 
 int 	is_space(char c);
 void    free_tokens(t_token **tokens);
 t_token_type identify_type(char *value);
 
 char	*find_env_value(t_env *env_list, char *replace);
-int	find_sep(char *cur);
+int	    find_sep(char *cur);
 t_env	*creat_envp_node(char *envp_str);
 t_env	*build_envp(char **envp);
 char	*extract_env(t_shell *shell, char *final, int *i);

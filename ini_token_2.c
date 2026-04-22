@@ -6,11 +6,44 @@
 /*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 13:32:54 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/04/16 14:47:16 by cocozhu          ###   ########.fr       */
+/*   Updated: 2026/04/22 17:26:07 by cocozhu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*join_and_free(char *s1, char *s2)
+{
+	char	*temp;
+
+	temp = ft_strjoin(s1, s2);
+	free(s1);
+	free(s2);
+	return (temp);
+}
+
+int	append_node(t_token **input_list, char *token)
+{
+	t_token	*new_node;
+	t_token	*last_node;
+
+	new_node = malloc(sizeof(t_token));
+	if (new_node == NULL)
+		return (1);
+	ft_memset(new_node, 0, sizeof(t_token));
+	new_node->value = token;
+	new_node->type = identify_type(new_node->value);
+	if (*input_list == NULL)
+	{
+		*input_list = new_node;
+		return (0);
+	}
+	last_node = *input_list;
+	while (last_node->next != NULL)
+		last_node = last_node->next;
+	last_node->next = new_node;
+	return (0);
+}
 
 char	*extract_operator(char *input, int *i)
 {

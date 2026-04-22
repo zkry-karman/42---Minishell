@@ -6,11 +6,8 @@ RM	= rm -f
 SRCS =  main.c \
 	    ini_token_1.c \
 		ini_token_2.c \
-		ini_cmd.c \
+		ini_env.c \
 		tool_box_parsing.c \
-		tool_box_execution.c \
-        execution.c \
-        exit_program.c \
 	
 OBJS = $(SRCS:.c=.o)
 
