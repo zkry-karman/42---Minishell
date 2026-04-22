@@ -6,7 +6,7 @@
 /*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/22 17:27:34 by cocozhu          ###   ########.fr       */
+/*   Updated: 2026/04/22 22:17:58 by cocozhu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 
 typedef struct s_env
 {
-    char    *key;
-    char    *value;
+    char            *key;
+    char            *value;
     struct s_env    *next;
 }   t_env;
 
@@ -38,18 +38,23 @@ typedef enum e_token_type
 
 typedef struct s_token
 {
-    char    *value;
-    t_token_type type;
-    struct s_token *next;
+    char            *value;
+    t_token_type    type;
+    struct s_token  *next;
 }   t_token;
+
+typedef struct s_redir
+{
+    t_token_type    type;
+    char            *file;
+    struct s_redir  *next;
+}   t_redir;
 
 typedef struct s_cmd
 {
-    char    **args;
-    int     infile // Initialize as 1;
-    int     outfile // Initialize as 0;
-    char    *limiter;
-    struct s_cmd *next;
+    char            **args;
+    t_redir         *redirs;
+    struct s_cmd    *next;
 }   t_cmd;
 
 typedef struct s_shell
@@ -71,10 +76,6 @@ char	*extract_operator(char *input, int *i);
 int	    append_node(t_token **input_list, char *token);
 char	*join_and_free(char *s1, char *s2);
 
-int 	is_space(char c);
-void    free_tokens(t_token **tokens);
-t_token_type identify_type(char *value);
-
 char	*find_env_value(t_env *env_list, char *replace);
 int	    find_sep(char *cur);
 t_env	*creat_envp_node(char *envp_str);
@@ -82,6 +83,10 @@ t_env	*build_envp(char **envp);
 char	*extract_env(t_shell *shell, char *final, int *i);
 char	*get_value(t_shell *shell, char *final, int *i);
 int		is_delimiter(char c);
+
+int 	is_space(char c);
+void    free_tokens(t_token **tokens);
+t_token_type identify_type(char *value);
 
 void    reading_commands(t_shell **shell);
 
