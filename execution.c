@@ -6,7 +6,7 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/21 13:58:17 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/22 15:10:59 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ void    reading_commands(t_shell *shell)
     children = malloc(sizeof(pid_t) * ft_lstsize(shell->cmds));
     if (!children)
         return ;
+    check_heredocs(shell);
     i = 0;
     while (curr_cmd)
     {
