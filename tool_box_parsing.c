@@ -6,11 +6,19 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 17:58:55 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/04/20 17:21:46 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/04/23 18:10:42 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	ini_shell(t_shell *shell, char	**envp)
+{
+	shell->env_list = build_envp(envp);
+	shell->input_list = NULL;
+	shell->cmds = NULL;
+	shell->exit_status = 0;
+}
 
 int	find_sep(char *cur)
 {
@@ -34,36 +42,19 @@ int is_delimiter(char c)
     return (0);
 }
 
-void	ini_shell(t_shell *shell, char	**envp)
-{
-	shell->env_list = build_envp(envp);
-	shell->input_list = NULL;
-	shell->cmds = NULL;
-	shell->exit_status = 0;
-}
-
-void	free_tokens(t_token **tokens)
-{
-	t_token	*current;
-	t_token	*next;
-
-	if (tokens == NULL)
-		return ;
-	current = *tokens;
-	while (current != NULL)
-	{
-		next = current->next;
-		if (current->value != NULL)
-			free(current->value);
-		free(current);
-		current = next;
-	}
-	*tokens = NULL;
-}
-
 int	is_space(char c)
 {
 	if (c == ' ' || (c >= 9 && c <= 13))
 		return (1);
 	return (0);
+}
+
+char	*join_and_free(char *s1, char *s2)
+{
+	char	*temp;
+
+	temp = ft_strjoin(s1, s2);
+	free(s1);
+	free(s2);
+	return (temp);
 }

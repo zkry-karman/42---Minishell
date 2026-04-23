@@ -6,7 +6,7 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 11:45:04 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/04/20 17:36:01 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/04/23 18:41:51 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*find_env_value(t_env *env_list, char *replace)
 	return (ft_strdup(""));
 }
 
-t_env	*creat_envp_node(char *envp_str)
+t_env	*create_envp_node(char *envp_str)
 {
 	t_env *cur;
 	int sep;
@@ -86,6 +86,8 @@ t_env	*creat_envp_node(char *envp_str)
 		cur->key = ft_substr(envp_str, 0, sep);
 		cur->value = ft_substr(envp_str, sep + 1, (ft_strlen(envp_str) - sep - 1));	
 	}
+	if (!cur->key || !cur->value)
+    	return (free(cur->key), free(cur->value), free(cur), NULL);
 	return (cur);
 }
 
@@ -100,17 +102,14 @@ t_env	*build_envp(char **envp)
 	head = NULL;
 	while (envp[i])
 	{
-		new_node = creat_envp_node(envp[i]);
+		new_node = create_envp_node(envp[i]);
+		if (!new_node)
+			return (free_env(head), NULL);
 		if (head == NULL)
-		{
 			head = new_node;
-			tail = head;
-		}
 		else
-		{
 			tail->next = new_node;
-			tail = tail->next;
-		}
+		tail = new_node;
 		i++;
 	}
 	return (head);

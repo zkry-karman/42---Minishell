@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/22 22:17:58 by cocozhu          ###   ########.fr       */
+/*   Updated: 2026/04/23 19:18:41 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ typedef struct s_cmd
 {
     char            **args;
     t_redir         *redirs;
+	int				infile;
+	int				outfile;
     struct s_cmd    *next;
 }   t_cmd;
 
@@ -74,19 +76,29 @@ char	*extract_quote(t_shell *shell, char *input, int *i);
 char	*extract_d_quote(t_shell *shell, char *input, int *i);
 char	*extract_operator(char *input, int *i);
 int	    append_node(t_token **input_list, char *token);
+t_token_type identify_type(char *value);
 char	*join_and_free(char *s1, char *s2);
 
 char	*find_env_value(t_env *env_list, char *replace);
-int	    find_sep(char *cur);
-t_env	*creat_envp_node(char *envp_str);
+t_env	*create_envp_node(char *envp_str);
 t_env	*build_envp(char **envp);
 char	*extract_env(t_shell *shell, char *final, int *i);
 char	*get_value(t_shell *shell, char *final, int *i);
-int		is_delimiter(char c);
 
 int 	is_space(char c);
+int		is_delimiter(char c);
+int	    find_sep(char *cur);
 void    free_tokens(t_token **tokens);
-t_token_type identify_type(char *value);
+void	free_array(char **arr);
+void free_redirs(t_redir *redirs);
+void	free_cmds(t_cmd *cmds);
+void	free_env(t_env *env_list);
+
+int	build_redir_node(t_redir **redir, t_token **cur);
+void	create_args(char **args, int *i, t_token **cur);
+int count_words_mini(t_token *token);
+t_cmd	*create_cmd_node(t_token **cur);
+int	build_cmds(t_shell *shell);
 
 void    reading_commands(t_shell **shell);
 
