@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/23 12:58:57 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/04/23 15:14:39 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ void    pipe_process(t_shell *shell, t_cmd *cmd, int curr_pipe[2], int last_pipe
         dup2(last_pipe, STDIN_FILENO);
     if (cmd->next)
         dup2(curr_pipe[1], STDOUT_FILENO);
+    if (check_file_descriptors(cmd) == -1)
+        exit_program(shell, 1);
     if (cmd->infile != STDIN_FILENO)
     {
         dup2(cmd->infile, STDIN_FILENO);
