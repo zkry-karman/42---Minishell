@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ini_token_1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:33:28 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/04/22 17:29:42 by cocozhu          ###   ########.fr       */
+/*   Updated: 2026/04/23 18:49:44 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,9 @@ char	*extract_token(t_shell *shell, char *input, int *i)
 	char 	*cur_token;
 	char	*final_token;
 	
-	final_token = ft_strdup("");
 	if (input[*i] == '<' || input[*i] == '>' || input[*i] == '|')
 		return (extract_operator(input, i));
+	final_token = ft_strdup("");
 	while (input[*i] && is_space(input[*i]) == 0 &&
 		input[*i] != '<' && input[*i] != '>' && input[*i] != '|')
 	{
@@ -121,7 +121,7 @@ int	build_token(t_shell *shell, char *input)
 			break ; 
 		cur_token = extract_token(shell, input, &i);
 		if (cur_token == NULL)
-			return (1);
+			return (free_tokens(&(shell->input_list)), 1);
 		append_node(&(shell->input_list), cur_token);
 	}
 	return (0);

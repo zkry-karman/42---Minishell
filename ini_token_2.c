@@ -3,24 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ini_token_2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 13:32:54 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/04/22 17:26:07 by cocozhu          ###   ########.fr       */
+/*   Updated: 2026/04/23 18:10:25 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*join_and_free(char *s1, char *s2)
-{
-	char	*temp;
-
-	temp = ft_strjoin(s1, s2);
-	free(s1);
-	free(s2);
-	return (temp);
-}
 
 int	append_node(t_token **input_list, char *token)
 {

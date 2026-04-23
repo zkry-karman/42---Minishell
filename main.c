@@ -3,14 +3,68 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:58:35 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/04/22 22:24:23 by cocozhu          ###   ########.fr       */
+/*   Updated: 2026/04/23 19:20:11 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	print_redirs(t_redir *redirs)
+{
+	t_redir	*tmp;
+
+	tmp = redirs;
+	if (!tmp)
+	{
+		printf("    (No redirections)\n");
+		return ;
+	}
+	while (tmp != NULL)
+	{
+		// Note: You might need to print the raw integer for 'type' 
+		// depending on how your TOKEN_IN, TOKEN_OUT enum is set up!
+		printf("    [Redir] Type: %d, File: %s\n", tmp->type, tmp->file);
+		tmp = tmp->next;
+	}
+}
+
+void	print_cmds(t_cmd *cmds)
+{
+	t_cmd	*tmp;
+	int		i;
+	int		j;
+
+	tmp = cmds;
+	i = 1;
+	printf("\n========== PARSER DUMP ==========\n");
+	while (tmp != NULL)
+	{
+		printf("CMD NODE %d:\n", i);
+		printf("  -> Args:\n");
+		j = 0;
+		if (tmp->args && tmp->args[0])
+		{
+			while (tmp->args[j] != NULL)
+			{
+				printf("    [%d]: %s\n", j, tmp->args[j]);
+				j++;
+			}
+		}
+		else
+			printf("    (No arguments)\n");
+		
+		printf("  -> Redirs:\n");
+		print_redirs(tmp->redirs);
+		
+		printf("=================================\n");
+		tmp = tmp->next;
+		i++;
+	}
+	printf("\n");
+}
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -19,8 +73,6 @@ int	main(int argc, char **argv, char **envp)
 
 	char	*input;
 	t_shell shell;
-	t_token	*temp;
-	int		i;
 
 	printf("Welcome to the Parsing Test!\n");
 	ini_shell(&shell, envp);
@@ -30,26 +82,25 @@ int	main(int argc, char **argv, char **envp)
 		if (input == NULL)
 		{
 			printf("\nexit\n");
+			free_env(shell.env_list);
+			rl_clear_history();
 			break;
 		}
 		if (input[0] != '\0')
 			add_history(input);
-		shell.input_list = NULL;
 		if (build_token(&shell, input) == 1)
+		{
+			free(input);
+			continue;
+		}
+		if (build_cmds(&shell) == 1)
 		{
 			free_tokens(&(shell.input_list));
 			free(input);
 			continue;
 		}
-		build_cmd(&shell);
-		i = 1;
-		temp = shell.input_list;
-		while (temp != NULL)
-		{
-			printf("Token %i: [%s]\n", i, temp->value);
-			temp = temp->next;
-			i++;
-		}
+		print_cmds(shell.cmds);
+		free_cmds(shell.cmds);
 		free_tokens(&(shell.input_list));
 		free(input);
 	}
