@@ -6,7 +6,7 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/10 11:24:06 by karmanz           #+#    #+#             */
-/*   Updated: 2026/04/24 20:38:36 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/24 20:39:59 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void    free_cmds(t_cmd *cmds)
         if (temp->infile > 0)
             close (temp->infile);
         if (temp->outfile > 1)
-            close (temp->outfile)
+            close (temp->outfile);
         free(temp);
     }
 }
@@ -68,7 +68,7 @@ void    exit_program(t_shell *shell, int exit_code)
     {
         if (shell->cmds)
             free_cmds(shell->cmds);
-        if (shell->env_list);
+        if (shell->env_list)
             free_envp_list(shell->env_list);
     }
     exit (exit_code);
