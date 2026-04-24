@@ -3,18 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
+/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/23 19:18:41 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/04/24 20:07:54 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/wait.h>
+#include <fcntl.h>
 #include "libft/libft.h"
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -100,6 +103,12 @@ int count_words_mini(t_token *token);
 t_cmd	*create_cmd_node(t_token **cur);
 int	build_cmds(t_shell *shell);
 
-void    reading_commands(t_shell **shell);
+void    reading_commands(t_shell *shell);
+void	free_dbl_pointer(char **ptr);
+char    **envp_list_to_arr(t_shell *shell);
+int    check_file_descriptors(t_cmd *cmd);
+void    check_heredocs(t_shell *shell);
+void    exit_program(t_shell *shell, int exit_code);
+
 
 #endif

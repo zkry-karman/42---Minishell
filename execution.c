@@ -6,7 +6,7 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/24 19:29:50 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/24 20:05:26 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char    *get_path(char *command, char **envp)
 {
     char    *path_str;
     char    **paths;
-    char    **full_path;
+    char    *full_path;
     char    *temp;
     int     i;
 
@@ -124,7 +124,7 @@ void    reading_commands(t_shell *shell)
         return ;
     curr_cmd = shell->cmds;
     last_pipe = -1;
-    children = malloc(sizeof(pid_t) * ft_lstsize(shell->cmds));
+    children = malloc(sizeof(pid_t) * ft_lstsize((t_list *)shell->cmds));
     if (!children)
         return ;
     check_heredocs(shell);
@@ -153,7 +153,7 @@ void    reading_commands(t_shell *shell)
         curr_cmd = curr_cmd->next;
     }
     i = 0;
-    while (i < ft_lstsize(shell->cmds))
+    while (i < ft_lstsize((t_list *)shell->cmds))
     {
         waitpid(children[i], NULL, 0);
         i++;
