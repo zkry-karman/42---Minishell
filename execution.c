@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/23 15:14:39 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/04/24 19:29:50 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,8 +145,10 @@ void    reading_commands(t_shell *shell)
         }
         else
             last_pipe = -1;
-        close (curr_cmd->infile);
-        close(curr_cmd->outfile);
+        if (curr_cmd->infile > 0)
+            close (curr_cmd->infile);
+        if (curr_cmd->outfile > 1)
+            close(curr_cmd->outfile);
         i++;
         curr_cmd = curr_cmd->next;
     }

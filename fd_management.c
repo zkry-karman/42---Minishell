@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   fd_management.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 14:22:46 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/23 15:12:02 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/04/24 19:26:13 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void    check_file_descriptors(t_cmd *cmd)
+int    check_file_descriptors(t_cmd *cmd)
 {
     t_redir   *curr;
 
     curr = cmd->redirs;
     while (curr)
     {
-        if (curr->type == TOKEN_OUT)
+        if (curr->type == TOKEN_IN)
         {
             if (cmd->infile > 0)
                 close (cmd->infile);
@@ -33,7 +33,7 @@ void    check_file_descriptors(t_cmd *cmd)
                 close (cmd->outfile);
             cmd->outfile = open(curr->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
             if (cmd->outfile == -1)
-                return (perro(curr->file), -1);
+                return (perror(curr->file), -1);
         }
         else if (curr->type == TOKEN_APPEND)
         {
