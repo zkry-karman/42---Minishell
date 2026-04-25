@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/23 15:14:39 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/04/24 20:05:26 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char    *get_path(char *command, char **envp)
 {
     char    *path_str;
     char    **paths;
-    char    **full_path;
+    char    *full_path;
     char    *temp;
     int     i;
 
@@ -124,7 +124,7 @@ void    reading_commands(t_shell *shell)
         return ;
     curr_cmd = shell->cmds;
     last_pipe = -1;
-    children = malloc(sizeof(pid_t) * ft_lstsize(shell->cmds));
+    children = malloc(sizeof(pid_t) * ft_lstsize((t_list *)shell->cmds));
     if (!children)
         return ;
     check_heredocs(shell);
@@ -145,13 +145,15 @@ void    reading_commands(t_shell *shell)
         }
         else
             last_pipe = -1;
-        close (curr_cmd->infile);
-        close(curr_cmd->outfile);
+        if (curr_cmd->infile > 0)
+            close (curr_cmd->infile);
+        if (curr_cmd->outfile > 1)
+            close(curr_cmd->outfile);
         i++;
         curr_cmd = curr_cmd->next;
     }
     i = 0;
-    while (i < ft_lstsize(shell->cmds))
+    while (i < ft_lstsize((t_list *)shell->cmds))
     {
         waitpid(children[i], NULL, 0);
         i++;

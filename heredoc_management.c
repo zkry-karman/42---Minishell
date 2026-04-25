@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_managment.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 15:19:08 by karmanz           #+#    #+#             */
-/*   Updated: 2026/04/23 15:13:44 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/04/24 19:24:41 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void    handle_heredoc(char *limiter)
+int    handle_heredoc(char *limiter)
 {
     int     fd[2];
     char    *line;

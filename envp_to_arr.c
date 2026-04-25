@@ -6,7 +6,7 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 12:19:30 by karmanz           #+#    #+#             */
-/*   Updated: 2026/04/19 15:13:23 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/24 20:10:21 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char    **envp_list_to_arr(t_shell *shell)
     char    *temp;
 
     curr = shell->env_list;
-    arr = malloc(sizeof(char *) * (ft_lstsize(curr) + 1));
+    arr = malloc(sizeof(char *) * (ft_lstsize((t_list *)curr) + 1));
     if (!arr)
         return (NULL);
     i = 0;
