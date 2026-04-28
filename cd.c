@@ -6,7 +6,7 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 20:51:19 by karmanz           #+#    #+#             */
-/*   Updated: 2026/04/28 23:04:14 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/28 23:05:57 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void    swap_dir(t_shell *shell, t_env *oldpwd)
 {
+    // dont swap pointers. need to rewrite this function
     t_env   *curr;
     char    *tmp;
 
