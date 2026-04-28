@@ -6,7 +6,7 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/28 17:14:54 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/04/28 17:23:10 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ void    reading_commands(t_shell *shell)
     }
     if (last_pipe != -1)
         close(last_pipe);
-    wait_children(shell, children);
+    //wait_children(shell, children);
     i = 0;
     while (i < command_count(shell->cmds))
     {
