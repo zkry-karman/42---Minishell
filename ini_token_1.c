@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ini_token_1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
+/*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:33:28 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/04/23 18:49:44 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/04/28 20:47:04 by cocozhu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*extract_d_quote(t_shell *shell, char *input, int *i)
 			final = join_and_free(final, chunk);
 	}
 	if (input[*i] == '\0')
-			return (free(final), printf("error: unclosed quote\n"), NULL);
+			return (shell->exit_status = 2, free(final), printf("error: unclosed quote\n"), NULL);
 	(*i)++;
 	return (final);
 }
@@ -52,7 +52,7 @@ char	*extract_quote(t_shell *shell, char *input, int *i)
 		while (input[*i] && (input[*i] != '\''))
 			(*i)++;
 		if (input[*i] == '\0')
-			return (printf("error: unclosed quote\n"), NULL);
+			return (shell->exit_status = 2, printf("error: unclosed quote\n"), NULL);
 		final = ft_substr(input, start, (*i) - start);
 		(*i)++;
 	}
