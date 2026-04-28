@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
+/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/28 17:23:10 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/04/28 20:36:23 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,24 +125,29 @@ void    reading_commands(t_shell *shell)
     i = 0;
     while (curr_cmd)
     {
-        if (curr_cmd->next)
-            pipe(curr_pipe);
-        children[i] = fork();
-        if (children[i] == 0)
-            pipe_process(shell, curr_cmd, curr_pipe, last_pipe);
-        if (last_pipe != -1)
-            close(last_pipe);
-        if (curr_cmd->next)
-        {
-            close(curr_pipe[1]);
-            last_pipe = curr_pipe[0];
-        }
+        if (is_built_in_command(curr_cmd->args[0]))
+            execute_built_in_command(shell, curr_cmd);
         else
-            last_pipe = -1;
-        if (curr_cmd->infile > 0)
-            close (curr_cmd->infile);
-        if (curr_cmd->outfile > 1)
-            close(curr_cmd->outfile);
+        {
+            if (curr_cmd->next)
+                pipe(curr_pipe);
+            children[i] = fork();
+            if (children[i] == 0)
+                pipe_process(shell, curr_cmd, curr_pipe, last_pipe);
+            if (last_pipe != -1)
+                close(last_pipe);
+            if (curr_cmd->next)
+            {
+                close(curr_pipe[1]);
+                last_pipe = curr_pipe[0];
+            }
+            else
+                last_pipe = -1;
+            if (curr_cmd->infile > 0)
+                close (curr_cmd->infile);
+            if (curr_cmd->outfile > 1)
+                close(curr_cmd->outfile);
+        }
         i++;
         curr_cmd = curr_cmd->next;
     }
