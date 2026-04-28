@@ -6,24 +6,17 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/28 16:33:58 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/04/28 16:47:18 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char    *env_path(char **envp)
+void    wait_children(t_shell *shell, pid_t *child)
 {
     int     i;
-    
+
     i = 0;
-    while (envp[i])
-    {
-        if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-            return (envp[i] + 5);
-        i++;
-    }
-    return (NULL);
 }
 
 char    *get_path(char *command, char **envp)
@@ -155,10 +148,11 @@ void    reading_commands(t_shell *shell)
     }
     if (last_pipe != -1)
         close(last_pipe);
+    wait_children(shell, children);
     i = 0;
     while (i < command_count(shell->cmds))
     {
-        waitpid(children[i], NULL, 0);
+        waitpid(children[i], &status, 0);
         if (WIFEXITED(status))
             shell->exit_status = WEXITSTATUS(status);
         else if (WIFSIGNALED(status))

@@ -6,11 +6,25 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 12:27:28 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/04/28 16:01:49 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/04/28 16:43:55 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char    *env_path(char **envp)
+{
+    int     i;
+    
+    i = 0;
+    while (envp[i])
+    {
+        if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+            return (envp[i] + 5);
+        i++;
+    }
+    return (NULL);
+}
 
 int     envp_size(t_env *envp)
 {
