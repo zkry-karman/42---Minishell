@@ -6,7 +6,7 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:58:35 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/04/23 19:20:11 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/04/28 14:23:17 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,18 @@ void	print_cmds(t_cmd *cmds)
 	printf("\n");
 }
 
+void    exit_program(t_shell *shell, int exit_code)
+{
+    if (shell)
+    {
+        if (shell->cmds)
+            free_cmds(shell->cmds);
+        if (shell->env_list)
+            free_env(shell->env_list);
+    }
+    exit (exit_code);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	(void)argc;
@@ -99,7 +111,8 @@ int	main(int argc, char **argv, char **envp)
 			free(input);
 			continue;
 		}
-		print_cmds(shell.cmds);
+		//print_cmds(shell.cmds);
+		reading_commands(&shell);
 		free_cmds(shell.cmds);
 		free_tokens(&(shell.input_list));
 		free(input);

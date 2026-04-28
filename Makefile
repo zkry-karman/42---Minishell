@@ -9,12 +9,11 @@ SRCS =  main.c \
 		ini_env.c \
 		ini_cmd.c \
 		tool_box_parsing.c \
-		tool_box_parsing_2.c \
+		tool_box_execution.c \
+		tool_box_free.c \
 		execution.c \
 		fd_management.c \
 		heredoc_management.c \
-		envp_to_arr.c \
-		exit_program.c \
 	
 OBJS = $(SRCS:.c=.o)
 
