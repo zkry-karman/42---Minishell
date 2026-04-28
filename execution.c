@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/28 16:47:18 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/04/28 17:23:10 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void    wait_children(t_shell *shell, pid_t *child)
+/*void    wait_children(t_shell *shell, pid_t *child)
 {
     int     i;
 
     i = 0;
-}
+}*/
 
 char    *get_path(char *command, char **envp)
 {
@@ -148,7 +148,7 @@ void    reading_commands(t_shell *shell)
     }
     if (last_pipe != -1)
         close(last_pipe);
-    wait_children(shell, children);
+    //wait_children(shell, children);
     i = 0;
     while (i < command_count(shell->cmds))
     {

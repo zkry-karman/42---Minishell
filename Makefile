@@ -11,6 +11,7 @@ SRCS =  main.c \
 		tool_box_parsing.c \
 		tool_box_execution.c \
 		tool_box_free.c \
+		syntax_checker.c\
 		execution.c \
 		fd_management.c \
 		heredoc_management.c \
