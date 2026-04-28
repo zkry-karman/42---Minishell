@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/28 15:57:07 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/04/28 16:33:58 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ void    reading_commands(t_shell *shell)
     pid_t   *children;
     int     i;
     t_cmd     *curr_cmd;
+    int     status;
     
     if (!shell)
         return ;
@@ -158,6 +159,10 @@ void    reading_commands(t_shell *shell)
     while (i < command_count(shell->cmds))
     {
         waitpid(children[i], NULL, 0);
+        if (WIFEXITED(status))
+            shell->exit_status = WEXITSTATUS(status);
+        else if (WIFSIGNALED(status))
+            shell->exit_status = 128 + WTERMSIG(status);
         i++;
     }
     free(children);
