@@ -6,7 +6,7 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 20:51:19 by karmanz           #+#    #+#             */
-/*   Updated: 2026/04/28 23:05:57 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/28 23:11:08 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int     change_dir(t_shell *shell, char **args)
         target_node = get_env_node(shell, "OLDPWD");
         if (!target_node)
             return(ft_putstr_fd("minishell: cd: OLDPWD not set", 2), 1);
-        printf("%s", target_node->value);
+        printf("%s\n", target_node->value);
         swap_dir(shell, target_node);
     }
     else
