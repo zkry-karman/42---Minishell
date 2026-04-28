@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
+/*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:58:35 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/04/28 17:17:33 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/04/28 20:44:24 by cocozhu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,13 @@ int	main(int argc, char **argv, char **envp)
 			free(input);
 			continue;
 		}
-		syntax_checker(shell.input_list);
+		if (syntax_checker(shell.input_list) == 1)
+		{
+			shell.exit_status = 2;
+			free_tokens(&(shell.input_list));
+			free(input);
+			continue;
+		}
 		if (build_cmds(&shell) == 1)
 		{
 			free_tokens(&(shell.input_list));
