@@ -6,7 +6,7 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/28 16:48:38 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/04/28 17:18:29 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ char    **envp_list_to_arr(t_shell *shell);
 int    check_file_descriptors(t_cmd *cmd);
 void    check_heredocs(t_shell *shell);
 void    exit_program(t_shell *shell, int exit_code);
+int     command_count(t_cmd *cmds);
 
 
 #endif

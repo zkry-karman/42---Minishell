@@ -6,25 +6,18 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/28 14:16:50 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/04/28 17:14:54 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char    *env_path(char **envp)
+/*void    wait_children(t_shell *shell, pid_t *child)
 {
     int     i;
-    
+
     i = 0;
-    while (envp[i])
-    {
-        if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-            return (envp[i] + 5);
-        i++;
-    }
-    return (NULL);
-}
+}*/
 
 char    *get_path(char *command, char **envp)
 {
@@ -119,12 +112,13 @@ void    reading_commands(t_shell *shell)
     pid_t   *children;
     int     i;
     t_cmd     *curr_cmd;
+    int     status;
     
     if (!shell)
         return ;
     curr_cmd = shell->cmds;
     last_pipe = -1;
-    children = malloc(sizeof(pid_t) * ft_lstsize((t_list *)shell->cmds));
+    children = malloc(sizeof(pid_t) * command_count(shell->cmds));
     if (!children)
         return ;
     check_heredocs(shell);
@@ -152,10 +146,17 @@ void    reading_commands(t_shell *shell)
         i++;
         curr_cmd = curr_cmd->next;
     }
+    if (last_pipe != -1)
+        close(last_pipe);
+    wait_children(shell, children);
     i = 0;
-    while (i < ft_lstsize((t_list *)shell->cmds))
+    while (i < command_count(shell->cmds))
     {
-        waitpid(children[i], NULL, 0);
+        waitpid(children[i], &status, 0);
+        if (WIFEXITED(status))
+            shell->exit_status = WEXITSTATUS(status);
+        else if (WIFSIGNALED(status))
+            shell->exit_status = 128 + WTERMSIG(status);
         i++;
     }
     free(children);
