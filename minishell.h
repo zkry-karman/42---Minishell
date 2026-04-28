@@ -6,7 +6,7 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/28 14:21:40 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/04/28 16:48:38 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ char	*extract_operator(char *input, int *i);
 int	    append_node(t_token **input_list, char *token);
 t_token_type identify_type(char *value);
 char	*join_and_free(char *s1, char *s2);
+int	syntax_checker(t_token *tokens);
 
 char	*find_env_value(t_env *env_list, char *replace);
 t_env	*create_envp_node(char *envp_str);
