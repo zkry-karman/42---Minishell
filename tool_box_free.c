@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tool_box_parsing_2.c                               :+:      :+:    :+:   */
+/*   tool_box_free.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 18:09:59 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/04/23 19:20:47 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/04/28 14:17:55 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,20 +57,24 @@ void free_redirs(t_redir *redirs)
 	}
 }
 
-void	free_cmds(t_cmd *cmds)
+void    free_cmds(t_cmd *cmds)
 {
-	t_cmd	*tmp;
+    t_cmd   *temp;
 
-	while (cmds != NULL)
-	{
-		tmp = cmds->next;
-		if (cmds->args != NULL)
-			free_array(cmds->args);
-		if (cmds->redirs!= NULL)
-			free_redirs(cmds->redirs);
-		free(cmds);
-		cmds = tmp;
-	}
+    while (cmds)
+    {
+        temp = cmds;
+        cmds = cmds->next;
+        if (temp->args)
+            free_array(temp->args);
+        if(temp->redirs)
+            free_redirs(temp->redirs);
+        if (temp->infile > 0)
+            close (temp->infile);
+        if (temp->outfile > 1)
+            close (temp->outfile);
+        free(temp);
+    }
 }
 
 void	free_env(t_env *env_list)

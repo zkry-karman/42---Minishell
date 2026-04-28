@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/24 20:07:54 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/28 14:21:40 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ t_cmd	*create_cmd_node(t_token **cur);
 int	build_cmds(t_shell *shell);
 
 void    reading_commands(t_shell *shell);
-void	free_dbl_pointer(char **ptr);
 char    **envp_list_to_arr(t_shell *shell);
 int    check_file_descriptors(t_cmd *cmd);
 void    check_heredocs(t_shell *shell);

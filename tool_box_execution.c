@@ -1,28 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tool_box_excusion.c                                :+:      :+:    :+:   */
+/*   tool_box_execution.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 12:27:28 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/04/16 12:27:43 by cocozhu          ###   ########.fr       */
+/*   Updated: 2026/04/28 14:20:49 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_dbl_pointer(char **ptr)
+char    **envp_list_to_arr(t_shell *shell)
 {
-	int		i;
+    char    **arr;
+    t_env   *curr;
+    int     i;
+    char    *temp;
 
-	if (!ptr || !*ptr)
-		return ;
-	i = 0;
-	while (ptr[i])
-	{
-		free(ptr[i]);
-		i++;
-	}
-	free(ptr);
+    curr = shell->env_list;
+    arr = malloc(sizeof(char *) * (ft_lstsize((t_list *)curr) + 1));
+    if (!arr)
+        return (NULL);
+    i = 0;
+    while (curr)
+    {
+        temp = ft_strjoin(curr->key, "=");
+        arr[i] = ft_strjoin(temp, curr->value);
+        free(temp);
+        i++;
+        curr = curr->next;
+    }
+    arr[i] = NULL;
+    return (arr);
 }

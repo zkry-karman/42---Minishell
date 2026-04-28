@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/24 20:05:26 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/28 14:16:50 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ char    *get_path(char *command, char **envp)
         free(temp);
         if (access(full_path, X_OK) == 0)
         {
-            free_dbl_pointer(paths);
+            free_array(paths);
             return (full_path);
         }
         free(full_path);
         i++;
     }
-    free_dbl_pointer(paths);
+    free_array(paths);
     return (NULL);
 }
 
@@ -69,14 +69,14 @@ void    execute_command(t_shell *shell, t_cmd *cmd)
     path = get_path(cmd->args[0], envp_arr);
     if (!path)
     {
-        free_dbl_pointer(envp_arr);
+        free_array(envp_arr);
         ft_putstr_fd(cmd->args[0], 2);
         ft_putstr_fd(": command not found\n", 2);
         exit_program(shell, 127);
     }
     if (execve(path, cmd->args, envp_arr) == -1)
     {
-        free_dbl_pointer(envp_arr);
+        free_array(envp_arr);
         perror("Execve Failure");
         exit_program(shell, 1);
     }
