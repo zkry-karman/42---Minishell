@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_management.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 15:19:08 by karmanz           #+#    #+#             */
-/*   Updated: 2026/04/28 23:28:02 by cocozhu          ###   ########.fr       */
+/*   Updated: 2026/04/29 13:06:45 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char    *expand_heredoc(t_shell *shell, char *line)
 	return (final);
 }
 
-int    handle_heredoc(t_shell *shell, char *limiter)
+int    handle_heredoc(t_shell *shell, char *limiter, int quoted)
 {
     int     fd[2];
     char    *line;
@@ -52,13 +52,17 @@ int    handle_heredoc(t_shell *shell, char *limiter)
     {
         line = readline("> ");
         if (!line)
+		{
+			printf("minishell: warning: here-document delimited by end-of-file (wanted `%s')\n", limiter)
+		}
             break ;
         if (ft_strncmp(line, limiter, ft_strlen(limiter) + 1) == 0)
         {
             free(line);
             break ;
         }
-        line = expand_heredoc(shell, line);
+		if (quoted == 0)
+        	line = expand_heredoc(shell, line);
         ft_putstr_fd(line, fd[1]);
         ft_putstr_fd("\n", fd[1]);
         free(line);
@@ -82,7 +86,7 @@ void    check_heredocs(t_shell *shell)
             {
                 if (curr_cmd->infile > 0)
                     close(curr_cmd->infile);
-                curr_cmd->infile = handle_heredoc(shell, curr_redir->file);
+                curr_cmd->infile = handle_heredoc(shell, curr_redir->file, curr_redir->quoted);
             }
             curr_redir = curr_redir->next;
         }
