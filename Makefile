@@ -4,15 +4,15 @@ CFLAGS	= -Wall -Wextra -Werror -I.
 RM	= rm -f
 
 SRCS =  main.c \
-	    ini_token_1.c \
-		ini_token_2.c \
-		ini_env.c \
-		ini_cmd.c \
+	    parsing/ini_token_1.c \
+		parsing/ini_token_2.c \
+		parsing/ini_env.c \
+		parsing/ini_cmd.c \
+		parsing/syntax_checker.c\
 		helper_functions/tool_box_parsing.c \
 		helper_functions/tool_box_exec.c \
 		helper_functions/tool_box_free.c \
 		helper_functions/tool_box_env.c \
-		syntax_checker.c\
 		execution/execution.c \
 		execution/fd_management.c \
 		execution/heredoc_management.c \
