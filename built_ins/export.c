@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 14:22:32 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/29 14:54:30 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/04/29 15:44:41 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,23 @@ void    process_arg(t_shell *shell, char *arg)
         add_to_env(shell, key, value);
    
     
+}
+int     is_valid_arg(char *arg)
+{
+    int     i;
+    
+    i = 0;
+    if (!arg || arg[0] == '\0')
+        return (0);
+    if (!(ft_isalpha(arg[i]) || arg[i] == '_'))
+        return (0);
+    while (arg[i] && arg[i] != '=')
+    {
+        if (!(ft_isalnum(arg[i]) || arg[i] == '_'))
+            return (0);
+        i++;
+    }
+    return (1);
 }
 
 int     ft_export(t_shell *shell, char **args)

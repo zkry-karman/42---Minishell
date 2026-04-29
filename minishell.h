@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/29 15:22:54 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/04/29 15:44:52 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,13 +113,18 @@ char    *expand_heredoc(t_shell *shell, char *line);
 void    exit_program(t_shell *shell, int exit_code);
 int     command_count(t_cmd *cmds);
 char    *env_path(char **envp);
+int ft_strcmp(const char *s1, const char *s2);
 int     is_built_in_command(char *cmd);
 int    execute_built_in_command(t_shell *shell, t_cmd *cmd);
 int     change_dir(t_shell *shell, char **args);
-int     echo(t_shell *shell, char **args);
+t_env    *get_env_node(t_shell *shell, char *wanted_path);
+void    replace_env_value(t_env *node, char *new_val);
+int     echo(char **args);
 int     show_env(t_env *env_list);
 int     check_exit(t_shell *shell, char **args);
+int     is_valid_arg(char *arg);
 int     ft_export(t_shell *shell, char **args);
+int     print_cwd(t_shell *shell, char **args);
 int     ft_unset(t_shell *shell, char **args);
 
 #endif

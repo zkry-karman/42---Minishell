@@ -22,6 +22,7 @@ SRCS =  main.c \
 		built_ins/env.c \
 		built_ins/exit.c \
 		built_ins/export.c \
+		built_ints/pwd.c \
 		built_ins/unset.c \
 
 OBJS = $(SRCS:.c=.o)

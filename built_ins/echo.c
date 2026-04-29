@@ -6,13 +6,13 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 11:20:20 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/29 11:46:10 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/04/29 15:37:59 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int     echo(t_shell *shell, char **args)
+int     echo(char **args)
 {
     int     i;
     int     n_flag;

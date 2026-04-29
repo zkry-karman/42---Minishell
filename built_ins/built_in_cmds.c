@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 20:15:06 by karmanz           #+#    #+#             */
-/*   Updated: 2026/04/29 15:12:36 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/04/29 15:38:06 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int    execute_built_in_command(t_shell *shell, t_cmd *cmd)
     if (ft_strcmp(cmd->args[0], "cd") == 0)
         return (change_dir(shell, cmd->args));
     if (ft_strcmp(cmd->args[0], "echo") == 0)
-        return (echo(shell, cmd->args));
+        return (echo(cmd->args));
     if (ft_strcmp(cmd->args[0], "env") == 0)
         return (show_env(shell->env_list));
     if (ft_strcmp(cmd->args[0], "exit") == 0)
