@@ -6,7 +6,7 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 11:55:10 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/04/23 19:04:18 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/04/29 11:46:57 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@ int	build_redir_node(t_redir **redir, t_token **cur)
 		return (1);
 	new_node->type = (*cur)->type;
 	new_node->file = ft_strdup((*cur)->next->value);
+	if (new_node->file == NULL)
+		return (free(new_node), 1);
+	new_node->quoted = (*cur)->next->quoted;
 	new_node->next = NULL;
 	if ((*redir) == NULL)
 		(*redir) = new_node;

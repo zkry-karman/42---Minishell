@@ -6,18 +6,22 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 17:58:55 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/04/23 18:10:42 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/04/29 14:53:29 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ini_shell(t_shell *shell, char	**envp)
+int g_status = 0;
+
+void	handle_sigint(int sig)
 {
-	shell->env_list = build_envp(envp);
-	shell->input_list = NULL;
-	shell->cmds = NULL;
-	shell->exit_status = 0;
+	(void)sig;
+	g_status = 130;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
 int	find_sep(char *cur)

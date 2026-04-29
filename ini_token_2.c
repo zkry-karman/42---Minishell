@@ -6,13 +6,13 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 13:32:54 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/04/23 18:10:25 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/04/29 11:27:42 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	append_node(t_token **input_list, char *token)
+int	append_node(t_token **input_list, char *token, int quoted)
 {
 	t_token	*new_node;
 	t_token	*last_node;
@@ -23,6 +23,8 @@ int	append_node(t_token **input_list, char *token)
 	ft_memset(new_node, 0, sizeof(t_token));
 	new_node->value = token;
 	new_node->type = identify_type(new_node->value);
+	new_node->quoted = quoted;
+	new_node->next = NULL;
 	if (*input_list == NULL)
 	{
 		*input_list = new_node;
