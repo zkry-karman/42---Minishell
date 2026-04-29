@@ -3,67 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:58:35 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/04/28 20:44:24 by cocozhu          ###   ########.fr       */
+/*   Updated: 2026/04/29 15:32:23 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_redirs(t_redir *redirs)
+void	ini_shell(t_shell *shell, char	**envp)
 {
-	t_redir	*tmp;
-
-	tmp = redirs;
-	if (!tmp)
-	{
-		printf("    (No redirections)\n");
-		return ;
-	}
-	while (tmp != NULL)
-	{
-		// Note: You might need to print the raw integer for 'type' 
-		// depending on how your TOKEN_IN, TOKEN_OUT enum is set up!
-		printf("    [Redir] Type: %d, File: %s\n", tmp->type, tmp->file);
-		tmp = tmp->next;
-	}
-}
-
-void	print_cmds(t_cmd *cmds)
-{
-	t_cmd	*tmp;
-	int		i;
-	int		j;
-
-	tmp = cmds;
-	i = 1;
-	printf("\n========== PARSER DUMP ==========\n");
-	while (tmp != NULL)
-	{
-		printf("CMD NODE %d:\n", i);
-		printf("  -> Args:\n");
-		j = 0;
-		if (tmp->args && tmp->args[0])
-		{
-			while (tmp->args[j] != NULL)
-			{
-				printf("    [%d]: %s\n", j, tmp->args[j]);
-				j++;
-			}
-		}
-		else
-			printf("    (No arguments)\n");
-		
-		printf("  -> Redirs:\n");
-		print_redirs(tmp->redirs);
-		
-		printf("=================================\n");
-		tmp = tmp->next;
-		i++;
-	}
-	printf("\n");
+	shell->env_list = build_envp(envp);
+	shell->input_list = NULL;
+	shell->cmds = NULL;
+	shell->exit_status = 0;
 }
 
 void    exit_program(t_shell *shell, int exit_code)
@@ -86,10 +40,16 @@ int	main(int argc, char **argv, char **envp)
 	char	*input;
 	t_shell shell;
 
-	printf("Welcome to the Parsing Test!\n");
+	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, SIG_IGN);
 	ini_shell(&shell, envp);
 	while (1)
 	{
+		if (g_status != 0)
+		{
+			shell.exit_status = g_status;
+			g_status = 0;
+		}
 		input = readline("minishell> ");
 		if (input == NULL)
 		{
@@ -118,9 +78,9 @@ int	main(int argc, char **argv, char **envp)
 			free(input);
 			continue;
 		}
-		//print_cmds(shell.cmds);
 		reading_commands(&shell);
 		free_cmds(shell.cmds);
+		shell.cmds = NULL;
 		free_tokens(&(shell.input_list));
 		free(input);
 	}

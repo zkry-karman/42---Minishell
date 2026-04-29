@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ini_token_1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:33:28 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/04/28 20:47:04 by cocozhu          ###   ########.fr       */
+/*   Updated: 2026/04/29 11:26:51 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char	*extract_word(t_shell *shell, char *input, int *i)
 	return (final);
 }
 
-char	*extract_token(t_shell *shell, char *input, int *i)
+char	*extract_token(t_shell *shell, char *input, int *i, int *quoted)
 {
 	char 	*cur_token;
 	char	*final_token;
@@ -97,7 +97,10 @@ char	*extract_token(t_shell *shell, char *input, int *i)
 		input[*i] != '<' && input[*i] != '>' && input[*i] != '|')
 	{
 		if (input[*i] == '\'' || input[*i] == '\"')
+		{
+			*quoted = 1;
 			cur_token = extract_quote(shell, input, i);
+		}
 		else
 			cur_token = extract_word(shell, input, i);
 		if (cur_token == NULL)
@@ -110,6 +113,7 @@ char	*extract_token(t_shell *shell, char *input, int *i)
 int	build_token(t_shell *shell, char *input)
 {
 	int		i;
+	int		quoted;
 	char	*cur_token;
 
 	i = 0;
@@ -119,10 +123,11 @@ int	build_token(t_shell *shell, char *input)
 			i++;
 		if (input[i] == '\0')
 			break ; 
-		cur_token = extract_token(shell, input, &i);
+		quoted = 0;
+		cur_token = extract_token(shell, input, &i, &quoted);
 		if (cur_token == NULL)
 			return (free_tokens(&(shell->input_list)), 1);
-		append_node(&(shell->input_list), cur_token);
+		append_node(&(shell->input_list), cur_token, quoted);
 	}
 	return (0);
 }
