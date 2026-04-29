@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_management.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 15:19:08 by karmanz           #+#    #+#             */
-/*   Updated: 2026/04/29 13:06:45 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/04/29 15:50:03 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ int    handle_heredoc(t_shell *shell, char *limiter, int quoted)
         line = readline("> ");
         if (!line)
 		{
-			printf("minishell: warning: here-document delimited by end-of-file (wanted `%s')\n", limiter)
-		}
+			printf("minishell: warning: here-document delimited by end-of-file (wanted `%s')\n", limiter);
             break ;
+        }
         if (ft_strncmp(line, limiter, ft_strlen(limiter) + 1) == 0)
         {
             free(line);
