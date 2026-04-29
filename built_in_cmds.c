@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 20:15:06 by karmanz           #+#    #+#             */
-/*   Updated: 2026/04/29 12:31:36 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/04/29 14:28:24 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@ int    execute_built_in_command(t_shell *shell, t_cmd *cmd)
     if (ft_strcmp(cmd->args[0], "exit") == 0)
         return (check_exit(shell, cmd->args));
     if (ft_strcmp(cmd->args[0], "export") == 0)
+        return (ft_export(shell, cmd->args));
     if (ft_strcmp(cmd->args[0], "pwd") == 0)
+        return (print_cwd(shell, cmd->args));
     if (ft_strcmp(cmd->args[0], "unset") == 0)
 
     return (0);
