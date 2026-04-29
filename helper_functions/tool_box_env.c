@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tool_box_execution.c                               :+:      :+:    :+:   */
+/*   tool_box_env.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 12:27:28 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/04/28 21:45:38 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/29 11:13:54 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,18 +80,11 @@ char    **envp_list_to_arr(t_shell *shell)
     arr[i] = NULL;
     return (arr);
 }
-
-int     command_count(t_cmd *cmds)
+void    replace_env_value(t_env *node, char *new_val)
 {
-    int     i;
-    t_cmd   *tmp;
-    
-    i = 0;
-    tmp = cmds;
-    while (tmp)
-    {
-        i++;
-        tmp = tmp->next;
-    }
-    return (i);
+    if (!node || !new_val)
+        return ;
+    free(node->value);
+    node->value = ft_strdup(new_val);
 }
+
