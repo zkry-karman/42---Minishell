@@ -8,9 +8,10 @@ SRCS =  main.c \
 		ini_token_2.c \
 		ini_env.c \
 		ini_cmd.c \
-		tool_box_parsing.c \
-		tool_box_execution.c \
-		tool_box_free.c \
+		helper_functions/tool_box_parsing.c \
+		helper_functions/tool_box_exec.c \
+		helper_functions/tool_box_free.c \
+		helper_functions/tool_box_env.c \
 		syntax_checker.c\
 		execution.c \
 		fd_management.c \
