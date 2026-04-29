@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in_cmds.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 20:15:06 by karmanz           #+#    #+#             */
-/*   Updated: 2026/04/28 20:49:33 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/29 12:31:36 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,15 @@ int    execute_built_in_command(t_shell *shell, t_cmd *cmd)
 {
     if (ft_strcmp(cmd->args[0], "cd") == 0)
         return (change_dir(shell, cmd->args));
-    /*if (ft_strcmp(cmd->args[0], "echo") == 0)
+    if (ft_strcmp(cmd->args[0], "echo") == 0)
+        return (echo(shell, cmd->args));
     if (ft_strcmp(cmd->args[0], "env") == 0)
+        return (show_env(shell->env_list));
     if (ft_strcmp(cmd->args[0], "exit") == 0)
+        return (check_exit(shell, cmd->args));
     if (ft_strcmp(cmd->args[0], "export") == 0)
     if (ft_strcmp(cmd->args[0], "pwd") == 0)
-    if (ft_strcmp(cmd->args[0], "unset") == 0)*/
+    if (ft_strcmp(cmd->args[0], "unset") == 0)
 
     return (0);
 }

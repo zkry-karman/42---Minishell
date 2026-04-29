@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 20:51:19 by karmanz           #+#    #+#             */
-/*   Updated: 2026/04/29 11:15:00 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/04/29 13:13:44 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int     change_dir(t_shell *shell, char **args)
     if (chdir(new_path) == -1)
     {
         perror("minishell: cd");
+        shell->exit_status = 1;
         return (1);
     }
     target_node = get_env_node(shell, "OLDPWD");
@@ -55,5 +56,6 @@ int     change_dir(t_shell *shell, char **args)
         if (target_node)
             replace_env_value(target_node, cwd);
     }
+    shell->exit_status = 0;
     return (0);
 }
