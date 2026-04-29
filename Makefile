@@ -1,6 +1,6 @@
 NAME = minishell
 CC	= cc
-CFLAGS	= -Wall -Wextra -Werror
+CFLAGS	= -Wall -Wextra -Werror -I.
 RM	= rm -f
 
 SRCS =  main.c \
@@ -15,7 +15,14 @@ SRCS =  main.c \
 		execution.c \
 		fd_management.c \
 		heredoc_management.c \
-	
+		built_ins/built_in_cmds.c \
+		built_ins/cd.c \
+		built_ins/echo.c \
+		built_ins/env.c \
+		built_ins/exit.c \
+		built_ins/export.c \
+		built_ins/unset.c \
+
 OBJS = $(SRCS:.c=.o)
 
 LIBFT = libft/libft.a
