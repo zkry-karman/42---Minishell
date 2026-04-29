@@ -13,16 +13,16 @@ SRCS =  main.c \
 		helper_functions/tool_box_free.c \
 		helper_functions/tool_box_env.c \
 		syntax_checker.c\
-		execution.c \
-		fd_management.c \
-		heredoc_management.c \
+		execution/execution.c \
+		execution/fd_management.c \
+		execution/heredoc_management.c \
 		built_ins/built_in_cmds.c \
 		built_ins/cd.c \
 		built_ins/echo.c \
 		built_ins/env.c \
 		built_ins/exit.c \
 		built_ins/export.c \
-		built_ints/pwd.c \
+		built_ins/pwd.c \
 		built_ins/unset.c \
 
 OBJS = $(SRCS:.c=.o)
