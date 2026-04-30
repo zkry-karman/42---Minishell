@@ -9,6 +9,7 @@ SRCS =  main.c \
 		parsing/ini_env.c \
 		parsing/ini_cmd.c \
 		parsing/syntax_checker.c\
+		helper_functions/tool_box_fd.c \
 		helper_functions/tool_box_parsing.c \
 		helper_functions/tool_box_exec.c \
 		helper_functions/tool_box_free.c \
