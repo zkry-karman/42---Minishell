@@ -6,7 +6,7 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/30 21:53:14 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/30 22:45:06 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,5 +132,7 @@ int     ft_export(t_shell *shell, char **args);
 int     print_cwd(t_shell *shell, char **args);
 int     ft_unset(t_shell *shell, char **args);
 void    close_if_non_standard_in_out_file(int infile, int outfile);
+void    check_for_next_pipe(int last_pipe, t_cmd *curr_cmd, int curr_pipe[2]);
+char    *get_path(char *command, char **envp);
 
 #endif

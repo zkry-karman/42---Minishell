@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
+/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:58:35 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/04/29 16:18:08 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/04/30 22:43:35 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void process_input(t_shell *shell, char *input)
 	if (syntax_checker(shell->input_list) == 1)
 	{
 		shell->exit_status = 2;
-		free_tokens(&(shell.input_list));
+		free_tokens(&(shell->input_list));
 		return ;
 	}
 	if (build_cmds(shell) == 1)
@@ -50,9 +50,9 @@ void process_input(t_shell *shell, char *input)
 		return ;
 	}
 	reading_commands(shell);
-	free_cmds(shell.cmds);
-	shell.cmds = NULL;
-	free_tokens(&(shell.input_list));
+	free_cmds(shell->cmds);
+	shell->cmds = NULL;
+	free_tokens(&(shell->input_list));
 }
 
 int	main(int argc, char **argv, char **envp)

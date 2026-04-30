@@ -6,7 +6,7 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/30 22:40:31 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/04/30 22:44:22 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void    wait_children(t_shell *shell, pid_t *child)
     int     status;
 
     i = 0;
-    while (i < command(shell->cmds))
+    while (i < command_count(shell->cmds))
     {
         waitpid(child[i], &status, 0);
         if (WIFEXITED(status))
