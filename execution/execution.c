@@ -3,52 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/29 15:55:38 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/04/30 22:40:31 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*void    wait_children(t_shell *shell, pid_t *child)
+void    wait_children(t_shell *shell, pid_t *child)
 {
     int     i;
+    int     status;
 
     i = 0;
-}*/
-
-char    *get_path(char *command, char **envp)
-{
-    char    *path_str;
-    char    **paths;
-    char    *full_path;
-    char    *temp;
-    int     i;
-
-    if (access(command, X_OK) == 0)
-        return (ft_strdup(command));
-    path_str = env_path(envp);
-    if (!path_str)
-        return (NULL);
-    paths = ft_split(path_str, ':');
-    i = 0;
-    while (paths[i])
+    while (i < command(shell->cmds))
     {
-        temp = ft_strjoin(paths[i], "/");
-        full_path = ft_strjoin(temp, command);
-        free(temp);
-        if (access(full_path, X_OK) == 0)
-        {
-            free_array(paths);
-            return (full_path);
-        }
-        free(full_path);
+        waitpid(child[i], &status, 0);
+        if (WIFEXITED(status))
+            shell->exit_status = WEXITSTATUS(status);
+        else if (WIFSIGNALED(status))
+            shell->exit_status = 128 + WTERMSIG(status);
         i++;
     }
-    free_array(paths);
-    return (NULL);
+    free(child);
 }
 
 void    execute_command(t_shell *shell, t_cmd *cmd)
@@ -112,7 +91,6 @@ void    reading_commands(t_shell *shell)
     pid_t   *children;
     int     i;
     t_cmd     *curr_cmd;
-    int     status;
     
     if (!shell)
         return ;
@@ -134,35 +112,12 @@ void    reading_commands(t_shell *shell)
             children[i] = fork();
             if (children[i] == 0)
                 pipe_process(shell, curr_cmd, curr_pipe, last_pipe);
-            if (last_pipe != -1)
-                close(last_pipe);
-            if (curr_cmd->next)
-            {
-                close(curr_pipe[1]);
-                last_pipe = curr_pipe[0];
-            }
-            else
-                last_pipe = -1;
-            if (curr_cmd->infile > 0)
-                close (curr_cmd->infile);
-            if (curr_cmd->outfile > 1)
-                close(curr_cmd->outfile);
+            check_for_next_pipe(last_pipe, curr_cmd, curr_pipe);
+            close_if_non_standard_in_out_file(curr_cmd->infile, curr_cmd->outfile);
         }
         i++;
         curr_cmd = curr_cmd->next;
     }
-    if (last_pipe != -1)
-        close(last_pipe);
-    //wait_children(shell, children);
-    i = 0;
-    while (i < command_count(shell->cmds))
-    {
-        waitpid(children[i], &status, 0);
-        if (WIFEXITED(status))
-            shell->exit_status = WEXITSTATUS(status);
-        else if (WIFSIGNALED(status))
-            shell->exit_status = 128 + WTERMSIG(status);
-        i++;
-    }
-    free(children);
+    check_for_next_pipe(last_pipe, NULL, NULL);
+    wait_children(shell, children);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
+/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/29 15:44:52 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/04/30 21:53:14 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,5 +131,6 @@ int     is_valid_arg(char *arg);
 int     ft_export(t_shell *shell, char **args);
 int     print_cwd(t_shell *shell, char **args);
 int     ft_unset(t_shell *shell, char **args);
+void    close_if_non_standard_in_out_file(int infile, int outfile);
 
 #endif
