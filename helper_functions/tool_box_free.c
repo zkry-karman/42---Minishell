@@ -6,7 +6,7 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 18:09:59 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/04/28 14:17:55 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/01 14:48:04 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,11 @@ void	free_tokens(t_token **tokens)
 	}
 	*tokens = NULL;
 }
+
 void	free_array(char **arr)
 {
 	int	i;
+
 	if (!arr)
 		return ;
 	i = 0;
@@ -44,9 +46,10 @@ void	free_array(char **arr)
 	free(arr);
 }
 
-void free_redirs(t_redir *redirs)
+void	free_redirs(t_redir *redirs)
 {
-	t_redir *tmp;
+	t_redir	*tmp;
+
 	while (redirs != NULL)
 	{
 		tmp = redirs->next;
@@ -57,24 +60,24 @@ void free_redirs(t_redir *redirs)
 	}
 }
 
-void    free_cmds(t_cmd *cmds)
+void	free_cmds(t_cmd *cmds)
 {
-    t_cmd   *temp;
+	t_cmd	*temp;
 
-    while (cmds)
-    {
-        temp = cmds;
-        cmds = cmds->next;
-        if (temp->args)
-            free_array(temp->args);
-        if(temp->redirs)
-            free_redirs(temp->redirs);
-        if (temp->infile > 0)
-            close (temp->infile);
-        if (temp->outfile > 1)
-            close (temp->outfile);
-        free(temp);
-    }
+	while (cmds)
+	{
+		temp = cmds;
+		cmds = cmds->next;
+		if (temp->args)
+			free_array(temp->args);
+		if (temp->redirs)
+			free_redirs(temp->redirs);
+		if (temp->infile > 0)
+			close (temp->infile);
+		if (temp->outfile > 1)
+			close (temp->outfile);
+		free(temp);
+	}
 }
 
 void	free_env(t_env *env_list)
@@ -92,4 +95,3 @@ void	free_env(t_env *env_list)
 		env_list = tmp;
 	}
 }
-

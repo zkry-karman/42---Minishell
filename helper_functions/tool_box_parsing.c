@@ -6,13 +6,13 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 17:58:55 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/04/29 14:53:29 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/01 14:52:07 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int g_status = 0;
+int	g_status = 0;
 
 void	handle_sigint(int sig)
 {
@@ -26,7 +26,7 @@ void	handle_sigint(int sig)
 
 int	find_sep(char *cur)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (cur[i])
@@ -38,12 +38,12 @@ int	find_sep(char *cur)
 	return (0);
 }
 
-int is_delimiter(char c)
+int	is_delimiter(char c)
 {
-    if (is_space(c) || c == '\'' || c == '\"' || 
-        c == '<' || c == '>' || c == '|')
-        return (1);     
-    return (0);
+	if (is_space(c) || c == '\'' || c == '\"'
+		|| c == '<' || c == '>' || c == '|')
+		return (1);
+	return (0);
 }
 
 int	is_space(char c)

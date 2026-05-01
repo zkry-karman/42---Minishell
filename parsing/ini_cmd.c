@@ -6,7 +6,7 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 11:55:10 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/04/29 11:46:57 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/01 13:58:33 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,13 @@ void	create_args(char **args, int *i, t_token **cur)
 	(*cur) = (*cur)->next;
 }
 
-int count_words_mini(t_token *token)
+int	count_words_mini(t_token *token)
 {
 	t_token	*cur;
 	int		operator_count;
 	int		total_count;
 	int		words_count;
-	
+
 	cur = token;
 	operator_count = 0;
 	total_count = 0;
@@ -92,13 +92,13 @@ t_cmd	*create_cmd_node(t_token **cur)
 		if ((*cur)->type != TOKEN_WORD)
 		{
 			if (build_redir_node(&(cmd->redirs), cur) == 1)
-				return (free_redirs(cmd->redirs), free_array(cmd->args), free(cmd), NULL);
+				return (free_redirs(cmd->redirs),
+					free_array(cmd->args), free(cmd), NULL);
 		}
 		else
 			create_args(cmd->args, &arg_count, cur);
 	}
-	cmd->args[arg_count] = NULL;
-	return (cmd);
+	return (cmd->args[arg_count] = NULL, cmd);
 }
 
 int	build_cmds(t_shell *shell)
