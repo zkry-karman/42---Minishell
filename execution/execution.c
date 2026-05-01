@@ -6,7 +6,7 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/30 22:49:29 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/05/01 13:14:25 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ void    execute_command(t_shell *shell, t_cmd *cmd)
 
 void    pipe_process(t_shell *shell, t_cmd *cmd, int curr_pipe[2], int last_pipe)
 {
-
     if (last_pipe != -1)
         dup2(last_pipe, STDIN_FILENO);
     if (cmd->next)
@@ -83,6 +82,26 @@ void    pipe_process(t_shell *shell, t_cmd *cmd, int curr_pipe[2], int last_pipe
     execute_command(shell, cmd);
 }
 
+int    execute_system_command(t_shell *shell, t_cmd *curr_cmd, int curr_pipe[2], int last_pipe)
+{
+    static int  i;
+    pid_t   *children;
+
+    i = 0;
+    children = malloc(sizeof(pid_t) * command_count(shell->cmds));
+    if (!children)
+        return (1);
+    if (curr_cmd->next)
+        pipe(curr_pipe);
+    children[i] = fork();
+    if (children[i] == 0)
+        pipe_process(shell, curr_cmd, curr_pipe, last_pipe);
+    check_for_next_pipe(last_pipe, curr_cmd, curr_pipe);
+    close_if_non_standard_in_out_file(curr_cmd->infile, curr_cmd->outfile);
+    i++;
+    return (0);
+}
+
 // Start of execution
 void    reading_commands(t_shell *shell)
 {
@@ -107,6 +126,10 @@ void    reading_commands(t_shell *shell)
             execute_built_in_command(shell, curr_cmd);
         else
         {
+            if (execute_system_command(shell, curr_cmd, curr_pipe, last_pipe))
+                return ;
+        }
+        /*{
             if (curr_cmd->next)
                 pipe(curr_pipe);
             children[i] = fork();
@@ -114,7 +137,7 @@ void    reading_commands(t_shell *shell)
                 pipe_process(shell, curr_cmd, curr_pipe, last_pipe);
             check_for_next_pipe(last_pipe, curr_cmd, curr_pipe);
             close_if_non_standard_in_out_file(curr_cmd->infile, curr_cmd->outfile);
-        }
+        }*/
         i++;
         curr_cmd = curr_cmd->next;
     }

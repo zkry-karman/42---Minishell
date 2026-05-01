@@ -6,13 +6,13 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 20:51:19 by karmanz           #+#    #+#             */
-/*   Updated: 2026/05/01 12:50:28 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/05/01 13:19:00 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int     go_to_new_dir(t_shell *shell, t_env *target_node, char *new_path, char cwd[1024])
+int     go_to_new_dir(t_shell *shell, t_env *target_node, char *new_path, char *cwd)
 {
     if (!getcwd(cwd, sizeof(cwd)))
         return (1);
@@ -61,6 +61,8 @@ int     change_dir(t_shell *shell, char **args)
     char    *new_path;
     char    cwd[1024];
     
+    target_node = NULL;
+    new_path = NULL;
     if (args[1] && args[2])
         return (ft_putstr_fd("Too many argumants\n", 2), 1);
     if (args[1] == NULL)
@@ -76,7 +78,7 @@ int     change_dir(t_shell *shell, char **args)
     else
     {
         new_path = args[1];
-        if (go_to_new_dir(shell, target_node, cwd))
+        if (go_to_new_dir(shell, target_node, new_path, cwd))
             return (1);
     }
     return (0);
