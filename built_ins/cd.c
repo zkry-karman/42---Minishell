@@ -6,7 +6,7 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 20:51:19 by karmanz           #+#    #+#             */
-/*   Updated: 2026/05/01 14:43:53 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/05/01 14:44:58 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,10 @@ int     change_dir(t_shell *shell, char **args)
     if (args[1] == NULL)
         new_path = go_to_home_dir(shell);
     else if (ft_strcmp(args[1], "-") == 0)
-        new_path = go_to_last_working_dir(shell, target_node, new_path);
+        new_path = go_to_last_working_dir(shell);
     else
         new_path = args[1];
-    if (!path)
+    if (!new_path)
         return (1);
     return (go_to_new_dir(shell, new_path));
 }
