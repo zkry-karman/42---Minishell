@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzhu <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 14:39:00 by kzhu              #+#    #+#             */
-/*   Updated: 2025/11/05 14:39:29 by kzhu             ###   ########.fr       */
+/*   Updated: 2026/05/01 13:56:01 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*ft_itoa(int n)
 	long int	number;
 	long int	count;
 	char		*result;
-	int		if_negative;
+	int			if_negative;
 
 	number = n;
 	if_negative = 1;

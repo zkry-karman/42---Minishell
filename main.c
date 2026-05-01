@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:58:35 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/04/30 22:43:35 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/05/01 13:44:16 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,19 @@ void	ini_shell(t_shell *shell, char	**envp)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void    exit_program(t_shell *shell, int exit_code)
+void	exit_program(t_shell *shell, int exit_code)
 {
-    if (shell)
-    {
-        if (shell->cmds)
-            free_cmds(shell->cmds);
-        if (shell->env_list)
-            free_env(shell->env_list);
-    }
-    exit (exit_code);
+	if (shell)
+	{
+		if (shell->cmds)
+			free_cmds(shell->cmds);
+		if (shell->env_list)
+			free_env(shell->env_list);
+	}
+	exit (exit_code);
 }
 
-void process_input(t_shell *shell, char *input)
+void	process_input(t_shell *shell, char *input)
 {
 	if (build_token(shell, input) == 1)
 		return ;
@@ -57,12 +57,11 @@ void process_input(t_shell *shell, char *input)
 
 int	main(int argc, char **argv, char **envp)
 {
+	char	*input;
+	t_shell	shell;
+
 	(void)argc;
 	(void)argv;
-
-	char	*input;
-	t_shell shell;
-
 	ini_shell(&shell, envp);
 	while (1)
 	{
@@ -73,7 +72,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		input = readline("minishell> ");
 		if (input == NULL)
-			break;
+			break ;
 		if (input[0] != '\0')
 			add_history(input);
 		process_input(&shell, input);

@@ -6,7 +6,7 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 11:45:04 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/04/23 18:41:51 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/01 14:03:16 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 char	*get_value(t_shell *shell, char *final, int *i)
 {
-	int start;
-	char *replace;
-	char *result;
+	int		start;
+	char	*replace;
+	char	*result;
 
 	start = *i;
-	while (ft_isdigit(final[*i]) || ft_isalpha(final[*i]) ||
-			final[*i] == '_')
+	while (ft_isdigit(final[*i]) || ft_isalpha(final[*i])
+		|| final[*i] == '_')
 		(*i)++;
 	replace = ft_substr(final, start, (*i) - start);
 	result = find_env_value(shell->env_list, replace);
@@ -31,9 +31,8 @@ char	*get_value(t_shell *shell, char *final, int *i)
 char	*extract_env(t_shell *shell, char *final, int *i)
 {
 	(*i)++;
-	
-	if (final[*i] == ' ' || final[*i] == '\0' ||
-		final[*i] == '\"')
+	if (final[*i] == ' ' || final[*i] == '\0'
+		|| final[*i] == '\"')
 		return (ft_strdup("$"));
 	if (final[*i] == '?')
 	{
@@ -47,14 +46,14 @@ char	*extract_env(t_shell *shell, char *final, int *i)
 	}
 	if (ft_isalpha(final[*i]) || final[*i] == '_')
 		return (get_value(shell, final, i));
-    return (ft_strdup("$"));
+	return (ft_strdup("$"));
 }
 
 char	*find_env_value(t_env *env_list, char *replace)
 {
 	t_env	*cur;
-	int len;
-	
+	int		len;
+
 	cur = env_list;
 	len = ft_strlen(replace);
 	while (cur != NULL)
@@ -68,8 +67,8 @@ char	*find_env_value(t_env *env_list, char *replace)
 
 t_env	*create_envp_node(char *envp_str)
 {
-	t_env *cur;
-	int sep;
+	t_env	*cur;
+	int		sep;
 
 	cur = malloc(sizeof(t_env));
 	if (cur == NULL)
@@ -84,10 +83,11 @@ t_env	*create_envp_node(char *envp_str)
 	else
 	{
 		cur->key = ft_substr(envp_str, 0, sep);
-		cur->value = ft_substr(envp_str, sep + 1, (ft_strlen(envp_str) - sep - 1));	
+		cur->value = ft_substr(envp_str, sep + 1,
+				(ft_strlen(envp_str) - sep - 1));
 	}
 	if (!cur->key || !cur->value)
-    	return (free(cur->key), free(cur->value), free(cur), NULL);
+		return (free(cur->key), free(cur->value), free(cur), NULL);
 	return (cur);
 }
 
@@ -96,7 +96,7 @@ t_env	*build_envp(char **envp)
 	t_env	*head;
 	t_env	*tail;
 	t_env	*new_node;
-	int i;
+	int		i;
 
 	i = 0;
 	head = NULL;
