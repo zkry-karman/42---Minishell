@@ -6,7 +6,7 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/04/30 22:44:22 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/05/01 14:07:51 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ void    execute_command(t_shell *shell, t_cmd *cmd)
 
 void    pipe_process(t_shell *shell, t_cmd *cmd, int curr_pipe[2], int last_pipe)
 {
-
     if (last_pipe != -1)
         dup2(last_pipe, STDIN_FILENO);
     if (cmd->next)
@@ -83,41 +82,43 @@ void    pipe_process(t_shell *shell, t_cmd *cmd, int curr_pipe[2], int last_pipe
     execute_command(shell, cmd);
 }
 
+void    execute_system_command(t_shell *shell, t_cmd *curr_cmd, t_pipe *p)
+{
+    if (curr_cmd->next)
+        pipe(p->curr);
+    p->children[p->i] = fork();
+    if (p->children[p->i] == 0)
+        pipe_process(shell, curr_cmd, p->curr, p->last_pipe);
+    check_for_next_pipe(p, curr_cmd);
+    close_if_non_standard_in_out_file(curr_cmd->infile, curr_cmd->outfile);
+}
+
 // Start of execution
 void    reading_commands(t_shell *shell)
 {
-    int     last_pipe;
-    int     curr_pipe[2];
-    pid_t   *children;
-    int     i;
+    t_pipe  p;
     t_cmd     *curr_cmd;
     
-    if (!shell)
+    if (!shell->cmds)
         return ;
-    curr_cmd = shell->cmds;
-    last_pipe = -1;
-    children = malloc(sizeof(pid_t) * command_count(shell->cmds));
-    if (!children)
+    p.last_pipe = -1;
+    p.i = 0;
+    p.children = malloc(sizeof(pid_t) * command_count(shell->cmds));
+    if (!p.children)
         return ;
     check_heredocs(shell);
-    i = 0;
+    curr_cmd = shell->cmds;
     while (curr_cmd)
     {
         if (is_built_in_command(curr_cmd->args[0]))
             execute_built_in_command(shell, curr_cmd);
         else
         {
-            if (curr_cmd->next)
-                pipe(curr_pipe);
-            children[i] = fork();
-            if (children[i] == 0)
-                pipe_process(shell, curr_cmd, curr_pipe, last_pipe);
-            check_for_next_pipe(last_pipe, curr_cmd, curr_pipe);
-            close_if_non_standard_in_out_file(curr_cmd->infile, curr_cmd->outfile);
+            execute_system_command(shell, curr_cmd, &p);
+            p.i++;
         }
-        i++;
         curr_cmd = curr_cmd->next;
     }
-    check_for_next_pipe(last_pipe, NULL, NULL);
-    wait_children(shell, children);
+    check_for_next_pipe(&p, NULL);
+    wait_children(shell, p.children);
 }
