@@ -6,7 +6,7 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:33:28 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/04/29 11:26:51 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/01 14:14:51 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 char	*extract_d_quote(t_shell *shell, char *input, int *i)
 {
-	int	start;
-	char *chunk;
-	char *final;
-	
+	int		start;
+	char	*chunk;
+	char	*final;
+
 	final = ft_strdup("");
 	while (input[*i] && (input[*i] != '\"'))
 	{
@@ -30,20 +30,21 @@ char	*extract_d_quote(t_shell *shell, char *input, int *i)
 				(*i)++;
 			chunk = ft_substr(input, start, (*i) - start);
 		}
-			final = join_and_free(final, chunk);
+		final = join_and_free(final, chunk);
 	}
 	if (input[*i] == '\0')
-			return (shell->exit_status = 2, free(final), printf("error: unclosed quote\n"), NULL);
+		return (shell->exit_status = 2,
+			free(final), printf("error: unclosed quote\n"), NULL);
 	(*i)++;
 	return (final);
 }
 
 char	*extract_quote(t_shell *shell, char *input, int *i)
 {
-	int	start;
-	char *final;
-	char quote_type;
-	
+	int		start;
+	char	*final;
+	char	quote_type;
+
 	quote_type = input[*i];
 	(*i)++;
 	if (quote_type == '\'')
@@ -52,7 +53,8 @@ char	*extract_quote(t_shell *shell, char *input, int *i)
 		while (input[*i] && (input[*i] != '\''))
 			(*i)++;
 		if (input[*i] == '\0')
-			return (shell->exit_status = 2, printf("error: unclosed quote\n"), NULL);
+			return (shell->exit_status = 2,
+				printf("error: unclosed quote\n"), NULL);
 		final = ft_substr(input, start, (*i) - start);
 		(*i)++;
 	}
@@ -63,9 +65,9 @@ char	*extract_quote(t_shell *shell, char *input, int *i)
 
 char	*extract_word(t_shell *shell, char *input, int *i)
 {
-	int start;
-	char *final;
-	char *chunk;
+	int		start;
+	char	*final;
+	char	*chunk;
 
 	final = ft_strdup("");
 	while (input[*i] && !is_delimiter(input[*i]))
@@ -75,8 +77,8 @@ char	*extract_word(t_shell *shell, char *input, int *i)
 		else
 		{
 			start = *i;
-			while (input[*i] != '$' && input[*i] &&
-				!is_delimiter(input[*i]))
+			while (input[*i] != '$' && input[*i]
+				&& !is_delimiter(input[*i]))
 				(*i)++;
 			chunk = ft_substr(input, start, (*i) - start);
 		}
@@ -87,14 +89,14 @@ char	*extract_word(t_shell *shell, char *input, int *i)
 
 char	*extract_token(t_shell *shell, char *input, int *i, int *quoted)
 {
-	char 	*cur_token;
+	char	*cur_token;
 	char	*final_token;
-	
+
 	if (input[*i] == '<' || input[*i] == '>' || input[*i] == '|')
 		return (extract_operator(input, i));
 	final_token = ft_strdup("");
-	while (input[*i] && is_space(input[*i]) == 0 &&
-		input[*i] != '<' && input[*i] != '>' && input[*i] != '|')
+	while (input[*i] && is_space(input[*i]) == 0
+		&& input[*i] != '<' && input[*i] != '>' && input[*i] != '|')
 	{
 		if (input[*i] == '\'' || input[*i] == '\"')
 		{
@@ -122,7 +124,7 @@ int	build_token(t_shell *shell, char *input)
 		while (is_space(input[i]) == 1)
 			i++;
 		if (input[i] == '\0')
-			break ; 
+			break ;
 		quoted = 0;
 		cur_token = extract_token(shell, input, &i, &quoted);
 		if (cur_token == NULL)
