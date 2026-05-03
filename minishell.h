@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/01 16:32:43 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/05/03 14:26:40 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ typedef struct s_shell
 	t_token	*input_list;
 	int		exit_status;
 }	t_shell;
+
+t_token_type	identify_type(char *value);
 
 void	ini_shell(t_shell *shell, char	**envp);
 void	handle_sigint(int sig);
