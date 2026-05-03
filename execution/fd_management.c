@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 14:22:46 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/03 15:49:43 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/03 16:18:46 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,20 @@ int	check_file_descriptors(t_cmd *cmd)
 	while (curr)
 	{
 		if (curr->type == TOKEN_IN)
+		{
 			if (manage_infile(cmd, curr))
 				return (-1);
+		}
 		else if (curr->type == TOKEN_OUT)
+		{
 			if (manage_outfile(cmd, curr))
 				return (-1);
+		}
 		else if (curr->type == TOKEN_APPEND)
+		{
 			if (manage_append(cmd, curr))
 				return (-1);
+		}
 		curr = curr->next;
 	}
 	return (0);

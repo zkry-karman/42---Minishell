@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/03 15:22:40 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/03 16:17:54 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	pipe_process(t_shell *shell, t_cmd *cmd, t_pipe *p)
 	if (p->last_pipe != -1)
 		dup2(p->last_pipe, STDIN_FILENO);
 	if (cmd->next)
-		dup2(p->curr_pipe[1], STDOUT_FILENO);
+		dup2(p->curr[1], STDOUT_FILENO);
 	if (check_file_descriptors(cmd) == -1)
 		exit_program(shell, 1);
 	if (cmd->infile != STDIN_FILENO)
@@ -74,8 +74,8 @@ void	pipe_process(t_shell *shell, t_cmd *cmd, t_pipe *p)
 	}
 	if (cmd->next)
 	{
-		close(p->curr_pipe[1]);
-		close(p->curr_pipe[0]);
+		close(p->curr[1]);
+		close(p->curr[0]);
 	}
 	if (p->last_pipe != -1)
 		close(p->last_pipe);

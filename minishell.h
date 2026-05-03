@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/03 15:44:48 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/03 16:16:16 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,11 @@ typedef struct s_cmd
 
 typedef struct s_pipe
 {
-    int     curr[2];
-    int     last_pipe;
-    int     i;
-    pid_t   *children;
-}   t_pipe;
+	int		curr[2];
+	int		last_pipe;
+	int		i;
+	pid_t	*children;
+}	t_pipe;
 
 typedef struct s_shell
 {
@@ -84,64 +84,64 @@ typedef struct s_shell
 
 t_token_type	identify_type(char *value);
 
-void	ini_shell(t_shell *shell, char	**envp);
-void	handle_sigint(int sig);
+void			ini_shell(t_shell *shell, char	**envp);
+void			handle_sigint(int sig);
 
-char	*find_env_value(t_env *env_list, char *replace);
-t_env	*create_envp_node(char *envp_str);
-t_env	*build_envp(char **envp);
-char	*extract_env(t_shell *shell, char *final, int *i);
-char	*get_value(t_shell *shell, char *final, int *i);
+char			*find_env_value(t_env *env_list, char *replace);
+t_env			*create_envp_node(char *envp_str);
+t_env			*build_envp(char **envp);
+char			*extract_env(t_shell *shell, char *final, int *i);
+char			*get_value(t_shell *shell, char *final, int *i);
 
-int		build_token(t_shell *shell, char *input);
-char	*extract_token(t_shell *shell, char *input, int *i, int *quoted);
-char	*extract_word(t_shell *shell, char *input, int *i);
-char	*extract_quote(t_shell *shell, char *input, int *i);
-char	*extract_d_quote(t_shell *shell, char *input, int *i);
-char	*extract_operator(char *input, int *i);
-int		append_node(t_token **input_list, char *token, int quoted);
-char	*join_and_free(char *s1, char *s2);
-int		syntax_checker(t_token *tokens);
+int				build_token(t_shell *shell, char *input);
+char			*extract_token(t_shell *shell, char *input, int *i, int *quoted);
+char			*extract_word(t_shell *shell, char *input, int *i);
+char			*extract_quote(t_shell *shell, char *input, int *i);
+char			*extract_d_quote(t_shell *shell, char *input, int *i);
+char			*extract_operator(char *input, int *i);
+int				append_node(t_token **input_list, char *token, int quoted);
+char			*join_and_free(char *s1, char *s2);
+int				syntax_checker(t_token *tokens);
 
-int		build_redir_node(t_redir **redir, t_token **cur);
-void	create_args(char **args, int *i, t_token **cur);
-int		count_words_mini(t_token *token);
-t_cmd	*create_cmd_node(t_token **cur);
-int		build_cmds(t_shell *shell);
+int				build_redir_node(t_redir **redir, t_token **cur);
+void			create_args(char **args, int *i, t_token **cur);
+int				count_words_mini(t_token *token);
+t_cmd			*create_cmd_node(t_token **cur);
+int				build_cmds(t_shell *shell);
 
-int		is_space(char c);
-int		is_delimiter(char c);
-int		find_sep(char *cur);
-void	free_tokens(t_token **tokens);
-void	free_array(char **arr);
-void	free_redirs(t_redir *redirs);
-void	free_cmds(t_cmd *cmds);
-void	free_env(t_env *env_list);
+int				is_space(char c);
+int				is_delimiter(char c);
+int				find_sep(char *cur);
+void			free_tokens(t_token **tokens);
+void			free_array(char **arr);
+void			free_redirs(t_redir *redirs);
+void			free_cmds(t_cmd *cmds);
+void			free_env(t_env *env_list);
 
-void    reading_commands(t_shell *shell);
-char    **envp_list_to_arr(t_shell *shell);
-int    check_file_descriptors(t_cmd *cmd);
-void    check_heredocs(t_shell *shell);
-int    handle_heredoc(t_shell *shell, t_redir *curr_redir);
-char    *expand_heredoc(t_shell *shell, char *line);
-void    exit_program(t_shell *shell, int exit_code);
-int     command_count(t_cmd *cmds);
-char    *env_path(char **envp);
-int ft_strcmp(const char *s1, const char *s2);
-int     is_built_in_command(char *cmd);
-int    execute_built_in_command(t_shell *shell, t_cmd *cmd);
-int     change_dir(t_shell *shell, char **args);
-t_env    *get_env_node(t_shell *shell, char *wanted_path);
-void    replace_env_value(t_env *node, char *new_val);
-int     echo(char **args);
-int     show_env(t_env *env_list);
-int     check_exit(t_shell *shell, char **args);
-int     is_valid_arg(char *arg);
-int     ft_export(t_shell *shell, char **args);
-int     print_cwd(t_shell *shell, char **args);
-int     ft_unset(t_shell *shell, char **args);
-void    close_if_non_standard_in_out_file(int infile, int outfile);
-void    check_for_next_pipe(t_pipe *p, t_cmd *curr_cmd);
-char    *get_path(char *command, char **envp);
+void			reading_commands(t_shell *shell);
+char			**envp_list_to_arr(t_shell *shell);
+int				check_file_descriptors(t_cmd *cmd);
+void			check_heredocs(t_shell *shell);
+int				handle_heredoc(t_shell *shell, t_redir *curr_redir);
+char			*expand_heredoc(t_shell *shell, char *line);
+void			exit_program(t_shell *shell, int exit_code);
+int				command_count(t_cmd *cmds);
+char			*env_path(char **envp);
+int				ft_strcmp(const char *s1, const char *s2);
+int				is_built_in_command(char *cmd);
+int				execute_built_in_command(t_shell *shell, t_cmd *cmd);
+int				change_dir(t_shell *shell, char **args);
+t_env			*get_env_node(t_shell *shell, char *wanted_path);
+void			replace_env_value(t_env *node, char *new_val);
+int				echo(char **args);
+int				show_env(t_env *env_list);
+int				check_exit(t_shell *shell, char **args);
+int				is_valid_arg(char *arg);
+int				ft_export(t_shell *shell, char **args);
+int				print_cwd(t_shell *shell, char **args);
+int				ft_unset(t_shell *shell, char **args);
+void			close_if_non_standard_in_out_file(int infile, int outfile);
+void			check_for_next_pipe(t_pipe *p, t_cmd *curr_cmd);
+char			*get_path(char *command, char **envp);
 
 #endif

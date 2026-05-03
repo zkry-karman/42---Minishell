@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 15:19:08 by karmanz           #+#    #+#             */
-/*   Updated: 2026/05/03 15:59:39 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/03 16:19:15 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	handle_heredoc(t_shell *shell, t_redir *curr)
 		line = readline("> ");
 		if (!line)
 		{
-			herdoc_error_msg(curr);
+			heredoc_error_msg(curr);
 			break ;
 		}
 		if (ft_strncmp(line, curr->file, ft_strlen(curr->file) + 1) == 0)
