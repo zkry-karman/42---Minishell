@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/03 14:26:40 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/03 15:44:48 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ void    reading_commands(t_shell *shell);
 char    **envp_list_to_arr(t_shell *shell);
 int    check_file_descriptors(t_cmd *cmd);
 void    check_heredocs(t_shell *shell);
-int    handle_heredoc(t_shell *shell, char *limiter, int quoted);
+int    handle_heredoc(t_shell *shell, t_redir *curr_redir);
 char    *expand_heredoc(t_shell *shell, char *line);
 void    exit_program(t_shell *shell, int exit_code);
 int     command_count(t_cmd *cmds);
