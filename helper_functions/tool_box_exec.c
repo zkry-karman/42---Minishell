@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tool_box_exec.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 11:11:06 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/03 15:19:09 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/04 17:34:39 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,17 @@ int	command_count(t_cmd *cmds)
 		tmp = tmp->next;
 	}
 	return (i);
+}
+
+void	initialize_children(t_shell *shell, t_pipe *p)
+{
+	int		i;
+	
+	p->children = malloc(sizeof(pid_t) * command_count(shell->cmds));
+	if (!p->children)
+		return ;
+	i = 0;
+	while (i < command_count(shell->cmds))
+		p->children[i++] = -1;
+	return ;
 }
