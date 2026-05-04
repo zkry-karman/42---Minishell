@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/03 16:17:54 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/04 17:35:11 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,16 @@ void	wait_children(t_shell *shell, pid_t *child)
 	i = 0;
 	while (i < command_count(shell->cmds))
 	{
-		waitpid(child[i], &status, 0);
-		if (WIFEXITED(status))
-			shell->exit_status = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-			shell->exit_status = 128 + WTERMSIG(status);
+		if (child[i] != -1)
+		{
+			if (waitpid(child[i], &status, 0) != -1)
+			{
+			if (WIFEXITED(status))
+				shell->exit_status = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+				shell->exit_status = 128 + WTERMSIG(status);
+			}
+		}
 		i++;
 	}
 	free(child);
@@ -103,7 +108,7 @@ void	reading_commands(t_shell *shell)
 		return ;
 	p.last_pipe = -1;
 	p.i = 0;
-	p.children = malloc(sizeof(pid_t) * command_count(shell->cmds));
+	initialize_children(shell, &p);
 	if (!p.children)
 		return ;
 	check_heredocs(shell);
@@ -111,7 +116,7 @@ void	reading_commands(t_shell *shell)
 	while (curr_cmd)
 	{
 		if (is_built_in_command(curr_cmd->args[0]))
-			execute_built_in_command(shell, curr_cmd);
+			shell->exit_status = execute_built_in_command(shell, curr_cmd);
 		else
 		{
 			execute_system_command(shell, curr_cmd, &p);

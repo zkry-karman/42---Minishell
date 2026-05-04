@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
+/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/04 11:15:56 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/04 17:34:21 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,5 +143,6 @@ int				ft_unset(t_shell *shell, char **args);
 void			close_if_non_standard_in_out_file(int infile, int outfile);
 void			check_for_next_pipe(t_pipe *p, t_cmd *curr_cmd);
 char			*get_path(char *command, char **envp);
+void			initialize_children(t_shell *shell, t_pipe *p);
 
 #endif
