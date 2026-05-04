@@ -6,7 +6,7 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:33:28 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/05/01 14:14:51 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/04 11:29:14 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ char	*extract_word(t_shell *shell, char *input, int *i)
 	return (final);
 }
 
-char	*extract_token(t_shell *shell, char *input, int *i, int *quoted)
+char	*extract_token(t_shell *shell, char *input, int *i, int *qted)
 {
 	char	*cur_token;
 	char	*final_token;
@@ -100,7 +100,7 @@ char	*extract_token(t_shell *shell, char *input, int *i, int *quoted)
 	{
 		if (input[*i] == '\'' || input[*i] == '\"')
 		{
-			*quoted = 1;
+			*qted = 1;
 			cur_token = extract_quote(shell, input, i);
 		}
 		else

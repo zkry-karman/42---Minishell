@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_management.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 15:19:08 by karmanz           #+#    #+#             */
-/*   Updated: 2026/05/03 16:19:15 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/04 11:17:19 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*expand_heredoc(t_shell *shell, char *line)
 				i++;
 			chunk = ft_substr(line, start, i - start);
 		}
-			final = join_and_free(final, chunk);
+		final = join_and_free(final, chunk);
 	}
 	free(line);
 	return (final);

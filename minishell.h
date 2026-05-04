@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/03 16:16:16 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/04 11:15:56 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ char			*extract_env(t_shell *shell, char *final, int *i);
 char			*get_value(t_shell *shell, char *final, int *i);
 
 int				build_token(t_shell *shell, char *input);
-char			*extract_token(t_shell *shell, char *input, int *i, int *quoted);
+char			*extract_token(t_shell *shell, char *input, int *i, int *qted);
 char			*extract_word(t_shell *shell, char *input, int *i);
 char			*extract_quote(t_shell *shell, char *input, int *i);
 char			*extract_d_quote(t_shell *shell, char *input, int *i);
