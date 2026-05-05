@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 13:17:12 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/03 14:50:19 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/05 15:04:42 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	print_cwd(t_shell *shell, char **args)
 	else
 	{
 		perror("minishell: pwd");
-		shell->exit_status = 1;
-		return (1);
+		shell->exit_status = 126;
+		return (126);
 	}
 }

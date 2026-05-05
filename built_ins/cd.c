@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 20:51:19 by karmanz           #+#    #+#             */
-/*   Updated: 2026/05/04 17:35:59 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/05/05 14:32:46 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	change_dir(t_shell *shell, char **args)
 	char	*new_path;
 
 	if (args[1] && args[2])
-		return (ft_putstr_fd("Too many argumants\n", 2), 1);
+		return (ft_putstr_fd(" too many arguments\n", 2), 1);
 	if (args[1] == NULL)
 		new_path = go_to_home_dir(shell);
 	else if (ft_strcmp(args[1], "-") == 0)

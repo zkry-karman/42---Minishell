@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/04 17:35:11 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/05/05 16:35:53 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ void	wait_children(t_shell *shell, pid_t *child)
 		{
 			if (waitpid(child[i], &status, 0) != -1)
 			{
-			if (WIFEXITED(status))
-				shell->exit_status = WEXITSTATUS(status);
-			else if (WIFSIGNALED(status))
-				shell->exit_status = 128 + WTERMSIG(status);
+				if (WIFEXITED(status))
+					shell->exit_status = WEXITSTATUS(status);
+				else if (WIFSIGNALED(status))
+					shell->exit_status = 128 + WTERMSIG(status);
 			}
 		}
 		i++;
@@ -39,11 +39,16 @@ void	execute_command(t_shell *shell, t_cmd *cmd)
 {
 	char	*path;
 	char	**envp_arr;
+	struct stat	path_stat;
+	int		err_no;
 
-	if (!cmd || !cmd->args || !cmd->args[0])
-		return ;
+	if (!cmd->args[0] || cmd->args[0][0] == '\0')
+		exit_program(shell, 0);
 	envp_arr = envp_list_to_arr(shell);
-	path = get_path(cmd->args[0], envp_arr);
+	if (ft_strchr(cmd->args[0], '/'))
+		path = ft_strdup(cmd->args[0]);
+	else
+		path = get_path(cmd->args[0], envp_arr);
 	if (!path)
 	{
 		free_array(envp_arr);
@@ -51,11 +56,25 @@ void	execute_command(t_shell *shell, t_cmd *cmd)
 		ft_putstr_fd(": command not found\n", 2);
 		exit_program(shell, 127);
 	}
+	if (stat(path, &path_stat) == 0 && S_ISDIR(path_stat.st_mode))
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(path, 2);
+		ft_putstr_fd(": Is a directory\n", 2);
+		exit_program(shell, 126);
+	}
 	if (execve(path, cmd->args, envp_arr) == -1)
 	{
+		err_no = errno; 
 		free_array(envp_arr);
-		perror("Execve Failure");
-		exit_program(shell, 1);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd->args[0], 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(strerror(err_no), 2);
+		ft_putstr_fd("\n", 2);
+		if (err_no == ENOENT)
+			exit_program(shell, 127);
+		exit_program(shell, 126);
 	}
 }
 
@@ -84,7 +103,13 @@ void	pipe_process(t_shell *shell, t_cmd *cmd, t_pipe *p)
 	}
 	if (p->last_pipe != -1)
 		close(p->last_pipe);
-	execute_command(shell, cmd);
+	if (is_built_in_command(cmd->args[0]))
+	{
+		shell->exit_status = execute_built_in_command(shell, cmd);
+		exit_program(shell, shell->exit_status);
+	}
+	else
+		execute_command(shell, cmd);
 }
 
 void	execute_system_command(t_shell *shell, t_cmd *curr_cmd, t_pipe *p)
@@ -103,6 +128,7 @@ void	reading_commands(t_shell *shell)
 {
 	t_pipe	p;
 	t_cmd	*curr_cmd;
+	int		stdout_dup;
 
 	if (!shell->cmds)
 		return ;
@@ -115,8 +141,22 @@ void	reading_commands(t_shell *shell)
 	curr_cmd = shell->cmds;
 	while (curr_cmd)
 	{
-		if (is_built_in_command(curr_cmd->args[0]))
-			shell->exit_status = execute_built_in_command(shell, curr_cmd);
+		if (is_built_in_command(curr_cmd->args[0]) && !curr_cmd->next && p.i == 0)
+		{
+			if (check_file_descriptors(curr_cmd) == -1)
+				shell->exit_status = 1;
+			else
+			{
+				stdout_dup = dup(STDOUT_FILENO);
+				if (curr_cmd->outfile != STDOUT_FILENO)
+					dup2(curr_cmd->outfile, STDOUT_FILENO);
+				shell->exit_status = execute_built_in_command(shell, curr_cmd);
+				dup2(stdout_dup, STDOUT_FILENO);
+				close(stdout_dup);
+				if (curr_cmd->outfile != STDOUT_FILENO)
+					close (curr_cmd->outfile);
+			}
+		}
 		else
 		{
 			execute_system_command(shell, curr_cmd, &p);

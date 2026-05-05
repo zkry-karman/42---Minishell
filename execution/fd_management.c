@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 14:22:46 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/03 16:18:46 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/05 16:37:18 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,10 @@ int	manage_infile(t_cmd *cmd, t_redir *curr)
 		close (cmd->infile);
 	cmd->infile = open(curr->file, O_RDONLY);
 	if (cmd->infile == -1)
+	{
+		ft_putstr_fd("minishell: ", 2);
 		return (perror(curr->file), -1);
+	}
 	return (0);
 }
 
