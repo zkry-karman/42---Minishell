@@ -6,7 +6,7 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:58:35 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/05/05 17:04:41 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/05 17:36:38 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ void	process_input(t_shell *shell, char *input)
 		return ;
 	}
 	reading_commands(shell);
-	// DEBUG EXIT STATUS PRINTF. TO BE DELETED
-	//printf("Current Exit code: %d\n", shell->exit_status);
 	free_cmds(shell->cmds);
 	shell->cmds = NULL;
 	free_tokens(&(shell->input_list));
