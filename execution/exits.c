@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/05 16:45:23 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/05 17:30:22 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/05 17:43:20 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	exit_execve_failure(t_shell *shell, char **env_arr, t_cmd *cmd)
 	int	err_no;
 
 	err_no = errno;
-	free_array(envp_arr);
+	free_array(env_arr);
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(cmd->args[0], 2);
 	ft_putstr_fd(": ", 2);

@@ -6,13 +6,13 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/05 17:14:40 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/05 17:32:41 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/05 17:45:42 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	loop_commands(t_shell *shell, t_pipe *p, t_cmd *cmd, int stout_dup)
+void	loop_cmds(t_shell *shell, t_pipe *p, t_cmd *cmd, int stout_dup)
 {
 	while (cmd)
 	{

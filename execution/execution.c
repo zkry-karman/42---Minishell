@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/05 17:34:09 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/05 17:42:57 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	execute_system_command(t_shell *shell, t_cmd *curr, t_pipe *p)
 	if (p->children[p->i] == 0)
 		pipe_process(shell, curr, p);
 	check_for_next_pipe(p, curr);
-	close_if_non_standard_in_out_file(curr_cmd->infile, curr_cmd->outfile);
+	close_if_non_standard_in_out_file(curr->infile, curr->outfile);
 }
 
 // Start of execution

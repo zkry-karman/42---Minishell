@@ -45,7 +45,16 @@ The parser also handles asynchronous OS Signals, using signal(), the shell corre
 
 Part II. Execution
 
-The execution part of this project was 
+The execution part of this project was split into 3 parts.
+
+1. Heredocs
+Because HEREDOCS take priority within a shell, this is the first thing to be executed when reading the commands. The command list is looped through to see if any of the commands are tokenized as a HEREDOC. If a HEREDOC is found, run it, allowing the user to input lines until the HEREDOC limiter is found. from there, we exit the HEREDOC, and continue reading the other commands. 
+
+2. Reading Commands
+The bulk of the execution part happens within the loop 'loop_cmds()'. Here we look at the current command, and decide whether it is a built in command that is managed/executed by zkarman directly, or if it is a system command that needs to be ran by execve. If it's a built in function, the function that needs to be executed is matched with the command, and then executed. Otherwise, the command is piped, and the correct infiles/outfiles are duplicated then closed while working on the child process, and finally the command is found within the system and executed. 
+
+3. Cleanup and exiting
+Once the commands are done being read, any allocated memory is freed, and the program is exited proving the necessary exit status based on the success/failure of the commands that were to be executed. 
 
 ## Instructions
 
