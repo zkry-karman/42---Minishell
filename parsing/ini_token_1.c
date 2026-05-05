@@ -6,7 +6,7 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:33:28 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/05/04 11:29:14 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/05 17:03:22 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,11 @@ int	build_token(t_shell *shell, char *input)
 		cur_token = extract_token(shell, input, &i, &quoted);
 		if (cur_token == NULL)
 			return (free_tokens(&(shell->input_list)), 1);
+		if (cur_token[0] == '\0' && quoted == 0)
+		{
+			free (cur_token);
+			continue;
+		}
 		append_node(&(shell->input_list), cur_token, quoted);
 	}
 	return (0);
