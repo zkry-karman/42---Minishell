@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:58:35 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/05/04 17:09:48 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/05/05 16:18:54 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	process_input(t_shell *shell, char *input)
 	}
 	reading_commands(shell);
 	// DEBUG EXIT STATUS PRINTF. TO BE DELETED
-	printf("Current Exit code: %d\n", shell->exit_status);
+	//printf("Current Exit code: %d\n", shell->exit_status);
 	free_cmds(shell->cmds);
 	shell->cmds = NULL;
 	free_tokens(&(shell->input_list));

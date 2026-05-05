@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 14:22:32 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/03 14:40:13 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/05 14:52:36 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,9 @@ int	is_valid_arg(char *arg)
 int	ft_export(t_shell *shell, char **args)
 {
 	int	i;
+	int exit_status;
 
+	exit_status = 0;
 	if (!args[1])
 		return (show_env(shell->env_list));
 	i = 1;
@@ -84,8 +86,11 @@ int	ft_export(t_shell *shell, char **args)
 		if (is_valid_arg(args[i]))
 			process_arg(shell, args[i]);
 		else
-			ft_putstr_fd("minishell: export: invalid identifier\n", 2);
+		{
+			ft_putstr_fd("minishell: export: not a valid identifier\n", 2);
+			exit_status = 1;
+		}
 		i++;
 	}
-	return (0);
+	return (exit_status);
 }

@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 12:31:50 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/03 14:49:25 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/05 13:49:14 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	check_exit(t_shell *shell, char **args)
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(args[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
-		exit_program(shell, 255);
+		exit_program(shell, 2);
 	}
 	if (args[2])
 	{

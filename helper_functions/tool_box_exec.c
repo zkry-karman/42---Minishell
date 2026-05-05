@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 11:11:06 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/05 13:37:58 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/05 16:01:35 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,8 @@ char	*get_path(char *command, char **envp)
 	char	*temp;
 	int		i;
 
-	if (access(command, X_OK) == 0)
-		return (ft_strdup(command));
 	path_str = env_path(envp);
-	if (!path_str)
+	if (!path_str || path_str[0] == '\0')
 		return (NULL);
 	paths = ft_split(path_str, ':');
 	i = 0;
