@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/04 17:35:11 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/05/05 13:37:45 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ void	wait_children(t_shell *shell, pid_t *child)
 		{
 			if (waitpid(child[i], &status, 0) != -1)
 			{
-			if (WIFEXITED(status))
-				shell->exit_status = WEXITSTATUS(status);
-			else if (WIFSIGNALED(status))
-				shell->exit_status = 128 + WTERMSIG(status);
+				if (WIFEXITED(status))
+					shell->exit_status = WEXITSTATUS(status);
+				else if (WIFSIGNALED(status))
+					shell->exit_status = 128 + WTERMSIG(status);
 			}
 		}
 		i++;
