@@ -15,8 +15,10 @@ SRCS =  main.c \
 		helper_functions/tool_box_free.c \
 		helper_functions/tool_box_env.c \
 		execution/execution.c \
+		execution/exits.c \
 		execution/fd_management.c \
 		execution/heredoc_management.c \
+		execution/loop_commands.c \
 		built_ins/built_in_cmds.c \
 		built_ins/cd.c \
 		built_ins/echo.c \

@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/05 16:06:09 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/05 17:26:46 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,5 +146,11 @@ void			close_if_non_standard_in_out_file(int infile, int outfile);
 void			check_for_next_pipe(t_pipe *p, t_cmd *curr_cmd);
 char			*get_path(char *command, char **envp);
 void			initialize_children(t_shell *shell, t_pipe *p);
+void			exit_no_path(t_shell *shell, char **envp_arr, t_cmd *cmd);
+void			exit_no_access(t_shell *shell, char *path, char **envp_arr);
+void			exit_execve_failure(t_shell *shell, char **env_arr, t_cmd *cmd);
+void			verifiy_stds(t_cmd *cmd);
+void			loop_cmds(t_shell *shell, t_pipe *p, t_cmd *cmd, int stout_dup);
+void			execute_system_command(t_shell *shell, t_cmd *curr, t_pipe *p);
 
 #endif

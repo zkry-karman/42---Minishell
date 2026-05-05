@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tool_box_fd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/30 21:49:28 by karmanz           #+#    #+#             */
-/*   Updated: 2026/05/03 15:14:30 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/05 17:06:38 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,18 @@ void	close_if_non_standard_in_out_file(int infile, int outfile)
 		if (outfile > 1)
 			close(outfile);
 	}
+}
+
+void	verifiy_stds(t_cmd *cmd)
+{
+	if (cmd->infile != STDIN_FILENO)
+	{
+		dup2(cmd->infile, STDIN_FILENO);
+		close(cmd->infile);
+	}
+	if (cmd->outfile != STDOUT_FILENO)
+	{
+		dup2(cmd->outfile, STDOUT_FILENO);
+		close(cmd->outfile);
+	}	
 }
