@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ini_token_1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:33:28 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/05/05 17:03:22 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/05 17:39:20 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ int	build_token(t_shell *shell, char *input)
 		if (cur_token[0] == '\0' && quoted == 0)
 		{
 			free (cur_token);
-			continue;
+			continue ;
 		}
 		append_node(&(shell->input_list), cur_token, quoted);
 	}
