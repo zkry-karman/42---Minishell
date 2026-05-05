@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:58:35 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/05/05 16:18:54 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/05 17:04:41 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	main(int argc, char **argv, char **envp)
 		process_input(&shell, input);
 		free(input);
 	}
-	printf("\nexit\n");
+	printf("exit\n");
 	free_env(shell.env_list);
 	rl_clear_history();
 	return (0);
