@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 14:22:32 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/05 14:52:36 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/05 17:35:48 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	is_valid_arg(char *arg)
 int	ft_export(t_shell *shell, char **args)
 {
 	int	i;
-	int exit_status;
+	int	exit_status;
 
 	exit_status = 0;
 	if (!args[1])

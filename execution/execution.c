@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/05 17:27:15 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/05 17:34:09 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ void	wait_children(t_shell *shell, pid_t *child)
 
 void	execute_command(t_shell *shell, t_cmd *cmd)
 {
-	char	*path;
-	char	**envp_arr;
+	char		*path;
+	char		**envp_arr;
 	struct stat	path_stat;
 
 	if (!cmd->args[0] || cmd->args[0][0] == '\0')

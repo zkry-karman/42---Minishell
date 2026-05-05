@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/30 21:49:28 by karmanz           #+#    #+#             */
-/*   Updated: 2026/05/05 17:06:38 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/05 17:35:12 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,5 @@ void	verifiy_stds(t_cmd *cmd)
 	{
 		dup2(cmd->outfile, STDOUT_FILENO);
 		close(cmd->outfile);
-	}	
+	}
 }
