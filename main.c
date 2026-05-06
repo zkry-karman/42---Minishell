@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:58:35 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/05/05 17:36:38 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/06 13:41:33 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	process_input(t_shell *shell, char *input)
 		return ;
 	}
 	reading_commands(shell);
+	printf("Exit Status: %d\n", shell->exit_status);
 	free_cmds(shell->cmds);
 	shell->cmds = NULL;
 	free_tokens(&(shell->input_list));
