@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/05 17:42:57 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/06 14:01:27 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,13 @@ void	execute_command(t_shell *shell, t_cmd *cmd)
 	char		**envp_arr;
 	struct stat	path_stat;
 
-	if (!cmd->args[0] || cmd->args[0][0] == '\0')
+	if (!cmd->args[0])
 		exit_program(shell, 0);
+	if (cmd->args[0][0] == '\0')
+	{
+		ft_putstr_fd("minishell: : command not found\n", 2);
+		exit_program(shell, 127);
+	}
 	envp_arr = envp_list_to_arr(shell);
 	if (ft_strchr(cmd->args[0], '/'))
 		path = ft_strdup(cmd->args[0]);

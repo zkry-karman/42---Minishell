@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 20:15:06 by karmanz           #+#    #+#             */
-/*   Updated: 2026/05/03 14:49:54 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/06 14:02:07 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,11 @@ int	execute_built_in_command(t_shell *shell, t_cmd *cmd)
 		return (print_cwd(shell, cmd->args));
 	if (ft_strcmp(cmd->args[0], "unset") == 0)
 		return (ft_unset(shell, cmd->args));
+	if (ft_strcmp(cmd->args[0], ".") == 0)
+	{
+		ft_putstr_fd("minishell: .: filename argument required\n", 2);
+		return (2);
+	}
 	return (0);
 }
 
@@ -41,7 +46,8 @@ int	is_built_in_command(char *cmd)
 		|| ft_strcmp(cmd, "exit") == 0
 		|| ft_strcmp(cmd, "export") == 0
 		|| ft_strcmp(cmd, "pwd") == 0
-		|| ft_strcmp(cmd, "unset") == 0)
+		|| ft_strcmp(cmd, "unset") == 0
+		|| ft_strcmp(cmd, ".") == 0)
 		return (1);
 	return (0);
 }
