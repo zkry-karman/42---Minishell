@@ -23,6 +23,7 @@
 # include <readline/history.h>
 # include <sys/stat.h>
 # include <errno.h>
+# include <signal.h>
 
 extern int	g_status;
 
