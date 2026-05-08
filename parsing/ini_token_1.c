@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ini_token_1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:33:28 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/05/05 17:39:20 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/08 11:42:31 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,19 @@ char	*extract_d_quote(t_shell *shell, char *input, int *i)
 	int		start;
 	char	*chunk;
 	char	*final;
+	int		hdoc_flag;
 
 	final = ft_strdup("");
+	hdoc_flag = is_hdoc(shell->input_list);
 	while (input[*i] && (input[*i] != '\"'))
 	{
-		if (input[*i] == '$')
+		if (input[*i] == '$' && !hdoc_flag)
 			chunk = extract_env(shell, input, i);
 		else
 		{
 			start = *i;
-			while (input[*i] && input[*i] != '\"' && input[*i] != '$')
+			while (input[*i] && input[*i] != '\"'
+				&& (input[*i] != '$' || hdoc_flag))
 				(*i)++;
 			chunk = ft_substr(input, start, (*i) - start);
 		}
@@ -35,8 +38,7 @@ char	*extract_d_quote(t_shell *shell, char *input, int *i)
 	if (input[*i] == '\0')
 		return (shell->exit_status = 2,
 			free(final), printf("error: unclosed quote\n"), NULL);
-	(*i)++;
-	return (final);
+	return ((*i)++, final);
 }
 
 char	*extract_quote(t_shell *shell, char *input, int *i)
@@ -68,17 +70,19 @@ char	*extract_word(t_shell *shell, char *input, int *i)
 	int		start;
 	char	*final;
 	char	*chunk;
+	int		hdoc_flag;
 
 	final = ft_strdup("");
+	hdoc_flag = is_hdoc(shell->input_list);
 	while (input[*i] && !is_delimiter(input[*i]))
 	{
-		if (input[*i] == '$')
+		if (input[*i] == '$' && !hdoc_flag)
 			chunk = extract_env(shell, input, i);
 		else
 		{
 			start = *i;
-			while (input[*i] != '$' && input[*i]
-				&& !is_delimiter(input[*i]))
+			while ((input[*i] != '$' || hdoc_flag)
+				&& input[*i] && !is_delimiter(input[*i]))
 				(*i)++;
 			chunk = ft_substr(input, start, (*i) - start);
 		}
