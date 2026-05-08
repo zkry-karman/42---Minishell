@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/05 17:26:46 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/08 11:33:19 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ char			*extract_quote(t_shell *shell, char *input, int *i);
 char			*extract_d_quote(t_shell *shell, char *input, int *i);
 char			*extract_operator(char *input, int *i);
 int				append_node(t_token **input_list, char *token, int quoted);
+int				is_hdoc(t_token *list);
 char			*join_and_free(char *s1, char *s2);
 int				syntax_checker(t_token *tokens);
 

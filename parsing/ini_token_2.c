@@ -6,7 +6,7 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 13:32:54 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/05/01 14:15:19 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/08 11:33:25 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,16 @@ t_token_type	identify_type(char *value)
 	else if (ft_strncmp(value, ">", 2) == 0)
 		return (TOKEN_OUT);
 	return (TOKEN_WORD);
+}
+
+int	is_hdoc(t_token *list)
+{
+	if (!list)
+		return (0);
+	while (list->next)
+		list = list->next;
+	if (list->value && list->value[0] == '<'
+		&& list->value[1] == '<' && list->value[2] == '\0')
+		return (1);
+	return (0);
 }
