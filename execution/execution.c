@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/08 11:44:15 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/08 11:45:41 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	wait_children(t_shell *shell, pid_t *child)
 				shell->exit_status = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
 			{
-				if ( WTERMSIG(status) == SIGQUIT)
+				if (WTERMSIG(status) == SIGQUIT)
 				{
 					ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
 					shell->exit_status = 131;
