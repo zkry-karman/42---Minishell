@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/06 14:01:27 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/08 11:44:15 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,24 @@ void	wait_children(t_shell *shell, pid_t *child)
 	i = 0;
 	while (i < command_count(shell->cmds))
 	{
-		if (child[i] != -1)
+		waitpid(child[i], &status, 0);
+		if (i == command_count(shell->cmds) - 1)
 		{
-			if (waitpid(child[i], &status, 0) != -1)
+			if (WIFEXITED(status))
+				shell->exit_status = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
 			{
-				if (WIFEXITED(status))
-					shell->exit_status = WEXITSTATUS(status);
-				else if (WIFSIGNALED(status))
-					shell->exit_status = 128 + WTERMSIG(status);
+				if ( WTERMSIG(status) == SIGQUIT)
+				{
+					ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
+					shell->exit_status = 131;
+				}
+				else if (WTERMSIG(status) == SIGINT)
+					shell->exit_status = 130;
 			}
 		}
 		i++;
 	}
-	free(child);
 }
 
 void	execute_command(t_shell *shell, t_cmd *cmd)
@@ -92,7 +97,11 @@ void	execute_system_command(t_shell *shell, t_cmd *curr, t_pipe *p)
 		pipe(p->curr);
 	p->children[p->i] = fork();
 	if (p->children[p->i] == 0)
+	{
+		signal(SIGQUIT, SIG_DFL);
+		signal(SIGINT, SIG_DFL);
 		pipe_process(shell, curr, p);
+	}
 	check_for_next_pipe(p, curr);
 	close_if_non_standard_in_out_file(curr->infile, curr->outfile);
 }
@@ -117,4 +126,5 @@ void	reading_commands(t_shell *shell)
 	loop_cmds(shell, &p, curr_cmd, stdout_dup);
 	check_for_next_pipe(&p, NULL);
 	wait_children(shell, p.children);
+	free(p.children);
 }
