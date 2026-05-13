@@ -6,7 +6,7 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/08 11:33:19 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/13 18:06:11 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,9 +118,9 @@ int				is_delimiter(char c);
 int				find_sep(char *cur);
 void			free_tokens(t_token **tokens);
 void			free_array(char **arr);
-void			free_redirs(t_redir *redirs);
-void			free_cmds(t_cmd *cmds);
-void			free_env(t_env *env_list);
+void			free_redirs(t_redir **redirs);
+void			free_cmds(t_cmd **cmds);
+void			free_env(t_env **env_list);
 
 void			reading_commands(t_shell *shell);
 char			**envp_list_to_arr(t_shell *shell);

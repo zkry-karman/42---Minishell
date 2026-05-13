@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:58:35 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/05/13 17:06:56 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/13 18:07:18 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ void	exit_program(t_shell *shell, int exit_code)
 	if (shell)
 	{
 		if (shell->cmds)
-			free_cmds(shell->cmds);
+			free_cmds(&(shell->cmds));
 		if (shell->env_list)
-			free_env(shell->env_list);
+			free_env(&(shell->env_list));
 	}
 	exit (exit_code);
 }
@@ -51,8 +51,7 @@ void	process_input(t_shell *shell, char *input)
 	}
 	free_tokens(&(shell->input_list));
 	reading_commands(shell);
-	free_cmds(shell->cmds);
-	shell->cmds = NULL;
+	free_cmds(&(shell->cmds));
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -79,7 +78,7 @@ int	main(int argc, char **argv, char **envp)
 		free(input);
 	}
 	printf("exit\n");
-	free_env(shell.env_list);
+	free_env(&(shell.env_list));
 	rl_clear_history();
 	return (0);
 }

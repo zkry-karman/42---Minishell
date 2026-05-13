@@ -6,7 +6,7 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 18:09:59 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/05/01 14:48:04 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/13 18:04:56 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 void	free_tokens(t_token **tokens)
 {
-	t_token	*current;
-	t_token	*next;
+	t_token	*cur;
+	t_token	*tmp;
 
 	if (!tokens || !*tokens)
 		return ;
-	current = *tokens;
-	while (current != NULL)
+	cur = *tokens;
+	while (cur != NULL)
 	{
-		next = current->next;
-		if (current->value != NULL)
-			free(current->value);
-		free(current);
-		current = next;
+		tmp = cur->next;
+		if (cur->value != NULL)
+			free(cur->value);
+		free(cur);
+		cur = tmp;
 	}
 	*tokens = NULL;
 }
@@ -46,52 +46,67 @@ void	free_array(char **arr)
 	free(arr);
 }
 
-void	free_redirs(t_redir *redirs)
+void	free_redirs(t_redir **redirs)
 {
 	t_redir	*tmp;
+	t_redir *cur;
 
-	while (redirs != NULL)
+	if (!redirs || !*redirs)
+		return ;
+	cur = *redirs;
+	while (cur != NULL)
 	{
-		tmp = redirs->next;
-		if (redirs->file != NULL)
-			free (redirs->file);
-		free(redirs);
-		redirs = tmp;
+		tmp = cur->next;
+		if (cur->file != NULL)
+			free (cur->file);
+		free(cur);
+		cur = tmp;
 	}
+	*redirs = NULL;
 }
 
-void	free_cmds(t_cmd *cmds)
+void	free_cmds(t_cmd **cmds)
 {
 	t_cmd	*temp;
+	t_cmd	*cur;
 
-	while (cmds)
+	if (!cmds || !*cmds)
+		return ;
+	cur = *cmds;
+	while (cur)
 	{
-		temp = cmds;
-		cmds = cmds->next;
-		if (temp->args)
-			free_array(temp->args);
-		if (temp->redirs)
-			free_redirs(temp->redirs);
-		if (temp->infile > 0)
-			close (temp->infile);
-		if (temp->outfile > 1)
-			close (temp->outfile);
-		free(temp);
+		temp = cur->next;
+		if (cur->args)
+			free_array(cur->args);
+		if (cur->redirs)
+			free_redirs(&(cur->redirs));
+		if (cur->infile > 0)
+			close (cur->infile);
+		if (cur->outfile > 1)
+			close (cur->outfile);
+		free(cur);
+		cur = temp;
 	}
+	*cmds = NULL;
 }
 
-void	free_env(t_env *env_list)
+void	free_env(t_env **env_list)
 {
 	t_env	*tmp;
+	t_env	*cur;
 
-	while (env_list != NULL)
+	if (!env_list || !*env_list)
+		return ;
+	cur = *env_list;
+	while (cur != NULL)
 	{
-		tmp = env_list->next;
-		if (env_list->key != NULL)
-			free(env_list->key);
-		if (env_list->value != NULL)
-			free(env_list->value);
-		free(env_list);
-		env_list = tmp;
+		tmp = cur->next;
+		if (cur->key != NULL)
+			free(cur->key);
+		if (cur->value != NULL)
+			free(cur->value);
+		free(cur);
+		cur = tmp;
 	}
+	*env_list = NULL;
 }
