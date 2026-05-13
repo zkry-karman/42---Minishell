@@ -6,7 +6,7 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 11:55:10 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/05/06 16:15:37 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/13 18:08:07 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ t_cmd	*create_cmd_node(t_token **cur)
 		if ((*cur)->type != TOKEN_WORD)
 		{
 			if (build_redir_node(&(cmd->redirs), cur) == 1)
-				return (free_redirs(cmd->redirs),
+				return (free_redirs(&(cmd->redirs)),
 					free_array(cmd->args), free(cmd), NULL);
 		}
 		else
@@ -136,7 +136,7 @@ int	build_cmds(t_shell *shell)
 	{
 		new_node = create_cmd_node(&cur);
 		if (!new_node)
-			return (free_cmds(head), 1);
+			return (free_cmds(&head), 1);
 		if (head == NULL)
 			head = new_node;
 		else

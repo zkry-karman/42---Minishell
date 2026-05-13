@@ -6,7 +6,7 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 11:45:04 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/05/01 14:03:16 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/13 18:07:26 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ t_env	*build_envp(char **envp)
 	{
 		new_node = create_envp_node(envp[i]);
 		if (!new_node)
-			return (free_env(head), NULL);
+			return (free_env(&head), NULL);
 		if (head == NULL)
 			head = new_node;
 		else
