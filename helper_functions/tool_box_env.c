@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tool_box_env.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 12:27:28 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/05/01 14:45:29 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/13 17:06:42 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	**envp_list_to_arr(t_shell *shell)
 	char	*temp;
 
 	curr = shell->env_list;
-	arr = malloc(sizeof(char *) * envp_size(curr) + 1);
+	arr = malloc(sizeof(char *) * (envp_size(curr) + 1));
 	if (!arr)
 		return (NULL);
 	i = 0;

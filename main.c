@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:58:35 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/05/08 11:50:19 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/13 17:06:56 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ void	process_input(t_shell *shell, char *input)
 		free_tokens(&(shell->input_list));
 		return ;
 	}
+	free_tokens(&(shell->input_list));
 	reading_commands(shell);
 	free_cmds(shell->cmds);
 	shell->cmds = NULL;
-	free_tokens(&(shell->input_list));
 }
 
 int	main(int argc, char **argv, char **envp)

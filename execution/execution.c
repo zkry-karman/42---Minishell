@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/08 11:45:41 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/13 17:06:28 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	wait_children(t_shell *shell, pid_t *child)
 	int	status;
 
 	i = 0;
+	status = 0;
 	while (i < command_count(shell->cmds))
 	{
 		waitpid(child[i], &status, 0);
