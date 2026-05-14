@@ -71,3 +71,23 @@ https://yannick.eu/minishell/
 
 Norminette Compliance Strategy: AI was used to brainstorm architectural refactoring strategies (such as safely splitting the main loop execution pipeline) to adhere to the strict 25-line function limits without breaking the logic flow.
 Concept Clarification: AI served as an interactive tutor to clarify low-level C concepts, such as the exact asynchronous execution flow of system signal() interrupts (SIGINT) versus standard terminal EOF (Ctrl+D).
+
+# Valgrind test command:
+valgrind  --track-origins=yes --track-fds=yes --leak-check=full --show-leak-kinds=all -s --suppressions=readline.supp ./minishell
+
+# File to suppress readline leaks: 
+readline.supp
+```
+{
+   readline_leak
+   Memcheck:Leak
+   ...
+   obj:*/libreadline*
+}
+{
+   readline_leak_so
+   Memcheck:Leak
+   ...
+   obj:*/libreadline.so*
+}
+```

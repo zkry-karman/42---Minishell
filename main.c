@@ -6,7 +6,7 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:58:35 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/05/13 18:07:18 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/14 18:59:54 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	main(int argc, char **argv, char **envp)
 			shell.exit_status = g_status;
 			g_status = 0;
 		}
-		input = readline("minishell> ");
+		input = readline("minishell$ ");
 		if (input == NULL)
 			break ;
 		if (input[0] != '\0')
