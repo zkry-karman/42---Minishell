@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tool_box_free.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
+/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 18:09:59 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/05/13 18:04:56 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/15 17:40:32 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,10 @@ void	free_cmds(t_cmd **cmds)
 			free_array(cur->args);
 		if (cur->redirs)
 			free_redirs(&(cur->redirs));
-		if (cur->infile > 0)
-			close (cur->infile);
-		if (cur->outfile > 1)
-			close (cur->outfile);
+		if (cur->infile > 2)
+			close_if_non_standard_in_out_file(&cur->infile, NULL);
+		if (cur->outfile > 2)
+			close_if_non_standard_in_out_file(NULL, &cur->outfile);
 		free(cur);
 		cur = temp;
 	}

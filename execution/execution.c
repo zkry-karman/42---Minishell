@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/13 17:06:28 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/15 18:14:37 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	pipe_process(t_shell *shell, t_cmd *cmd, t_pipe *p)
 		dup2(p->curr[1], STDOUT_FILENO);
 	if (check_file_descriptors(cmd) == -1)
 		exit_program(shell, 1);
-	verifiy_stds(cmd);
+	verify_stds(cmd);
 	if (cmd->next)
 	{
 		close(p->curr[1]);
@@ -86,7 +86,7 @@ void	pipe_process(t_shell *shell, t_cmd *cmd, t_pipe *p)
 	if (is_built_in_command(cmd->args[0]))
 	{
 		shell->exit_status = execute_built_in_command(shell, cmd);
-		exit_program(shell, shell->exit_status);
+		kill_child(shell, shell->exit_status);
 	}
 	else
 		execute_command(shell, cmd);
@@ -104,7 +104,7 @@ void	execute_system_command(t_shell *shell, t_cmd *curr, t_pipe *p)
 		pipe_process(shell, curr, p);
 	}
 	check_for_next_pipe(p, curr);
-	close_if_non_standard_in_out_file(curr->infile, curr->outfile);
+	close_if_non_standard_in_out_file(&curr->infile, &curr->outfile);
 }
 
 // Start of execution

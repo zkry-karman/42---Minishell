@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tool_box_fd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/30 21:49:28 by karmanz           #+#    #+#             */
-/*   Updated: 2026/05/05 17:35:12 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/15 17:55:14 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,30 +28,32 @@ void	check_for_next_pipe(t_pipe *p, t_cmd *curr_cmd)
 	}
 }
 
-void	close_if_non_standard_in_out_file(int infile, int outfile)
+void	close_if_non_standard_in_out_file(int *infile, int *outfile)
 {
-	if (infile)
+	if (infile && *infile > 2)
 	{
-		if (infile > 0)
-			close(infile);
+		close(*infile);
+		*infile = -1;
 	}
-	if (outfile)
+	if (outfile && *outfile > 2)
 	{
-		if (outfile > 1)
-			close(outfile);
+		close(*outfile);
+		*outfile = -1;
 	}
 }
 
-void	verifiy_stds(t_cmd *cmd)
+void	verify_stds(t_cmd *cmd)
 {
-	if (cmd->infile != STDIN_FILENO)
+	if (cmd->infile != STDIN_FILENO && cmd->infile > 0)
 	{
 		dup2(cmd->infile, STDIN_FILENO);
 		close(cmd->infile);
+		cmd->infile = STDIN_FILENO;
 	}
-	if (cmd->outfile != STDOUT_FILENO)
+	if (cmd->outfile != STDOUT_FILENO && cmd->outfile > 1)
 	{
 		dup2(cmd->outfile, STDOUT_FILENO);
 		close(cmd->outfile);
+		cmd->outfile = STDOUT_FILENO;
 	}
 }
