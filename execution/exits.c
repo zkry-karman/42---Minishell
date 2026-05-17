@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/05 16:45:23 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/17 17:29:20 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/17 18:37:38 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,10 @@ void	exit_fd_failure(t_shell *shell, t_cmd *cmd, t_pipe *p)
 	}
 	if (p->last_pipe != -1)
 		close(p->last_pipe);
-	if(p->children)
+	if (p->children)
 	{
 		free(p->children);
 		p->children = NULL;
 	}
-	exit_program(shell, 1);	
+	exit_program(shell, 1);
 }

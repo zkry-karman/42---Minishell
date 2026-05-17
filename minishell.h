@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/17 18:07:38 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/17 18:59:23 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void			free_env(t_env **env_list);
 void			reading_commands(t_shell *shell);
 char			**envp_list_to_arr(t_shell *shell);
 int				check_file_descriptors(t_cmd *cmd);
-int			check_heredocs(t_shell *shell);
+int				check_heredocs(t_shell *shell);
 int				handle_heredoc(t_shell *shell, t_redir *curr_redir);
 char			*expand_heredoc(t_shell *shell, char *line);
 void			exit_program(t_shell *shell, int exit_code);
@@ -158,5 +158,9 @@ void			verify_stds(t_cmd *cmd);
 void			loop_cmds(t_shell *shell, t_pipe *p, t_cmd *cmd, int stout_dup);
 void			execute_system_command(t_shell *shell, t_cmd *curr, t_pipe *p);
 void			kill_child(t_shell *shell, int exit_code);
+void			exit_fd_failure(t_shell *shell, t_cmd *cmd, t_pipe *p);
+void			check_backups(t_shell *shell);
+void			read_hd(t_shell *shell, t_redir *curr, char *line, int fd[2]);
+int				setup_heredoc(t_shell *shell, t_redir *redir, t_cmd *cmd);
 
 #endif
