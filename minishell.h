@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/15 18:21:53 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/05/17 15:55:22 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ typedef struct s_shell
 	t_cmd	*cmds;
 	t_token	*input_list;
 	int		exit_status;
+	t_pipe	*pipe_processes;
+    int     backup_stdout;
 }	t_shell;
 
 t_token_type	identify_type(char *value);

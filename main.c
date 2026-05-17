@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:58:35 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/05/14 18:59:54 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/17 15:44:25 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	ini_shell(t_shell *shell, char	**envp)
 	shell->input_list = NULL;
 	shell->cmds = NULL;
 	shell->exit_status = 0;
+	shell->pipe_processes = NULL;
+	shell->backup_stdout = -1;
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 }
@@ -26,10 +28,25 @@ void	exit_program(t_shell *shell, int exit_code)
 {
 	if (shell)
 	{
+		if (shell->backup_stdout != -1)
+		{
+			if (shell->cmds && shell->cmds->outfile != STDOUT_FILENO)
+				dup2(shell->backup_stdout, STDOUT_FILENO);
+			close(shell->backup_stdout);
+			shell->backup_stdout = -1;
+		}
 		if (shell->cmds)
+		{
+			if (shell->cmds->outfile > 2)
+				close(shell->cmds->outfile);
+			if (shell->cmds->infile > 2)
+				close(shell->cmds->infile);
 			free_cmds(&(shell->cmds));
+		}
 		if (shell->env_list)
 			free_env(&(shell->env_list));
+		if (shell->pipe_processes && shell->pipe_processes->children)
+			free(shell->pipe_processes->children);
 	}
 	exit (exit_code);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/15 18:14:37 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/05/17 15:06:54 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,9 +118,13 @@ void	reading_commands(t_shell *shell)
 		return ;
 	p.last_pipe = -1;
 	p.i = 0;
+	shell->pipe_processes = &p;
 	initialize_children(shell, &p);
 	if (!p.children)
+	{
+		shell->pipe_processes = NULL;
 		return ;
+	}
 	check_heredocs(shell);
 	curr_cmd = shell->cmds;
 	stdout_dup = 0;
@@ -128,4 +132,5 @@ void	reading_commands(t_shell *shell)
 	check_for_next_pipe(&p, NULL);
 	wait_children(shell, p.children);
 	free(p.children);
+	shell->pipe_processes = NULL;
 }

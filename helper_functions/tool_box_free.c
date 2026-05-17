@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tool_box_free.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 18:09:59 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/05/15 17:40:32 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/05/17 15:55:07 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	free_array(char **arr)
 void	free_redirs(t_redir **redirs)
 {
 	t_redir	*tmp;
-	t_redir *cur;
+	t_redir	*cur;
 
 	if (!redirs || !*redirs)
 		return ;
