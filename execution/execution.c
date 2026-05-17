@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/17 18:38:34 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/17 21:23:42 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,10 @@ void	execute_command(t_shell *shell, t_cmd *cmd)
 	else
 		path = get_path(cmd->args[0], envp_arr);
 	if (!path)
+	{
+		free(path);
 		exit_no_path(shell, envp_arr, cmd);
+	}
 	if (stat(path, &path_stat) == 0 && S_ISDIR(path_stat.st_mode))
 		exit_no_access(shell, path, envp_arr);
 	if (execve(path, cmd->args, envp_arr) == -1)
@@ -95,8 +98,20 @@ void	pipe_process(t_shell *shell, t_cmd *cmd, t_pipe *p)
 void	execute_system_command(t_shell *shell, t_cmd *curr, t_pipe *p)
 {
 	if (curr->next)
+	{
+		if (pipe(p->curr) == -1)
+		{
+			perror("pipe");
+			exit_program(shell, 1);
+		}
+	}
 		pipe(p->curr);
 	p->children[p->i] = fork();
+	if (p->children[p->i] == -1)
+	{
+		perror("fork");
+		exit_fd_failure(shell, curr, p);
+	}
 	if (p->children[p->i] == 0)
 	{
 		signal(SIGQUIT, SIG_DFL);
