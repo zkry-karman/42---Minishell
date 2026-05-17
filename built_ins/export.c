@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 14:22:32 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/05 17:35:48 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/17 21:10:17 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,26 @@ void	add_to_env(t_shell *shell, char *key, char *value)
 void	process_arg(t_shell *shell, char *arg)
 {
 	t_env	*target_node;
+	char	*arg_copy;
 	char	*equal_sign;
 	char	*key;
 	char	*value;
 
-	equal_sign = ft_strchr(arg, '=');
-	if (!equal_sign)
+	arg_copy = ft_strdup(arg);
+	if (!arg_copy)
 		return ;
+	equal_sign = ft_strchr(arg_copy, '=');
+	if (!equal_sign)
+		return (free(arg_copy));
 	*equal_sign = '\0';
-	key = arg;
+	key = arg_copy;
 	value = equal_sign + 1;
 	target_node = get_env_node(shell, key);
 	if (target_node)
 		replace_env_value(target_node, value);
 	else
 		add_to_env(shell, key, value);
+	free (arg_copy);
 }
 
 int	is_valid_arg(char *arg)
