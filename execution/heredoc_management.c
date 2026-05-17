@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_management.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 15:19:08 by karmanz           #+#    #+#             */
-/*   Updated: 2026/05/04 11:17:19 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/17 17:14:29 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,13 @@ void	check_heredocs(t_shell *shell)
 				if (curr_cmd->infile > 0)
 					close(curr_cmd->infile);
 				curr_cmd->infile = handle_heredoc(shell, curr_redir);
+				if (shell->exit_status == 130)
+					return ;
 			}
 			curr_redir = curr_redir->next;
 		}
+		if (shell->exit_status == 130)
+			return ;
 		curr_cmd = curr_cmd->next;
 	}
 }

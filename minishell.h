@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/17 15:55:22 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/17 16:34:46 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ typedef struct s_shell
 	t_token	*input_list;
 	int		exit_status;
 	t_pipe	*pipe_processes;
-    int     backup_stdout;
+	int		backup_stdout;
+	int		backup_stdin;
 }	t_shell;
 
 t_token_type	identify_type(char *value);

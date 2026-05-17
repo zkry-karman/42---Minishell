@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:58:35 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/05/17 15:44:25 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/17 16:54:58 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	ini_shell(t_shell *shell, char	**envp)
 	shell->exit_status = 0;
 	shell->pipe_processes = NULL;
 	shell->backup_stdout = -1;
+	shell->backup_stdin = -1;
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 }
@@ -28,10 +29,13 @@ void	exit_program(t_shell *shell, int exit_code)
 {
 	if (shell)
 	{
-		if (shell->backup_stdout != -1)
+		if (shell->backup_stdin > 2)
 		{
-			if (shell->cmds && shell->cmds->outfile != STDOUT_FILENO)
-				dup2(shell->backup_stdout, STDOUT_FILENO);
+			close(shell->backup_stdin);
+			shell->backup_stdin = -1;
+		}
+		if (shell->backup_stdout > 2)
+		{
 			close(shell->backup_stdout);
 			shell->backup_stdout = -1;
 		}
@@ -48,6 +52,9 @@ void	exit_program(t_shell *shell, int exit_code)
 		if (shell->pipe_processes && shell->pipe_processes->children)
 			free(shell->pipe_processes->children);
 	}
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	close(STDERR_FILENO);
 	exit (exit_code);
 }
 
@@ -67,6 +74,8 @@ void	process_input(t_shell *shell, char *input)
 		return ;
 	}
 	free_tokens(&(shell->input_list));
+	shell->backup_stdin = -1;
+	shell->backup_stdout = -1;
 	reading_commands(shell);
 	free_cmds(&(shell->cmds));
 }
