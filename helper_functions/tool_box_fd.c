@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tool_box_fd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/30 21:49:28 by karmanz           #+#    #+#             */
-/*   Updated: 2026/05/15 17:55:14 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/05/17 18:54:56 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,19 @@ void	verify_stds(t_cmd *cmd)
 		dup2(cmd->outfile, STDOUT_FILENO);
 		close(cmd->outfile);
 		cmd->outfile = STDOUT_FILENO;
+	}
+}
+
+void	check_backups(t_shell *shell)
+{
+	if (shell->backup_stdin > 2)
+	{
+		close(shell->backup_stdin);
+		shell->backup_stdin = -1;
+	}
+	if (shell->backup_stdout > 2)
+	{
+		close(shell->backup_stdout);
+		shell->backup_stdout = -1;
 	}
 }

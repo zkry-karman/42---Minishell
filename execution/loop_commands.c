@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/05 17:14:40 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/17 16:35:18 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/17 18:36:44 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,15 @@ void	setup_built_in_command(t_shell *shell, t_cmd *cmd, int *stout_dup)
 	close(stdin_backup);
 	close(*stout_dup);
 	shell->backup_stdout = -1;
-	if (cmd->outfile > 2)
-	{
-		close(cmd->outfile);
-		cmd->outfile = STDOUT_FILENO;
-	}
-	if (cmd->infile > 2)
-	{
-		close(cmd->infile);
-		cmd->infile = STDIN_FILENO;
-	}
+	close_if_non_standard_in_out_file(&cmd->infile, &cmd->outfile);
+	cmd->infile = STDIN_FILENO;
+	cmd->outfile = STDOUT_FILENO;
 	*stout_dup = -1;
 }
 
 void	loop_cmds(t_shell *shell, t_pipe *p, t_cmd *cmd, int stout_dup)
 {
 	stout_dup = -1;
-	
 	while (cmd)
 	{
 		if (is_built_in_command(cmd->args[0]) && !cmd->next && p->i == 0)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:58:35 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/05/17 17:56:18 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/17 18:32:19 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,7 @@ void	exit_program(t_shell *shell, int exit_code)
 {
 	if (shell)
 	{
-		if (shell->backup_stdin > 2)
-		{
-			close(shell->backup_stdin);
-			shell->backup_stdin = -1;
-		}
-		if (shell->backup_stdout > 2)
-		{
-			close(shell->backup_stdout);
-			shell->backup_stdout = -1;
-		}
+		check_backups(shell);
 		if (shell->cmds)
 		{
 			if (shell->cmds->outfile > 2)
