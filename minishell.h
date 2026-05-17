@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/17 16:34:46 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/17 18:07:38 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void			free_env(t_env **env_list);
 void			reading_commands(t_shell *shell);
 char			**envp_list_to_arr(t_shell *shell);
 int				check_file_descriptors(t_cmd *cmd);
-void			check_heredocs(t_shell *shell);
+int			check_heredocs(t_shell *shell);
 int				handle_heredoc(t_shell *shell, t_redir *curr_redir);
 char			*expand_heredoc(t_shell *shell, char *line);
 void			exit_program(t_shell *shell, int exit_code);
