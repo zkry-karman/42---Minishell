@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/05 16:45:23 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/17 18:37:38 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/17 20:42:21 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ void	kill_child(t_shell *shell, int exit_code)
 			free_cmds(&(shell->cmds));
 		if (shell->env_list)
 			free_env(&(shell->env_list));
+		if (shell->pipe_processes && shell->pipe_processes->children)
+		{
+			free(shell->pipe_processes->children);
+			shell->pipe_processes->children = NULL;
+		}
 	}
 	close(STDIN_FILENO);
 	close(STDOUT_FILENO);
