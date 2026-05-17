@@ -74,21 +74,7 @@ void	pipe_process(t_shell *shell, t_cmd *cmd, t_pipe *p)
 	if (cmd->next)
 		dup2(p->curr[1], STDOUT_FILENO);
 	if (check_file_descriptors(cmd) == -1)
-	{
-		if (cmd->next)
-		{
-			close(p->curr[1]);
-			close(p->curr[0]);
-		}
-		if (p->last_pipe != -1)
-			close(p->last_pipe);
-		if(p->children)
-		{
-			free(p->children);
-			p->children = NULL;
-		}
-		exit_program(shell, 1);
-	}
+		exit_fd_failure(shell, cmd, p);
 	verify_stds(cmd);
 	if (cmd->next)
 	{
