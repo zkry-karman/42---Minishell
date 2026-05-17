@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exits.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/05 16:45:23 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/15 18:26:14 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/05/17 17:29:20 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,21 @@ void	exit_no_path(t_shell *shell, char **envp_arr, t_cmd *cmd)
 	ft_putstr_fd(cmd->args[0], 2);
 	ft_putstr_fd(": command not found\n", 2);
 	kill_child(shell, 127);
+}
+
+void	exit_fd_failure(t_shell *shell, t_cmd *cmd, t_pipe *p)
+{
+	if (cmd->next)
+	{
+		close(p->curr[1]);
+		close(p->curr[0]);
+	}
+	if (p->last_pipe != -1)
+		close(p->last_pipe);
+	if(p->children)
+	{
+		free(p->children);
+		p->children = NULL;
+	}
+	exit_program(shell, 1);	
 }
