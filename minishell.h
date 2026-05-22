@@ -6,7 +6,7 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/22 18:56:55 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/05/22 23:32:15 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # include <errno.h>
 # include <signal.h>
 
-extern int	g_status;
+extern volatile sig_atomic_t	g_status;
 
 typedef struct s_env
 {
@@ -155,12 +155,14 @@ void			exit_no_path(t_shell *shell, char **envp_arr, t_cmd *cmd);
 void			exit_no_access(t_shell *shell, char *path, char **envp_arr);
 void			exit_execve_failure(t_shell *shell, char **env_arr, t_cmd *cmd);
 void			verify_stds(t_cmd *cmd);
-int			loop_cmds(t_shell *shell, t_pipe *p, t_cmd *cmd, int stout_dup);
+int				loop_cmds(t_shell *shell, t_pipe *p, t_cmd *cmd, int stout_dup);
 int				execute_system_command(t_shell *shell, t_cmd *curr, t_pipe *p);
 void			kill_child(t_shell *shell, int exit_code);
 void			exit_fd_failure(t_shell *shell, t_cmd *cmd, t_pipe *p);
 void			check_backups(t_shell *shell);
-void		read_hd(t_shell *shell, t_redir *curr, int fd[2]);
+void			read_hd(t_shell *shell, t_redir *curr, int fd[2]);
 int				setup_heredoc(t_shell *shell, t_redir *redir, t_cmd *cmd);
+void    		setup_prompt_signals(void);
+int     		rl_event_placeholder(void);
 
 #endif

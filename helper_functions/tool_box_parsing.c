@@ -6,24 +6,11 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 17:58:55 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/05/22 19:42:54 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/05/22 20:54:31 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	g_status = 0;
-
-void	handle_sigint(int sig)
-{
-	(void)sig;
-	g_status = 130;
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	rl_done = 1;
-}
 
 int	find_sep(char *cur)
 {

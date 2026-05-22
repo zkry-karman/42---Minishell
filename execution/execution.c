@@ -6,7 +6,7 @@
 /*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/22 18:32:21 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/05/22 23:22:42 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,6 @@ void	reading_commands(t_shell *shell)
 	t_pipe	p;
 	t_cmd	*curr_cmd;
 	int		stdout_dup;
-	int		terminal_stdin;
 
 	if (!shell->cmds)
 		return ;
@@ -155,37 +154,78 @@ void	reading_commands(t_shell *shell)
 	p.curr[1] = -1;
 	p.i = 0;
 	shell->pipe_processes = &p;
+	shell->backup_stdin = dup(STDIN_FILENO);
+	shell->backup_stdout = dup(STDOUT_FILENO);
 	initialize_children(shell, &p);
 	if (!p.children)
 	{
 		shell->pipe_processes = NULL;
-		signal(SIGINT, handle_sigint);
+		if (shell->backup_stdin != -1)
+			close(shell->backup_stdin);
+		if (shell->backup_stdout != -1)
+			close(shell->backup_stdout);
+		shell->backup_stdin = -1;
+		shell->backup_stdout = -1;
+		setup_prompt_signals();
 		return ;
 	}
-	terminal_stdin = dup(STDIN_FILENO);
 	if (check_heredocs(shell))
 	{
-		dup2(terminal_stdin, STDIN_FILENO);
-		close(terminal_stdin);
+		if (shell->backup_stdin != -1)
+		{
+			dup2(shell->backup_stdin, STDIN_FILENO);
+			close(shell->backup_stdin);
+		}
+		if (shell->backup_stdout != -1)
+		{
+			dup2(shell->backup_stdout, STDOUT_FILENO);
+			close(shell->backup_stdout);
+		}
+		shell->backup_stdin = -1;
+		shell->backup_stdout = -1;
+		shell->pipe_processes = NULL;
+		setup_prompt_signals();
 		return (free(p.children));
 	}
-	dup2(terminal_stdin, STDIN_FILENO);
-	close(terminal_stdin);
 	curr_cmd = shell->cmds;
 	stdout_dup = 0;
 	if (loop_cmds(shell, &p, curr_cmd, stdout_dup) != 0)
 	{
 		if (p.last_pipe != -1)
 			close(p.last_pipe);
-		wait_children(shell, p.children, p.i);
+		wait_children(shell, p.children, command_count(shell->cmds));
 		free(p.children);
 		shell->pipe_processes = NULL;
-		signal(SIGINT, handle_sigint);
+		if (shell->backup_stdin != -1)
+		{
+			dup2(shell->backup_stdin, STDIN_FILENO);
+			close(shell->backup_stdin);
+		}
+		if (shell->backup_stdout != -1)
+		{
+			dup2(shell->backup_stdout, STDOUT_FILENO);
+			close(shell->backup_stdout);
+		}
+		shell->backup_stdin = -1;
+		shell->backup_stdout = -1;
+		setup_prompt_signals();
 		return ;
 	}
 	check_for_next_pipe(&p, NULL);
-	wait_children(shell, p.children, p.i);
+	wait_children(shell, p.children, command_count(shell->cmds));
 	free(p.children);
 	shell->pipe_processes = NULL;
-	signal(SIGINT, handle_sigint);
+	if (shell->backup_stdin != -1)
+	{
+		dup2(shell->backup_stdin, STDIN_FILENO);
+		close(shell->backup_stdin);
+	}
+	if (shell->backup_stdout != -1)
+	{
+		dup2(shell->backup_stdout, STDOUT_FILENO);
+		close(shell->backup_stdout);
+	}
+	shell->backup_stdin = -1;
+	shell->backup_stdout = -1;
+	setup_prompt_signals();
 }

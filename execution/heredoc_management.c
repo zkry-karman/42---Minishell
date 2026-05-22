@@ -89,9 +89,10 @@ int	check_heredocs(t_shell *shell)
 			curr_redir = curr_redir->next;
 		}
 		if (g_status == 130)
+		{
 			shell->exit_status = 130;
-		if (shell->exit_status == 130)
 			return (1);
+		}
 		curr_cmd = curr_cmd->next;
 	}
 	return (0);

@@ -15,13 +15,20 @@
 void	setup_built_in_command(t_shell *shell, t_cmd *cmd, int *stout_dup)
 {
 	int		target_out;
-	int		target_in;;
+	int		target_in;
+	int		tmp_stdin;
+	int		tmp_stdout;
 
 	(void)stout_dup;
-	shell->backup_stdin = dup(STDIN_FILENO);
-	shell->backup_stdout = dup(STDOUT_FILENO);
 	target_out = cmd->outfile;
 	target_in = cmd->infile;
+	tmp_stdin = -1;
+	tmp_stdout = -1;
+	if (target_out > 2 || target_in > 2)
+	{
+		tmp_stdin = dup(STDIN_FILENO);
+		tmp_stdout = dup(STDOUT_FILENO);
+	}
 	if (target_out > 2)
 	{
 		dup2(target_out, STDOUT_FILENO);
@@ -35,9 +42,16 @@ void	setup_built_in_command(t_shell *shell, t_cmd *cmd, int *stout_dup)
 		cmd->infile = -1;
 	}
 	shell->exit_status = execute_built_in_command(shell, cmd);
-	dup2(shell->backup_stdin, STDIN_FILENO);
-	dup2(shell->backup_stdout, STDOUT_FILENO);
-	check_backups(shell);
+	if (tmp_stdin != -1)
+	{
+		dup2(tmp_stdin, STDIN_FILENO);
+		close(tmp_stdin);
+	}
+	if (tmp_stdout != -1)
+	{
+		dup2(tmp_stdout, STDOUT_FILENO);
+		close(tmp_stdout);
+	}
 	close_if_non_standard_in_out_file(&cmd->infile, &cmd->outfile);
 }
 
