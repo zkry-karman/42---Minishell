@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_management.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 15:19:08 by karmanz           #+#    #+#             */
-/*   Updated: 2026/05/23 12:36:33 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/23 16:23:52 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,6 @@ int	handle_heredoc(t_shell *shell, t_redir *curr)
 	local_stdin_dup = dup(STDIN_FILENO);
 	signal(SIGINT, heredoc_sigint);
 	read_hd(shell, curr, fd);
-	if (g_status != 130)
-		heredoc_error_msg(curr);
 	dup2(local_stdin_dup, STDIN_FILENO);
 	close(local_stdin_dup);
 	signal(SIGINT, handle_sigint);
