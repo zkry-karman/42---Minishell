@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 20:15:06 by karmanz           #+#    #+#             */
-/*   Updated: 2026/05/06 14:02:07 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/23 14:32:18 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,16 @@ int	execute_built_in_command(t_shell *shell, t_cmd *cmd)
 		return (2);
 	}
 	return (0);
+}
+
+void run_built_in_and_exit(t_shell *shell, t_cmd *cmd, t_pipe *p)
+{
+	shell->exit_status = execute_built_in_command(shell, cmd);
+	if (p->curr[1] != -1)
+		close(p->curr[1]);
+	if (p->curr[0] != -1)
+		close(p->curr[0]);
+	kill_child(shell, shell->exit_status);
 }
 
 int	is_built_in_command(char *cmd)

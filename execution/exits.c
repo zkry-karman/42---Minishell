@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/05 16:45:23 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/23 13:13:52 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/23 14:40:20 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,7 @@ void	kill_child(t_shell *shell, int exit_code)
 		curr = shell->cmds;
 		while (curr)
 		{
-			if (curr->infile > 2)
-			{
-				close(curr->infile);
-				curr->infile = -1;
-			}
-			if (curr->outfile > 2)
-			{
-				close(curr->outfile);
-				curr->outfile = -1;
-			}
+			close_if_non_standard_in_out_file(&curr->infile, &curr->outfile);
 			curr = curr->next;
 		}
 		if (shell->cmds)

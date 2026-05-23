@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/22 23:32:15 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/05/23 15:30:36 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,43 +126,71 @@ void			free_cmds(t_cmd **cmds);
 void			free_env(t_env **env_list);
 
 void			reading_commands(t_shell *shell);
-char			**envp_list_to_arr(t_shell *shell);
+int				execute_system_command(t_shell *shell, t_cmd *curr, t_pipe *p);
+
+void			kill_child(t_shell *shell, int exit_code);
+void			exit_execve_failure(t_shell *shell, char **env_arr, t_cmd *cmd);
+void			exit_no_access(t_shell *shell, char *path, char **envp_arr);
+void			exit_no_path(t_shell *shell, char **envp_arr, t_cmd *cmd);
+void			exit_fd_failure(t_shell *shell, t_cmd *cmd, t_pipe *p);
+
 int				check_file_descriptors(t_cmd *cmd);
+
 int				check_heredocs(t_shell *shell);
 int				handle_heredoc(t_shell *shell, t_redir *curr_redir);
 char			*expand_heredoc(t_shell *shell, char *line);
-void			exit_program(t_shell *shell, int exit_code);
-int				command_count(t_cmd *cmds);
-char			*env_path(char **envp);
-int				ft_strcmp(const char *s1, const char *s2);
-int				is_built_in_command(char *cmd);
-int				execute_built_in_command(t_shell *shell, t_cmd *cmd);
-int				change_dir(t_shell *shell, char **args);
-t_env			*get_env_node(t_shell *shell, char *wanted_path);
+
+int				loop_cmds(t_shell *shell, t_pipe *p, t_cmd *cmd, int stout_dup);
+
+void    		children_failure(t_shell *shell);
+void			clean_up_children(t_shell *shell, t_pipe *p);
+void			wait_children(t_shell *shell, pid_t *child, int child_count);
+void			initialize_children(t_shell *shell, t_pipe *p);
+
 void			replace_env_value(t_env *node, char *new_val);
-int				echo(char **args);
-int				show_env(t_env *env_list);
-int				check_exit(t_shell *shell, char **args);
-int				is_valid_arg(char *arg);
-int				ft_export(t_shell *shell, char **args);
-int				print_cwd(t_shell *shell, char **args);
-int				ft_unset(t_shell *shell, char **args);
+char			**envp_list_to_arr(t_shell *shell);
+char			*env_path(char **envp);
+t_env			*get_env_node(t_shell *shell, char *wanted_path);
+
+void			fork_failure(t_shell *shell, t_cmd *curr, t_pipe *p);
+int				ft_strcmp(const char *s1, const char *s2);
+void			initialize_pipe(t_pipe *p);
+int				command_count(t_cmd *cmds);
+char			*get_path(char *command, char **envp);
+
+void			check_backups(t_shell *shell);
+void			verify_stds(t_cmd *cmd);
 void			close_if_non_standard_in_out_file(int *infile, int *outfile);
 void			check_for_next_pipe(t_pipe *p, t_cmd *curr_cmd);
-char			*get_path(char *command, char **envp);
-void			initialize_children(t_shell *shell, t_pipe *p);
-void			exit_no_path(t_shell *shell, char **envp_arr, t_cmd *cmd);
-void			exit_no_access(t_shell *shell, char *path, char **envp_arr);
-void			exit_execve_failure(t_shell *shell, char **env_arr, t_cmd *cmd);
-void			verify_stds(t_cmd *cmd);
-int				loop_cmds(t_shell *shell, t_pipe *p, t_cmd *cmd, int stout_dup);
-int				execute_system_command(t_shell *shell, t_cmd *curr, t_pipe *p);
-void			kill_child(t_shell *shell, int exit_code);
-void			exit_fd_failure(t_shell *shell, t_cmd *cmd, t_pipe *p);
-void			check_backups(t_shell *shell);
-void			read_hd(t_shell *shell, t_redir *curr, int fd[2]);
+void			setup_next_pipe(t_pipe *p, int *old_pipe);
+
+void    		heredoc_failure(t_shell *shell, t_pipe *p);
 int				setup_heredoc(t_shell *shell, t_redir *redir, t_cmd *cmd);
+void			read_hd(t_shell *shell, t_redir *curr, int fd[2]);
+
+void			main_cleanup(t_shell *shell);
+
 void    		setup_prompt_signals(void);
-int     		rl_event_placeholder(void);
+
+int				is_built_in_command(char *cmd);
+void			run_built_in_and_exit(t_shell *shell, t_cmd *cmd, t_pipe *p);
+int				execute_built_in_command(t_shell *shell, t_cmd *cmd);
+
+int				change_dir(t_shell *shell, char **args);
+
+int				echo(char **args);
+
+int				show_env(t_env *env_list);
+
+int				check_exit(t_shell *shell, char **args);
+
+int				ft_export(t_shell *shell, char **args);
+int				is_valid_arg(char *arg);
+
+int				print_cwd(t_shell *shell, char **args);
+
+int				ft_unset(t_shell *shell, char **args);
+
+void			exit_program(t_shell *shell, int exit_code);
 
 #endif

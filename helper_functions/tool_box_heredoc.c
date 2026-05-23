@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tool_box_heredoc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/17 18:41:28 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/22 16:12:32 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/05/23 14:17:50 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,12 @@ int	setup_heredoc(t_shell *shell, t_redir *redir, t_cmd *cmd)
 	if (shell->exit_status == 130)
 		return (0);
 	return (0);
+}
+
+void	heredoc_failure(t_shell *shell, t_pipe *p)
+{
+	shell->pipe_processes = NULL;
+	setup_prompt_signals();
+	free(p->children);
+	return ;
 }

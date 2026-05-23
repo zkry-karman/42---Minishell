@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 11:11:06 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/05 16:01:35 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/23 14:26:35 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,16 +62,25 @@ int	command_count(t_cmd *cmds)
 	}
 	return (i);
 }
-
-void	initialize_children(t_shell *shell, t_pipe *p)
+void	initialize_pipe(t_pipe *p)
 {
-	int		i;
-
-	p->children = malloc(sizeof(pid_t) * command_count(shell->cmds));
-	if (!p->children)
-		return ;
-	i = 0;
-	while (i < command_count(shell->cmds))
-		p->children[i++] = -1;
-	return ;
+	p->last_pipe = -1;
+	p->curr[0] = -1;
+	p->curr[1] = -1;
+	p->i = 0;
+}
+void	fork_failure(t_shell *shell, t_cmd *curr, t_pipe *p)
+{
+	perror("minishell: fork");
+	shell->exit_status = 1;
+	if (curr->next)
+	{
+		close(p->curr[1]);
+		close(p->curr[0]);
+	}
+	if (p->last_pipe != -1)
+	{
+		close(p->last_pipe);
+		p->last_pipe = -1;
+	}
 }

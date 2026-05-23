@@ -6,11 +6,25 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/30 21:49:28 by karmanz           #+#    #+#             */
-/*   Updated: 2026/05/23 12:51:44 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/23 15:27:31 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	setup_next_pipe(t_pipe *p, int *old_pipe)
+{
+	if (p->curr[1] > 2)
+	{
+		close(p->curr[1]);
+		p->curr[1] = -1;
+	}
+	*old_pipe = p->last_pipe;
+	p->last_pipe = p->curr[0];
+	p->curr[0] = -1;
+	if (*old_pipe != -1)
+		close(*old_pipe);
+}
 
 void	check_for_next_pipe(t_pipe *p, t_cmd *curr_cmd)
 {
@@ -19,18 +33,7 @@ void	check_for_next_pipe(t_pipe *p, t_cmd *curr_cmd)
 	if (curr_cmd)
 	{
 		if (curr_cmd->next)
-		{
-			if (p->curr[1] > 2)
-			{
-				close(p->curr[1]);
-				p->curr[1] = -1;
-			}
-			old_pipe = p->last_pipe;
-			p->last_pipe = p->curr[0];
-			p->curr[0] = -1;
-			if (old_pipe != -1)
-				close(old_pipe);
-		}
+			setup_next_pipe(p, &old_pipe);
 		else
 		{
 			if (p->last_pipe != -1)
