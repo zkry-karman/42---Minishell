@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 11:11:06 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/23 14:26:35 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/23 15:43:22 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	command_count(t_cmd *cmds)
 	}
 	return (i);
 }
+
 void	initialize_pipe(t_pipe *p)
 {
 	p->last_pipe = -1;
@@ -69,6 +70,7 @@ void	initialize_pipe(t_pipe *p)
 	p->curr[1] = -1;
 	p->i = 0;
 }
+
 void	fork_failure(t_shell *shell, t_cmd *curr, t_pipe *p)
 {
 	perror("minishell: fork");

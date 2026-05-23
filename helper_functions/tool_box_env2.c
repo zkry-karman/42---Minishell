@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tool_box_main.c                                    :+:      :+:    :+:   */
+/*   tool_box_env2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/23 15:04:59 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/23 15:41:30 by zkarman          ###   ########.fr       */
+/*   Created: 2026/05/23 15:50:22 by zkarman           #+#    #+#             */
+/*   Updated: 2026/05/23 15:58:10 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	main_cleanup(t_shell *shell)
+static char    *link_and_join(t_env *node)
 {
-	check_backups(shell);
-	if (shell->env_list)
-		free_env(&(shell->env_list));
-	rl_clear_history();
-	close(STDIN_FILENO);
-	close(STDOUT_FILENO);
-	close(STDERR_FILENO);
+    char    *temp;
+    char    *value_to_join;
+    char    *result;
+
+    temp = ft_strjoin(node->key, "=");
+    if (!temp)
+        return (NULL);
+    if (node->value)
+        value_to_join = node->key
 }

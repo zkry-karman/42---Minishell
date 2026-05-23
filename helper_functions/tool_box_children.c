@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/23 14:05:27 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/23 15:00:46 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/23 15:40:58 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,17 +63,17 @@ void	initialize_children(t_shell *shell, t_pipe *p)
 	return ;
 }
 
-void    clean_up_children(t_shell *shell, t_pipe *p)
+void	clean_up_children(t_shell *shell, t_pipe *p)
 {
-    wait_children(shell, p->children, command_count(shell->cmds));
-    free(p->children);
-    shell->pipe_processes = NULL;
-    setup_prompt_signals();
+	wait_children(shell, p->children, command_count(shell->cmds));
+	free(p->children);
+	shell->pipe_processes = NULL;
+	setup_prompt_signals();
 }
 
-void    children_failure(t_shell *shell)
+void	children_failure(t_shell *shell)
 {
-    shell->pipe_processes = NULL;
-    setup_prompt_signals();
-    return ;
+	shell->pipe_processes = NULL;
+	setup_prompt_signals();
+	return ;
 }

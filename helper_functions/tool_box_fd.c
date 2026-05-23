@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/30 21:49:28 by karmanz           #+#    #+#             */
-/*   Updated: 2026/05/23 15:27:31 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/23 15:42:27 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	setup_next_pipe(t_pipe *p, int *old_pipe)
 void	check_for_next_pipe(t_pipe *p, t_cmd *curr_cmd)
 {
 	int		old_pipe;
-	
+
 	if (curr_cmd)
 	{
 		if (curr_cmd->next)

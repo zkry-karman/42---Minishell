@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/23 15:30:36 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/23 15:38:27 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ typedef struct s_shell
 	t_pipe	*pipe_processes;
 	int		backup_stdout;
 	int		backup_stdin;
-}   t_shell;
+}	t_shell;
 
 t_token_type	identify_type(char *value);
 
@@ -142,7 +142,7 @@ char			*expand_heredoc(t_shell *shell, char *line);
 
 int				loop_cmds(t_shell *shell, t_pipe *p, t_cmd *cmd, int stout_dup);
 
-void    		children_failure(t_shell *shell);
+void			children_failure(t_shell *shell);
 void			clean_up_children(t_shell *shell, t_pipe *p);
 void			wait_children(t_shell *shell, pid_t *child, int child_count);
 void			initialize_children(t_shell *shell, t_pipe *p);
@@ -164,13 +164,13 @@ void			close_if_non_standard_in_out_file(int *infile, int *outfile);
 void			check_for_next_pipe(t_pipe *p, t_cmd *curr_cmd);
 void			setup_next_pipe(t_pipe *p, int *old_pipe);
 
-void    		heredoc_failure(t_shell *shell, t_pipe *p);
+void			heredoc_failure(t_shell *shell, t_pipe *p);
 int				setup_heredoc(t_shell *shell, t_redir *redir, t_cmd *cmd);
 void			read_hd(t_shell *shell, t_redir *curr, int fd[2]);
 
 void			main_cleanup(t_shell *shell);
 
-void    		setup_prompt_signals(void);
+void			setup_prompt_signals(void);
 
 int				is_built_in_command(char *cmd);
 void			run_built_in_and_exit(t_shell *shell, t_cmd *cmd, t_pipe *p);

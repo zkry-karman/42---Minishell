@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/23 15:28:22 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/23 15:44:14 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void	reading_commands(t_shell *shell)
 	{
 		if (p.last_pipe != -1)
 			close(p.last_pipe);
-		return (clean_up_children(shell, &p));;
+		return (clean_up_children(shell, &p));
 	}
 	check_for_next_pipe(&p, NULL);
 	clean_up_children(shell, &p);

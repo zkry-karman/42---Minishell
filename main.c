@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:58:35 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/05/23 15:06:47 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/23 15:39:00 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	ini_shell(t_shell *shell, char	**envp)
 void	exit_program(t_shell *shell, int exit_code)
 {
 	t_cmd	*curr;
-	
+
 	if (shell)
 	{
 		check_backups(shell);
@@ -95,7 +95,7 @@ int	main(int argc, char **argv, char **envp)
 		if (input[0] == '\0')
 		{
 			free(input);
-			continue;
+			continue ;
 		}
 		add_history(input);
 		process_input(&shell, input);

@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/05 16:45:23 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/23 14:40:20 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/23 15:44:55 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	kill_child(t_shell *shell, int exit_code)
 {
 	t_cmd	*curr;
-	
+
 	if (shell)
 	{
 		check_backups(shell);
