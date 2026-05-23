@@ -68,6 +68,8 @@ Minishell: Building a mini-bash
 https://m4nnb3ll.medium.com/minishell-building-a-mini-bash-a-42-project-b55a10598218
 minishell: My very own handmade computer shell
 https://yannick.eu/minishell/
+Linux Commands Cheat Sheet
+https://www.geeksforgeeks.org/linux-unix/linux-commands-cheat-sheet/
 
 Norminette Compliance Strategy: AI was used to brainstorm architectural refactoring strategies (such as safely splitting the main loop execution pipeline) to adhere to the strict 25-line function limits without breaking the logic flow.
 Concept Clarification: AI served as an interactive tutor to clarify low-level C concepts, such as the exact asynchronous execution flow of system signal() interrupts (SIGINT) versus standard terminal EOF (Ctrl+D).
