@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tool_box_exec.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 11:11:06 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/23 15:43:22 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/23 22:42:38 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,11 @@ char	*get_path(char *command, char **envp)
 
 	path_str = env_path(envp);
 	if (!path_str || path_str[0] == '\0')
+	{
+		if (access(command, X_OK) == 0)
+			return (ft_strdup(command));
 		return (NULL);
+	}
 	paths = ft_split(path_str, ':');
 	i = 0;
 	while (paths[i])
