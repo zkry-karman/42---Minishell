@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/23 15:44:14 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/23 23:02:11 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ void	execute_command(t_shell *shell, t_cmd *cmd)
 	if (stat(path, &path_stat) == 0 && S_ISDIR(path_stat.st_mode))
 		exit_no_access(shell, path, envp_arr);
 	if (execve(path, cmd->args, envp_arr) == -1)
+	{
+		free(path);
 		exit_execve_failure(shell, envp_arr, cmd);
+	}
 }
 
 void	pipe_process(t_shell *shell, t_cmd *cmd, t_pipe *p)
