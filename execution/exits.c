@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exits.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/05 16:45:23 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/17 20:42:21 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/22 15:56:41 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,6 @@ void	kill_child(t_shell *shell, int exit_code)
 			shell->pipe_processes->children = NULL;
 		}
 	}
-	close(STDIN_FILENO);
-	close(STDOUT_FILENO);
-	close(STDERR_FILENO);
 	exit(exit_code);
 }
 

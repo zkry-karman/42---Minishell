@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:58:35 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/05/17 18:32:19 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/23 00:58:58 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void	ini_shell(t_shell *shell, char	**envp)
 	shell->pipe_processes = NULL;
 	shell->backup_stdout = -1;
 	shell->backup_stdin = -1;
-	signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, SIG_IGN);
+	rl_catch_signals = 0;
+	setup_prompt_signals();
 }
 
 void	exit_program(t_shell *shell, int exit_code)
@@ -43,9 +43,6 @@ void	exit_program(t_shell *shell, int exit_code)
 		if (shell->pipe_processes && shell->pipe_processes->children)
 			free(shell->pipe_processes->children);
 	}
-	close(STDIN_FILENO);
-	close(STDOUT_FILENO);
-	close(STDERR_FILENO);
 	exit (exit_code);
 }
 
@@ -65,8 +62,6 @@ void	process_input(t_shell *shell, char *input)
 		return ;
 	}
 	free_tokens(&(shell->input_list));
-	shell->backup_stdin = -1;
-	shell->backup_stdout = -1;
 	reading_commands(shell);
 	free_cmds(&(shell->cmds));
 }
@@ -81,20 +76,31 @@ int	main(int argc, char **argv, char **envp)
 	ini_shell(&shell, envp);
 	while (1)
 	{
-		if (g_status != 0)
+		input = readline("minishell$ ");
+		if (g_status == 130)
 		{
-			shell.exit_status = g_status;
+			shell.exit_status = 130;
 			g_status = 0;
 		}
-		input = readline("minishell$ ");
-		if (input == NULL)
+		if (!input)
+		{
+			if (shell.exit_status == 130)
+			{
+				shell.exit_status = 0;
+				continue ;
+			}
+			write (1, "exit\n", 5);
 			break ;
-		if (input[0] != '\0')
-			add_history(input);
+		}
+		if (input[0] == '\0')
+		{
+			free(input);
+			continue;
+		}
+		add_history(input);
 		process_input(&shell, input);
 		free(input);
 	}
-	printf("exit\n");
 	free_env(&(shell.env_list));
 	rl_clear_history();
 	return (0);

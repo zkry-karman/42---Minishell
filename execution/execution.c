@@ -3,38 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/17 18:38:34 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/22 23:22:42 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	wait_children(t_shell *shell, pid_t *child)
+void	wait_children(t_shell *shell, pid_t *child, int child_count)
 {
 	int	i;
 	int	status;
 
 	i = 0;
 	status = 0;
-	while (i < command_count(shell->cmds))
+	while (i < child_count)
 	{
-		waitpid(child[i], &status, 0);
-		if (i == command_count(shell->cmds) - 1)
+		if (child[i] >= 0)
 		{
-			if (WIFEXITED(status))
-				shell->exit_status = WEXITSTATUS(status);
-			else if (WIFSIGNALED(status))
+			waitpid(child[i], &status, 0);
+			if (i == child_count - 1)
 			{
-				if (WTERMSIG(status) == SIGQUIT)
+				if (WIFEXITED(status))
+					shell->exit_status = WEXITSTATUS(status);
+				else if (WIFSIGNALED(status))
 				{
-					ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
-					shell->exit_status = 131;
+					if (WTERMSIG(status) == SIGQUIT)
+					{
+						ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
+						shell->exit_status = 131;
+					}
+					else if (WTERMSIG(status) == SIGINT)
+					{
+						ft_putstr_fd("\n", STDERR_FILENO);
+						shell->exit_status = 130;
+					}
 				}
-				else if (WTERMSIG(status) == SIGINT)
-					shell->exit_status = 130;
 			}
 		}
 		i++;
@@ -70,19 +76,20 @@ void	execute_command(t_shell *shell, t_cmd *cmd)
 void	pipe_process(t_shell *shell, t_cmd *cmd, t_pipe *p)
 {
 	if (p->last_pipe != -1)
+	{
 		dup2(p->last_pipe, STDIN_FILENO);
-	if (cmd->next)
-		dup2(p->curr[1], STDOUT_FILENO);
-	if (check_file_descriptors(cmd) == -1)
-		exit_fd_failure(shell, cmd, p);
-	verify_stds(cmd);
+		close(p->last_pipe);
+		p->last_pipe = -1;
+	}
 	if (cmd->next)
 	{
+		dup2(p->curr[1], STDOUT_FILENO);
 		close(p->curr[1]);
 		close(p->curr[0]);
 	}
-	if (p->last_pipe != -1)
-		close(p->last_pipe);
+	if (check_file_descriptors(cmd) == -1)
+		exit_fd_failure(shell, cmd, p);
+	verify_stds(cmd);
 	if (is_built_in_command(cmd->args[0]))
 	{
 		shell->exit_status = execute_built_in_command(shell, cmd);
@@ -92,11 +99,34 @@ void	pipe_process(t_shell *shell, t_cmd *cmd, t_pipe *p)
 		execute_command(shell, cmd);
 }
 
-void	execute_system_command(t_shell *shell, t_cmd *curr, t_pipe *p)
+int	execute_system_command(t_shell *shell, t_cmd *curr, t_pipe *p)
 {
 	if (curr->next)
-		pipe(p->curr);
+	{
+		if (pipe(p->curr) == -1)
+		{
+			perror("minishell: pipe");
+			shell->exit_status = 1;
+			return (1);
+		}
+	}
 	p->children[p->i] = fork();
+	if (p->children[p->i] == -1)
+	{
+		perror("minishell: fork");
+		shell->exit_status = 1;
+		if (curr->next)
+		{
+			close(p->curr[1]);
+			close(p->curr[0]);
+		}
+		if (p->last_pipe != -1)
+		{
+			close(p->last_pipe);
+			p->last_pipe = -1;
+		}
+		return (1);
+	}
 	if (p->children[p->i] == 0)
 	{
 		signal(SIGQUIT, SIG_DFL);
@@ -105,6 +135,7 @@ void	execute_system_command(t_shell *shell, t_cmd *curr, t_pipe *p)
 	}
 	check_for_next_pipe(p, curr);
 	close_if_non_standard_in_out_file(&curr->infile, &curr->outfile);
+	return (0);
 }
 
 // Start of execution
@@ -116,22 +147,85 @@ void	reading_commands(t_shell *shell)
 
 	if (!shell->cmds)
 		return ;
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	p.last_pipe = -1;
+	p.curr[0] = -1;
+	p.curr[1] = -1;
 	p.i = 0;
 	shell->pipe_processes = &p;
+	shell->backup_stdin = dup(STDIN_FILENO);
+	shell->backup_stdout = dup(STDOUT_FILENO);
 	initialize_children(shell, &p);
 	if (!p.children)
 	{
 		shell->pipe_processes = NULL;
+		if (shell->backup_stdin != -1)
+			close(shell->backup_stdin);
+		if (shell->backup_stdout != -1)
+			close(shell->backup_stdout);
+		shell->backup_stdin = -1;
+		shell->backup_stdout = -1;
+		setup_prompt_signals();
 		return ;
 	}
 	if (check_heredocs(shell))
+	{
+		if (shell->backup_stdin != -1)
+		{
+			dup2(shell->backup_stdin, STDIN_FILENO);
+			close(shell->backup_stdin);
+		}
+		if (shell->backup_stdout != -1)
+		{
+			dup2(shell->backup_stdout, STDOUT_FILENO);
+			close(shell->backup_stdout);
+		}
+		shell->backup_stdin = -1;
+		shell->backup_stdout = -1;
+		shell->pipe_processes = NULL;
+		setup_prompt_signals();
 		return (free(p.children));
+	}
 	curr_cmd = shell->cmds;
 	stdout_dup = 0;
-	loop_cmds(shell, &p, curr_cmd, stdout_dup);
+	if (loop_cmds(shell, &p, curr_cmd, stdout_dup) != 0)
+	{
+		if (p.last_pipe != -1)
+			close(p.last_pipe);
+		wait_children(shell, p.children, command_count(shell->cmds));
+		free(p.children);
+		shell->pipe_processes = NULL;
+		if (shell->backup_stdin != -1)
+		{
+			dup2(shell->backup_stdin, STDIN_FILENO);
+			close(shell->backup_stdin);
+		}
+		if (shell->backup_stdout != -1)
+		{
+			dup2(shell->backup_stdout, STDOUT_FILENO);
+			close(shell->backup_stdout);
+		}
+		shell->backup_stdin = -1;
+		shell->backup_stdout = -1;
+		setup_prompt_signals();
+		return ;
+	}
 	check_for_next_pipe(&p, NULL);
-	wait_children(shell, p.children);
+	wait_children(shell, p.children, command_count(shell->cmds));
 	free(p.children);
 	shell->pipe_processes = NULL;
+	if (shell->backup_stdin != -1)
+	{
+		dup2(shell->backup_stdin, STDIN_FILENO);
+		close(shell->backup_stdin);
+	}
+	if (shell->backup_stdout != -1)
+	{
+		dup2(shell->backup_stdout, STDOUT_FILENO);
+		close(shell->backup_stdout);
+	}
+	shell->backup_stdin = -1;
+	shell->backup_stdout = -1;
+	setup_prompt_signals();
 }

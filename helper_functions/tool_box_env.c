@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tool_box_env.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 12:27:28 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/05/13 17:06:42 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/22 16:04:08 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ char	**envp_list_to_arr(t_shell *shell)
 	t_env	*curr;
 	int		i;
 	char	*temp;
+	char	*value_to_join;
 
 	curr = shell->env_list;
 	arr = malloc(sizeof(char *) * (envp_size(curr) + 1));
@@ -73,7 +74,15 @@ char	**envp_list_to_arr(t_shell *shell)
 	while (curr)
 	{
 		temp = ft_strjoin(curr->key, "=");
-		arr[i] = ft_strjoin(temp, curr->value);
+		if (!temp)
+			return (free_array(arr), NULL);
+		if (curr->value)
+			value_to_join = curr->value;
+		else
+			value_to_join = "";
+		arr[i] = ft_strjoin(temp, value_to_join);
+		if (!arr[i])
+			return (free(temp), free_array(arr), NULL);
 		free(temp);
 		i++;
 		curr = curr->next;

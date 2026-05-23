@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tool_box_fd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/30 21:49:28 by karmanz           #+#    #+#             */
-/*   Updated: 2026/05/17 18:54:56 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/22 18:22:54 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,41 @@
 
 void	check_for_next_pipe(t_pipe *p, t_cmd *curr_cmd)
 {
-	if (p->last_pipe != -1)
-		close(p->last_pipe);
+	int		old_pipe;
+	
 	if (curr_cmd)
 	{
 		if (curr_cmd->next)
 		{
-			close(p->curr[1]);
+			if (p->curr[1] > 2)
+			{
+				close(p->curr[1]);
+				p->curr[1] = -1;
+			}
+			old_pipe = p->last_pipe;
 			p->last_pipe = p->curr[0];
+			p->curr[0] = -1;
+			if (old_pipe != -1)
+				close(old_pipe);
 		}
 		else
-			p->last_pipe = -1;
+		{
+			if (p->last_pipe != -1)
+			{
+				close(p->last_pipe);
+				p->last_pipe = -1;
+			}
+			if (p->curr[1] > 2)
+			{
+				close(p->curr[1]);
+				p->curr[1] = -1;
+			}
+			if (p->curr[0] > 2)
+			{
+				close(p->curr[0]);
+				p->curr[0] = -1;
+			}
+		}
 	}
 }
 

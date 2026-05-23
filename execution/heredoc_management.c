@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_management.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 15:19:08 by karmanz           #+#    #+#             */
-/*   Updated: 2026/05/17 18:59:30 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/22 16:27:50 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,21 +54,18 @@ char	*expand_heredoc(t_shell *shell, char *line)
 
 int	handle_heredoc(t_shell *shell, t_redir *curr)
 {
-	int		fd[2];
-	char	*line;
+	int	fd[2];
 
-	line = NULL;
 	if (pipe(fd) == -1)
 		return (perror("minishell: pipe"), -1);
 	shell->backup_stdin = dup(STDIN_FILENO);
 	signal(SIGINT, heredoc_sigint);
-	read_hd(shell, curr, line, fd);
-	if (line)
-		free(line);
-	else if (g_status != 130)
+	read_hd(shell, curr, fd);
+	if (g_status != 130)
 		heredoc_error_msg(curr);
 	dup2(shell->backup_stdin, STDIN_FILENO);
 	close(shell->backup_stdin);
+	shell->backup_stdin = -1;
 	signal(SIGINT, handle_sigint);
 	if (g_status == 130)
 		return (close(fd[0]), close(fd[1]), -1);
@@ -87,11 +84,15 @@ int	check_heredocs(t_shell *shell)
 		while (curr_redir)
 		{
 			if (curr_redir->type == TOKEN_HEREDOC)
-				return (setup_heredoc(shell, curr_redir, curr_cmd));
+				if (setup_heredoc(shell, curr_redir, curr_cmd) != 0)
+					return (1);
 			curr_redir = curr_redir->next;
 		}
-		if (shell->exit_status == 130)
-			return (0);
+		if (g_status == 130)
+		{
+			shell->exit_status = 130;
+			return (1);
+		}
 		curr_cmd = curr_cmd->next;
 	}
 	return (0);

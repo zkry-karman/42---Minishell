@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 14:22:32 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/05 17:35:48 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/22 16:49:33 by karmanz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,21 @@ void	process_arg(t_shell *shell, char *arg)
 	char	*equal_sign;
 	char	*key;
 	char	*value;
+	int		key_len;
 
 	equal_sign = ft_strchr(arg, '=');
 	if (!equal_sign)
 		return ;
-	*equal_sign = '\0';
-	key = arg;
-	value = equal_sign + 1;
+	key_len = equal_sign - arg;
+	key = ft_substr(arg, 0, key_len);
+	value = ft_strdup(equal_sign + 1);
 	target_node = get_env_node(shell, key);
 	if (target_node)
 		replace_env_value(target_node, value);
 	else
 		add_to_env(shell, key, value);
+	free(key);
+	free(value);
 }
 
 int	is_valid_arg(char *arg)

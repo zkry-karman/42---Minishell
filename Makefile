@@ -15,6 +15,7 @@ SRCS =  main.c \
 		helper_functions/tool_box_exec.c \
 		helper_functions/tool_box_free.c \
 		helper_functions/tool_box_env.c \
+		helper_functions/tool_box_sig.c \
 		execution/execution.c \
 		execution/exits.c \
 		execution/fd_management.c \
