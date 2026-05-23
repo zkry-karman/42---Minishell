@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:58:35 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/05/23 00:58:58 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/05/23 13:54:56 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,28 @@ void	ini_shell(t_shell *shell, char	**envp)
 	shell->cmds = NULL;
 	shell->exit_status = 0;
 	shell->pipe_processes = NULL;
-	shell->backup_stdout = -1;
-	shell->backup_stdin = -1;
+	shell->backup_stdout = dup(STDOUT_FILENO);
+	shell->backup_stdin = dup(STDIN_FILENO);
 	rl_catch_signals = 0;
 	setup_prompt_signals();
 }
 
 void	exit_program(t_shell *shell, int exit_code)
 {
+	t_cmd	*curr;
+	
 	if (shell)
 	{
 		check_backups(shell);
+		curr = shell->cmds;
+		while (curr)
+		{
+			if (curr->outfile > 2)
+				close(curr->outfile);
+			if (curr->infile > 2)
+				close(curr->infile);
+			curr = curr->next;
+		}
 		if (shell->cmds)
 		{
 			if (shell->cmds->outfile > 2)
@@ -42,6 +53,9 @@ void	exit_program(t_shell *shell, int exit_code)
 			free_env(&(shell->env_list));
 		if (shell->pipe_processes && shell->pipe_processes->children)
 			free(shell->pipe_processes->children);
+		close(STDIN_FILENO);
+		close(STDOUT_FILENO);
+		close(STDERR_FILENO);
 	}
 	exit (exit_code);
 }
@@ -84,11 +98,11 @@ int	main(int argc, char **argv, char **envp)
 		}
 		if (!input)
 		{
-			if (shell.exit_status == 130)
+			/*if (shell.exit_status == 130)
 			{
 				shell.exit_status = 0;
 				continue ;
-			}
+			}*/
 			write (1, "exit\n", 5);
 			break ;
 		}
@@ -101,7 +115,12 @@ int	main(int argc, char **argv, char **envp)
 		process_input(&shell, input);
 		free(input);
 	}
-	free_env(&(shell.env_list));
+	check_backups(&shell);
+	if (shell.env_list)
+		free_env(&(shell.env_list));
 	rl_clear_history();
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	close(STDERR_FILENO);
 	return (0);
 }

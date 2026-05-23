@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop_commands.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/05 17:14:40 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/22 18:10:24 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/05/23 13:10:01 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,10 @@ void	setup_built_in_command(t_shell *shell, t_cmd *cmd, int *stout_dup)
 {
 	int		target_out;
 	int		target_in;
-	int		tmp_stdin;
-	int		tmp_stdout;
 
 	(void)stout_dup;
 	target_out = cmd->outfile;
 	target_in = cmd->infile;
-	tmp_stdin = -1;
-	tmp_stdout = -1;
-	if (target_out > 2 || target_in > 2)
-	{
-		tmp_stdin = dup(STDIN_FILENO);
-		tmp_stdout = dup(STDOUT_FILENO);
-	}
 	if (target_out > 2)
 	{
 		dup2(target_out, STDOUT_FILENO);
@@ -42,16 +33,8 @@ void	setup_built_in_command(t_shell *shell, t_cmd *cmd, int *stout_dup)
 		cmd->infile = -1;
 	}
 	shell->exit_status = execute_built_in_command(shell, cmd);
-	if (tmp_stdin != -1)
-	{
-		dup2(tmp_stdin, STDIN_FILENO);
-		close(tmp_stdin);
-	}
-	if (tmp_stdout != -1)
-	{
-		dup2(tmp_stdout, STDOUT_FILENO);
-		close(tmp_stdout);
-	}
+	dup2(shell->backup_stdout, STDOUT_FILENO);
+	dup2(shell->backup_stdin, STDIN_FILENO);
 	close_if_non_standard_in_out_file(&cmd->infile, &cmd->outfile);
 }
 

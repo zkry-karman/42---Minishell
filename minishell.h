@@ -86,7 +86,7 @@ typedef struct s_shell
 	t_pipe	*pipe_processes;
 	int		backup_stdout;
 	int		backup_stdin;
-}	t_shell;
+}   t_shell;
 
 t_token_type	identify_type(char *value);
 

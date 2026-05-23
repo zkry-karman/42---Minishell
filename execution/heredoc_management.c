@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_management.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 15:19:08 by karmanz           #+#    #+#             */
-/*   Updated: 2026/05/22 16:27:50 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/05/23 12:36:33 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,17 +55,17 @@ char	*expand_heredoc(t_shell *shell, char *line)
 int	handle_heredoc(t_shell *shell, t_redir *curr)
 {
 	int	fd[2];
+	int	local_stdin_dup;
 
 	if (pipe(fd) == -1)
 		return (perror("minishell: pipe"), -1);
-	shell->backup_stdin = dup(STDIN_FILENO);
+	local_stdin_dup = dup(STDIN_FILENO);
 	signal(SIGINT, heredoc_sigint);
 	read_hd(shell, curr, fd);
 	if (g_status != 130)
 		heredoc_error_msg(curr);
-	dup2(shell->backup_stdin, STDIN_FILENO);
-	close(shell->backup_stdin);
-	shell->backup_stdin = -1;
+	dup2(local_stdin_dup, STDIN_FILENO);
+	close(local_stdin_dup);
 	signal(SIGINT, handle_sigint);
 	if (g_status == 130)
 		return (close(fd[0]), close(fd[1]), -1);

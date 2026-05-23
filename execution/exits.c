@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exits.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/05 16:45:23 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/22 15:56:41 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/05/23 13:13:52 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,26 @@
 
 void	kill_child(t_shell *shell, int exit_code)
 {
+	t_cmd	*curr;
+	
 	if (shell)
 	{
+		check_backups(shell);
+		curr = shell->cmds;
+		while (curr)
+		{
+			if (curr->infile > 2)
+			{
+				close(curr->infile);
+				curr->infile = -1;
+			}
+			if (curr->outfile > 2)
+			{
+				close(curr->outfile);
+				curr->outfile = -1;
+			}
+			curr = curr->next;
+		}
 		if (shell->cmds)
 			free_cmds(&(shell->cmds));
 		if (shell->env_list)
@@ -25,6 +43,8 @@ void	kill_child(t_shell *shell, int exit_code)
 			free(shell->pipe_processes->children);
 			shell->pipe_processes->children = NULL;
 		}
+		close(STDIN_FILENO);
+		close(STDOUT_FILENO);
 	}
 	exit(exit_code);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/22 23:22:42 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/05/23 13:14:58 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ void	pipe_process(t_shell *shell, t_cmd *cmd, t_pipe *p)
 		dup2(p->curr[1], STDOUT_FILENO);
 		close(p->curr[1]);
 		close(p->curr[0]);
+		p->curr[1] = -1;
+		p->curr[0] = -1;
 	}
 	if (check_file_descriptors(cmd) == -1)
 		exit_fd_failure(shell, cmd, p);
@@ -93,6 +95,10 @@ void	pipe_process(t_shell *shell, t_cmd *cmd, t_pipe *p)
 	if (is_built_in_command(cmd->args[0]))
 	{
 		shell->exit_status = execute_built_in_command(shell, cmd);
+		if (p->curr[1] != -1)
+			close(p->curr[1]);
+		if (p->curr[0] != -1)
+			close(p->curr[0]);
 		kill_child(shell, shell->exit_status);
 	}
 	else
@@ -154,38 +160,19 @@ void	reading_commands(t_shell *shell)
 	p.curr[1] = -1;
 	p.i = 0;
 	shell->pipe_processes = &p;
-	shell->backup_stdin = dup(STDIN_FILENO);
-	shell->backup_stdout = dup(STDOUT_FILENO);
 	initialize_children(shell, &p);
 	if (!p.children)
 	{
 		shell->pipe_processes = NULL;
-		if (shell->backup_stdin != -1)
-			close(shell->backup_stdin);
-		if (shell->backup_stdout != -1)
-			close(shell->backup_stdout);
-		shell->backup_stdin = -1;
-		shell->backup_stdout = -1;
 		setup_prompt_signals();
 		return ;
 	}
 	if (check_heredocs(shell))
 	{
-		if (shell->backup_stdin != -1)
-		{
-			dup2(shell->backup_stdin, STDIN_FILENO);
-			close(shell->backup_stdin);
-		}
-		if (shell->backup_stdout != -1)
-		{
-			dup2(shell->backup_stdout, STDOUT_FILENO);
-			close(shell->backup_stdout);
-		}
-		shell->backup_stdin = -1;
-		shell->backup_stdout = -1;
 		shell->pipe_processes = NULL;
 		setup_prompt_signals();
-		return (free(p.children));
+		free(p.children);
+		return ;
 	}
 	curr_cmd = shell->cmds;
 	stdout_dup = 0;
@@ -196,18 +183,6 @@ void	reading_commands(t_shell *shell)
 		wait_children(shell, p.children, command_count(shell->cmds));
 		free(p.children);
 		shell->pipe_processes = NULL;
-		if (shell->backup_stdin != -1)
-		{
-			dup2(shell->backup_stdin, STDIN_FILENO);
-			close(shell->backup_stdin);
-		}
-		if (shell->backup_stdout != -1)
-		{
-			dup2(shell->backup_stdout, STDOUT_FILENO);
-			close(shell->backup_stdout);
-		}
-		shell->backup_stdin = -1;
-		shell->backup_stdout = -1;
 		setup_prompt_signals();
 		return ;
 	}
@@ -215,17 +190,5 @@ void	reading_commands(t_shell *shell)
 	wait_children(shell, p.children, command_count(shell->cmds));
 	free(p.children);
 	shell->pipe_processes = NULL;
-	if (shell->backup_stdin != -1)
-	{
-		dup2(shell->backup_stdin, STDIN_FILENO);
-		close(shell->backup_stdin);
-	}
-	if (shell->backup_stdout != -1)
-	{
-		dup2(shell->backup_stdout, STDOUT_FILENO);
-		close(shell->backup_stdout);
-	}
-	shell->backup_stdin = -1;
-	shell->backup_stdout = -1;
 	setup_prompt_signals();
 }
