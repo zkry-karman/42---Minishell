@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tool_box_heredoc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/17 18:41:28 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/23 14:17:50 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/23 16:27:19 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ void	read_hd(t_shell *shell, t_redir *curr, int fd[2])
 	while (1)
 	{
 		line = readline("> ");
-		if (line == NULL)
-			break ;
 		if (g_status == 130)
+			break ;
+		if (line == NULL)
 		{
-			free(line);
+			heredoc_error_msg(curr);
 			break ;
 		}
 		if (ft_strcmp(line, curr->file) == 0)

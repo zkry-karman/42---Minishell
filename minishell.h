@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/23 15:38:27 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/23 16:29:45 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ int				check_file_descriptors(t_cmd *cmd);
 int				check_heredocs(t_shell *shell);
 int				handle_heredoc(t_shell *shell, t_redir *curr_redir);
 char			*expand_heredoc(t_shell *shell, char *line);
+void			heredoc_error_msg(t_redir *curr);
 
 int				loop_cmds(t_shell *shell, t_pipe *p, t_cmd *cmd, int stout_dup);
 

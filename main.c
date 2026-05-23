@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:58:35 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/05/23 15:39:00 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/23 16:20:07 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,20 +71,16 @@ void	process_input(t_shell *shell, char *input)
 	free_cmds(&(shell->cmds));
 }
 
-int	main(int argc, char **argv, char **envp)
+void	shell_loop(t_shell *shell)
 {
-	char	*input;
-	t_shell	shell;
-
-	(void)argc;
-	(void)argv;
-	ini_shell(&shell, envp);
+	char *input;
+	
 	while (1)
 	{
 		input = readline("minishell$ ");
 		if (g_status == 130)
 		{
-			shell.exit_status = 130;
+			shell->exit_status = 130;
 			g_status = 0;
 		}
 		if (!input)
@@ -92,15 +88,23 @@ int	main(int argc, char **argv, char **envp)
 			write (1, "exit\n", 5);
 			break ;
 		}
-		if (input[0] == '\0')
+		if (input[0] != '\0')
 		{
-			free(input);
-			continue ;
+			add_history(input);
+			process_input(shell, input);
 		}
-		add_history(input);
-		process_input(&shell, input);
 		free(input);
 	}
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_shell	shell;
+
+	(void)argc;
+	(void)argv;
+	ini_shell(&shell, envp);
+	shell_loop(&shell);
 	main_cleanup(&shell);
 	return (0);
 }
