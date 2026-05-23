@@ -6,7 +6,7 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 15:19:08 by karmanz           #+#    #+#             */
-/*   Updated: 2026/05/23 16:23:52 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/23 17:11:52 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	heredoc_sigint(int sig)
 {
 	(void)sig;
 	g_status = 130;
-	write(1, "\n", 1);
 	close(STDIN_FILENO);
 }
 

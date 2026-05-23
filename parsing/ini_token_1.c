@@ -6,7 +6,7 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:33:28 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/05/08 11:42:31 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/23 17:22:22 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ char	*extract_word(t_shell *shell, char *input, int *i)
 	hdoc_flag = is_hdoc(shell->input_list);
 	while (input[*i] && !is_delimiter(input[*i]))
 	{
+		if (g_status == 130)
+            return (free(final), NULL);
 		if (input[*i] == '$' && !hdoc_flag)
 			chunk = extract_env(shell, input, i);
 		else

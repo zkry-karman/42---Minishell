@@ -6,7 +6,7 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:58:35 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/05/23 16:20:07 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/23 16:54:00 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ void	process_input(t_shell *shell, char *input)
 
 void	shell_loop(t_shell *shell)
 {
-	char *input;
-	
+	char	*input;
+
 	while (1)
 	{
 		input = readline("minishell$ ");
