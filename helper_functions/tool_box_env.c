@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 12:27:28 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/05/23 15:54:13 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/23 16:20:40 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,29 @@ int	envp_size(t_env *envp)
 	return (i);
 }
 
+static char	*link_and_join(t_env *node)
+{
+	char	*temp;
+	char	*value_to_join;
+	char	*result;
+
+	temp = ft_strjoin(node->key, "=");
+	if (!temp)
+		return (NULL);
+	if (node->value)
+		value_to_join = node->value;
+	else
+		value_to_join = "";
+	result = ft_strjoin(temp, value_to_join);
+	free(temp);
+	return (result);
+}
+
 char	**envp_list_to_arr(t_shell *shell)
 {
 	char	**arr;
 	t_env	*curr;
 	int		i;
-	char	*temp;
-	char	*value_to_join;
 
 	curr = shell->env_list;
 	arr = malloc(sizeof(char *) * (envp_size(curr) + 1));
@@ -73,28 +89,12 @@ char	**envp_list_to_arr(t_shell *shell)
 	i = 0;
 	while (curr)
 	{
-		temp = ft_strjoin(curr->key, "=");
-		if (!temp)
-			return (free_array(arr), NULL);
-		if (curr->value)
-			value_to_join = curr->value;
-		else
-			value_to_join = "";
-		arr[i] = ft_strjoin(temp, value_to_join);
+		arr[i] = link_and_join(curr);
 		if (!arr[i])
-			return (free(temp), free_array(arr), NULL);
-		free(temp);
+			return (free_array(arr), NULL);
 		i++;
 		curr = curr->next;
 	}
 	arr[i] = NULL;
 	return (arr);
-}
-
-void	replace_env_value(t_env *node, char *new_val)
-{
-	if (!node || !new_val)
-		return ;
-	free(node->value);
-	node->value = ft_strdup(new_val);
 }
