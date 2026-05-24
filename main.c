@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
+/*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:58:35 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/05/23 16:54:00 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/24 13:52:47 by cocozhu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ void	ini_shell(t_shell *shell, char	**envp)
 	shell->pipe_processes = NULL;
 	shell->backup_stdout = dup(STDOUT_FILENO);
 	shell->backup_stdin = dup(STDIN_FILENO);
-	rl_catch_signals = 0;
+#ifndef __APPLE__
+    rl_catch_signals = 0;
+#endif
 	setup_prompt_signals();
 }
 

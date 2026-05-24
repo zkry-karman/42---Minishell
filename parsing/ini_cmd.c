@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ini_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
+/*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 11:55:10 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/05/13 18:08:07 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/24 15:22:40 by cocozhu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,13 @@ void	create_args(char **args, int *i, t_token **cur)
 	char	**split;
 	int		j;
 
-	if ((*cur)->quoted == 0
-		&& ft_strchr((*cur)->value, ' '))
+	if (ft_strchr((*cur)->value, ' '))
 	{
 		split = ft_split((*cur)->value, ' ');
 		j = 0;
 		while (split && split[j])
 		{
-			args[*i] = ft_strdup(split[j]);
+			args[*i] = restore_spaces(ft_strdup(split[j]));
 			(*i)++;
 			j++;
 		}
@@ -59,7 +58,7 @@ void	create_args(char **args, int *i, t_token **cur)
 	}
 	else
 	{
-		args[*i] = ft_strdup((*cur)->value);
+		args[*i] = restore_spaces(ft_strdup((*cur)->value));
 		(*i)++;
 	}
 	(*cur) = (*cur)->next;
@@ -76,8 +75,7 @@ int	count_words_mini(t_token *token)
 	{
 		if (token->type != TOKEN_WORD)
 			token = token->next;
-		else if (token->quoted == 0
-			&& ft_strchr(token->value, ' '))
+		else if (ft_strchr(token->value, ' '))
 		{
 			split = ft_split(token->value, ' ');
 			i = 0;

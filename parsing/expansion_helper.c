@@ -1,26 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tool_box_main.c                                    :+:      :+:    :+:   */
+/*   expansion_helper.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/23 15:04:59 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/24 13:54:01 by cocozhu          ###   ########.fr       */
+/*   Created: 2026/05/24 14:43:48 by cocozhu           #+#    #+#             */
+/*   Updated: 2026/05/24 15:26:35 by cocozhu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	main_cleanup(t_shell *shell)
+char	*hide_spaces(char *str)
 {
-	check_backups(shell);
-	if (shell->env_list)
-		free_env(&(shell->env_list));
-#ifndef __APPLE__
-	rl_clear_history();
-#endif
-	close(STDIN_FILENO);
-	close(STDOUT_FILENO);
-	close(STDERR_FILENO);
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (NULL);
+	while (str[i])
+	{
+		if (str[i] == ' ')
+			str[i] = '\1';
+		i++;
+	}
+	return (str);
+}
+
+char	*restore_spaces(char *str)
+{
+	int i;
+	
+	i = 0;
+	if (!str)
+		return (NULL);
+	while (str[i])
+	{
+		if (str[i] == '\1')
+			str[i] = ' ';
+		i++;
+	}
+	return (str);
 }
