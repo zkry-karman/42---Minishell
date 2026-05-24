@@ -8,7 +8,8 @@ SRCS =  main.c \
 		parsing/ini_token_2.c \
 		parsing/ini_env.c \
 		parsing/ini_cmd.c \
-		parsing/syntax_checker.c\
+		parsing/syntax_checker.c \
+		parsing/expansion_helper.c \
 		helper_functions/tool_box_children.c \
 		helper_functions/tool_box_fd.c \
 		helper_functions/tool_box_heredoc.c \

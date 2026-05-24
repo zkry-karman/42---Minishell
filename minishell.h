@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
+/*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/23 16:29:45 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/24 15:12:45 by cocozhu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <sys/stat.h>
 # include <errno.h>
 # include <signal.h>
+# include <string.h>
 
 extern volatile sig_atomic_t	g_status;
 
@@ -109,6 +110,8 @@ int				append_node(t_token **input_list, char *token, int quoted);
 int				is_hdoc(t_token *list);
 char			*join_and_free(char *s1, char *s2);
 int				syntax_checker(t_token *tokens);
+char			*hide_spaces(char *str);
+char			*restore_spaces(char *str);
 
 int				build_redir_node(t_redir **redir, t_token **cur);
 void			create_args(char **args, int *i, t_token **cur);

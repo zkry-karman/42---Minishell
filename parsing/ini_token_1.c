@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ini_token_1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
+/*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:33:28 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/05/23 17:22:22 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/24 16:02:34 by cocozhu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*extract_d_quote(t_shell *shell, char *input, int *i)
 	if (input[*i] == '\0')
 		return (shell->exit_status = 2,
 			free(final), printf("error: unclosed quote\n"), NULL);
-	return ((*i)++, final);
+	return ((*i)++, hide_spaces(final));
 }
 
 char	*extract_quote(t_shell *shell, char *input, int *i)
@@ -59,6 +59,7 @@ char	*extract_quote(t_shell *shell, char *input, int *i)
 				printf("error: unclosed quote\n"), NULL);
 		final = ft_substr(input, start, (*i) - start);
 		(*i)++;
+		return (hide_spaces(final));
 	}
 	else
 		final = extract_d_quote(shell, input, i);
@@ -137,10 +138,11 @@ int	build_token(t_shell *shell, char *input)
 			return (free_tokens(&(shell->input_list)), 1);
 		if (cur_token[0] == '\0' && quoted == 0)
 		{
-			free (cur_token);
+			free(cur_token);
 			continue ;
 		}
-		append_node(&(shell->input_list), cur_token, quoted);
+		if (append_node(&(shell->input_list), cur_token, quoted) == 1)
+			return (free(cur_token), free_tokens(&(shell->input_list)), 1);
 	}
 	return (0);
 }
