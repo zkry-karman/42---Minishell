@@ -6,11 +6,30 @@
 /*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 15:17:23 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/05/02 11:18:44 by cocozhu          ###   ########.fr       */
+/*   Updated: 2026/05/25 14:51:50 by cocozhu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	check_hd_limit(t_token *tokens)
+{
+	int count;
+
+	count = 0;
+	while (tokens)
+	{
+		if (tokens->type == TOKEN_HEREDOC)
+			count++;
+		tokens = tokens->next;
+	}
+	if (count > 16)
+	{
+		printf("minishell: maximum here-document count exceeded\n");
+		return (1);
+	}
+	return (0);
+}
 
 void	syntax_error_printer(int i, char *value)
 {
@@ -26,6 +45,8 @@ int	syntax_checker(t_token *tokens)
 {
 	t_token	*cur;
 
+	if (check_hd_limit(tokens) == 1)
+		return (1);
 	cur = tokens;
 	if (cur && cur->type == TOKEN_PIPE)
 		return (syntax_error_printer(1, NULL), 1);

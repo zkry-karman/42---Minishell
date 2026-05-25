@@ -6,7 +6,7 @@
 /*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:33:28 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/05/24 16:02:34 by cocozhu          ###   ########.fr       */
+/*   Updated: 2026/05/25 16:08:23 by cocozhu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 char	*extract_d_quote(t_shell *shell, char *input, int *i)
 {
-	int		start;
 	char	*chunk;
 	char	*final;
 	int		hdoc_flag;
@@ -26,15 +25,11 @@ char	*extract_d_quote(t_shell *shell, char *input, int *i)
 		if (input[*i] == '$' && !hdoc_flag)
 			chunk = extract_env(shell, input, i);
 		else
-		{
-			start = *i;
-			while (input[*i] && input[*i] != '\"'
-				&& (input[*i] != '$' || hdoc_flag))
-				(*i)++;
-			chunk = ft_substr(input, start, (*i) - start);
-		}
+			chunk = get_literal_chunk(input, i, hdoc_flag);
 		final = join_and_free(final, chunk);
 	}
+	if (!final)
+		return (NULL);
 	if (input[*i] == '\0')
 		return (shell->exit_status = 2,
 			free(final), printf("error: unclosed quote\n"), NULL);
@@ -91,6 +86,8 @@ char	*extract_word(t_shell *shell, char *input, int *i)
 		}
 		final = join_and_free(final, chunk);
 	}
+	if (!final)
+		return (NULL);
 	return (final);
 }
 
@@ -102,6 +99,8 @@ char	*extract_token(t_shell *shell, char *input, int *i, int *qted)
 	if (input[*i] == '<' || input[*i] == '>' || input[*i] == '|')
 		return (extract_operator(input, i));
 	final_token = ft_strdup("");
+	if (!final_token)
+		return (NULL);
 	while (input[*i] && is_space(input[*i]) == 0
 		&& input[*i] != '<' && input[*i] != '>' && input[*i] != '|')
 	{
@@ -115,6 +114,8 @@ char	*extract_token(t_shell *shell, char *input, int *i, int *qted)
 		if (cur_token == NULL)
 			return (free(final_token), NULL);
 		final_token = join_and_free(final_token, cur_token);
+		if (!final_token)
+			return (NULL);
 	}
 	return (final_token);
 }

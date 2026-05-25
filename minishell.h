@@ -6,7 +6,7 @@
 /*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/24 15:12:45 by cocozhu          ###   ########.fr       */
+/*   Updated: 2026/05/25 14:15:24 by cocozhu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ char			*hide_spaces(char *str);
 char			*restore_spaces(char *str);
 
 int				build_redir_node(t_redir **redir, t_token **cur);
-void			create_args(char **args, int *i, t_token **cur);
+int				create_args(char **args, int *i, t_token **cur);
 int				count_words_mini(t_token *token);
 t_cmd			*create_cmd_node(t_token **cur);
 int				build_cmds(t_shell *shell);
