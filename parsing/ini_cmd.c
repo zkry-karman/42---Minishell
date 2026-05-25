@@ -6,7 +6,7 @@
 /*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 11:55:10 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/05/24 15:22:40 by cocozhu          ###   ########.fr       */
+/*   Updated: 2026/05/25 15:49:14 by cocozhu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,29 +39,32 @@ int	build_redir_node(t_redir **redir, t_token **cur)
 	return (0);
 }
 
-void	create_args(char **args, int *i, t_token **cur)
+int	create_args(char **args, int *i, t_token **cur)
 {
 	char	**split;
 	int		j;
 
-	if (ft_strchr((*cur)->value, ' '))
-	{
-		split = ft_split((*cur)->value, ' ');
-		j = 0;
-		while (split && split[j])
-		{
-			args[*i] = restore_spaces(ft_strdup(split[j]));
-			(*i)++;
-			j++;
-		}
-		free_array(split);
-	}
-	else
+	if (!ft_strchr((*cur)->value, ' '))
 	{
 		args[*i] = restore_spaces(ft_strdup((*cur)->value));
+		if (!args[*i])
+			return (1);
+		return ((*i)++, (*cur) = (*cur)->next, 0);
+	}
+	split = ft_split((*cur)->value, ' ');
+	if (!split)
+		return (1);
+	j = -1;
+	while (split[++j])
+	{
+		args[*i] = restore_spaces(ft_strdup(split[j]));
+		if (!args[*i])
+			return (free_array(split), 1);
 		(*i)++;
 	}
+	free_array(split);
 	(*cur) = (*cur)->next;
+	return (0);
 }
 
 int	count_words_mini(t_token *token)
@@ -97,10 +100,9 @@ t_cmd	*create_cmd_node(t_token **cur)
 	t_cmd	*cmd;
 	int		arg_count;
 
-	cmd = malloc(sizeof(t_cmd));
-	if (cmd == NULL)
+	cmd =ft_calloc(1, sizeof(t_cmd));
+	if (!cmd)
 		return (NULL);
-	ft_memset(cmd, 0, sizeof(t_cmd));
 	cmd->outfile = 1;
 	arg_count = count_words_mini(*cur);
 	cmd->args = ft_calloc((arg_count + 1), sizeof(char *));
@@ -115,8 +117,9 @@ t_cmd	*create_cmd_node(t_token **cur)
 				return (free_redirs(&(cmd->redirs)),
 					free_array(cmd->args), free(cmd), NULL);
 		}
-		else
-			create_args(cmd->args, &arg_count, cur);
+		else if (create_args(cmd->args, &arg_count, cur) == 1)
+			return (free_redirs(&(cmd->redirs)),
+				free_array(cmd->args), free(cmd), NULL);
 	}
 	return (cmd->args[arg_count] = NULL, cmd);
 }
