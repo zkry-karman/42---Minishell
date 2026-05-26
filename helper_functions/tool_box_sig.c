@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tool_box_sig.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 20:31:00 by karmanz           #+#    #+#             */
-/*   Updated: 2026/05/24 13:54:31 by cocozhu          ###   ########.fr       */
+/*   Updated: 2026/05/26 17:28:36 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,9 @@ void	handle_sigint(int sig)
 	(void)sig;
 	g_status = 130;
 	write(1, "\n", 1);
-#ifndef __APPLE__
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-#endif
 }
 
 void	setup_prompt_signals(void)
