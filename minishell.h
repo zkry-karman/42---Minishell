@@ -107,6 +107,8 @@ char			*extract_quote(t_shell *shell, char *input, int *i);
 char			*extract_d_quote(t_shell *shell, char *input, int *i);
 char			*extract_operator(char *input, int *i);
 int				append_node(t_token **input_list, char *token, int quoted);
+char			*get_literal_chunk(char *input, int *i, int hdoc_flag);
+char			*get_word_chunk(char *input, int *i, int hdoc_flag);
 int				is_hdoc(t_token *list);
 char			*join_and_free(char *s1, char *s2);
 int				syntax_checker(t_token *tokens);
@@ -152,6 +154,8 @@ void			wait_children(t_shell *shell, pid_t *child, int child_count);
 void			initialize_children(t_shell *shell, t_pipe *p);
 
 void			replace_env_value(t_env *node, char *new_val);
+char			*check_access(char *path);
+
 char			**envp_list_to_arr(t_shell *shell);
 char			*env_path(char **envp);
 t_env			*get_env_node(t_shell *shell, char *wanted_path);

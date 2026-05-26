@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ini_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 11:55:10 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/05/25 15:49:14 by cocozhu          ###   ########.fr       */
+/*   Updated: 2026/05/26 18:06:06 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ t_cmd	*create_cmd_node(t_token **cur)
 	t_cmd	*cmd;
 	int		arg_count;
 
-	cmd =ft_calloc(1, sizeof(t_cmd));
+	cmd = ft_calloc(1, sizeof(t_cmd));
 	if (!cmd)
 		return (NULL);
 	cmd->outfile = 1;
