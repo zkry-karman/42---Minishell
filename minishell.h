@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
 /*   Updated: 2026/05/26 17:42:13 by kzhu@student.42.f###   ########.fr       */
@@ -154,6 +154,8 @@ void			wait_children(t_shell *shell, pid_t *child, int child_count);
 void			initialize_children(t_shell *shell, t_pipe *p);
 
 void			replace_env_value(t_env *node, char *new_val);
+char			*check_access(char *path);
+
 char			**envp_list_to_arr(t_shell *shell);
 char			*env_path(char **envp);
 t_env			*get_env_node(t_shell *shell, char *wanted_path);
