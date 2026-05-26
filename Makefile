@@ -3,6 +3,14 @@ CC	= cc
 CFLAGS	= -Wall -Wextra -Werror -I.
 RM	= rm -f
 
+RESET   = \033[0m
+RED     = \033[0;31m
+GREEN   = \033[0;32m
+CYAN    = \033[0;36m
+YELLOW  = \033[0;33m
+BLUE    = \033[0;34m
+PURPLE  = \033[0;35m
+
 SRCS =  main.c \
 	    parsing/ini_token_1.c \
 		parsing/ini_token_2.c \
@@ -41,19 +49,25 @@ LIBFT = libft/libft.a
 all: $(NAME)
 
 $(NAME): $(OBJS)
-		@make bonus -C libft
-		$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -lreadline -o $(NAME)
+		@make bonus -C libft --no-print-directory > /dev/null 2>&1
+		@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -lreadline -o $(NAME)
+		@echo -e "$(RED)███╗   ███╗██╗███╗   ██╗██╗███████╗███████╗██╗  ██╗███████╗██╗     ██╗     "
+		@echo -e "$(YELLOW)████╗ ████║██║████╗  ██║██║██╔════╝██╔════╝██║  ██║██╔════╝██║     ██║     "
+		@echo -e "$(GREEN)██╔████╔██║██║██╔██╗ ██║██║███████╗███████╗███████║█████╗  ██║     ██║     "
+		@echo -e "$(CYAN)██║╚██╔╝██║██║██║╚██╗██║██║╚════██║╚════██║██╔══██║██╔══╝  ██║     ██║     "
+		@echo -e "$(BLUE)██║ ╚═╝ ██║██║██║ ╚████║██║███████║███████║██║  ██║███████╗███████╗███████╗"
+		@echo -e "$(PURPLE)╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝$(RESET)"
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	$(RM) $(OBJS)
-	make -C libft clean
+	@$(RM) $(OBJS)
+	@make -C libft clean --no-print-directory > /dev/null 2>&1
 
 fclean: clean
-	$(RM) $(NAME)
-	make -C libft fclean
+	@$(RM) $(NAME)
+	@make -C libft fclean --no-print-directory > /dev/null 2>&1
 
 re: fclean all
 
