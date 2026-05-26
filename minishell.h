@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:07:38 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/26 13:15:39 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/05/26 19:13:34 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ void			free_env(t_env **env_list);
 
 void			reading_commands(t_shell *shell);
 int				execute_system_command(t_shell *shell, t_cmd *curr, t_pipe *p);
+int				has_path_env(char **envp);
 
 void			kill_child(t_shell *shell, int exit_code);
 void			exit_execve_failure(t_shell *shell, char **env_arr, t_cmd *cmd);

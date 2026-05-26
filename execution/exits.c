@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exits.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/05 16:45:23 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/26 18:04:49 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/26 19:05:04 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,13 @@ void	exit_no_access(t_shell *shell, char *path, char **envp_arr)
 
 void	exit_no_path(t_shell *shell, char **envp_arr, t_cmd *cmd)
 {
+	if (!has_path_env(envp_arr))
+	{
+		errno = ENOENT;
+		exit_execve_failure(shell, envp_arr, cmd);
+	}
 	free_array(envp_arr);
+	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(cmd->args[0], 2);
 	ft_putstr_fd(": command not found\n", 2);
 	kill_child(shell, 127);
