@@ -6,13 +6,13 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/26 19:04:13 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/26 19:15:04 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	has_path_env(char **envp)
+int	has_path_env(char **envp)
 {
 	int		i;
 
