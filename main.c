@@ -6,7 +6,7 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:58:35 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/05/26 17:33:08 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/26 19:37:28 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,22 @@ void	process_input(t_shell *shell, char *input)
 	{
 		shell->exit_status = 2;
 		free_tokens(&(shell->input_list));
+		shell->input_list = NULL;
 		return ;
 	}
 	if (build_cmds(shell) == 1)
 	{
 		free_tokens(&(shell->input_list));
+		shell->input_list = NULL;
+		free_cmds(&(shell->cmds));
+		shell->cmds = NULL;
 		return ;
 	}
 	free_tokens(&(shell->input_list));
+	shell->input_list = NULL;
 	reading_commands(shell);
 	free_cmds(&(shell->cmds));
+	shell->cmds = NULL;
 }
 
 void	shell_loop(t_shell *shell)
