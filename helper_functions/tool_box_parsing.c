@@ -6,7 +6,7 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 17:58:55 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/05/26 18:00:36 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/26 18:05:06 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int	is_space(char c)
 		return (1);
 	return (0);
 }
-
 
 char	*get_literal_chunk(char *input, int *i, int hdoc_flag)
 {

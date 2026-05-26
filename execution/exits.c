@@ -6,7 +6,7 @@
 /*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/05 16:45:23 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/26 17:33:32 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/26 19:05:04 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,13 @@ void	exit_no_access(t_shell *shell, char *path, char **envp_arr)
 
 void	exit_no_path(t_shell *shell, char **envp_arr, t_cmd *cmd)
 {
+	if (!has_path_env(envp_arr))
+	{
+		errno = ENOENT;
+		exit_execve_failure(shell, envp_arr, cmd);
+	}
 	free_array(envp_arr);
+	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(cmd->args[0], 2);
 	ft_putstr_fd(": command not found\n", 2);
 	kill_child(shell, 127);
@@ -79,8 +85,8 @@ void	exit_fd_failure(t_shell *shell, t_cmd *cmd, t_pipe *p)
 	{
 		if (p->curr[1] > 2)
 			close(p->curr[1]);
-        if (p->curr[0] > 2)
-            close(p->curr[0]);
+		if (p->curr[0] > 2)
+			close(p->curr[0]);
 	}
 	if (p->last_pipe != -1)
 		close(p->last_pipe);

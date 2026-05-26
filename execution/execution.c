@@ -3,14 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karmanz <karmanz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:03:52 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/23 23:02:11 by karmanz          ###   ########.fr       */
+/*   Updated: 2026/05/26 19:04:13 by zkarman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	has_path_env(char **envp)
+{
+	int		i;
+
+	i = 0;
+	if (!envp)
+		return (0);
+	while (envp[i])
+	{
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 void	execute_command(t_shell *shell, t_cmd *cmd)
 {
