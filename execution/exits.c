@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exits.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/05 16:45:23 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/26 17:33:32 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/26 18:04:49 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ void	exit_fd_failure(t_shell *shell, t_cmd *cmd, t_pipe *p)
 	{
 		if (p->curr[1] > 2)
 			close(p->curr[1]);
-        if (p->curr[0] > 2)
-            close(p->curr[0]);
+		if (p->curr[0] > 2)
+			close(p->curr[0]);
 	}
 	if (p->last_pipe != -1)
 		close(p->last_pipe);

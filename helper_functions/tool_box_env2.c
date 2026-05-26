@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tool_box_env2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zkarman <zkarman@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/23 15:50:22 by zkarman           #+#    #+#             */
-/*   Updated: 2026/05/26 17:48:33 by zkarman          ###   ########.fr       */
+/*   Updated: 2026/05/26 18:05:20 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	replace_env_value(t_env *node, char *new_val)
 	free(node->value);
 	node->value = ft_strdup(new_val);
 }
+
 char	*check_access(char *path)
 {
 	if (!path)

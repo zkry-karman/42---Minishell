@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_checker.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 15:17:23 by kzhu@studen       #+#    #+#             */
-/*   Updated: 2026/05/25 14:51:50 by cocozhu          ###   ########.fr       */
+/*   Updated: 2026/05/26 18:06:37 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	check_hd_limit(t_token *tokens)
 {
-	int count;
+	int	count;
 
 	count = 0;
 	while (tokens)
