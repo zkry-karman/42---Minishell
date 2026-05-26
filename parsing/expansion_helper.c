@@ -6,7 +6,7 @@
 /*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 14:43:48 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/05/26 18:01:02 by kzhu@student.42.f###   ########.fr       */
+/*   Updated: 2026/05/26 18:05:48 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ char	*hide_spaces(char *str)
 
 char	*restore_spaces(char *str)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	if (!str)
 		return (NULL);
