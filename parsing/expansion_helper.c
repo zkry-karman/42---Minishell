@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_helper.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cocozhu <cocozhu@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kzhu@student.42.fr <kzhu>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 14:43:48 by cocozhu           #+#    #+#             */
-/*   Updated: 2026/05/24 15:26:35 by cocozhu          ###   ########.fr       */
+/*   Updated: 2026/05/26 18:01:02 by kzhu@student.42.f###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,22 @@ char	*restore_spaces(char *str)
 		i++;
 	}
 	return (str);
+}
+
+char	*join_and_free(char *s1, char *s2)
+{
+	char	*temp;
+
+	if (!s1 || !s2)
+	{
+		if (s1)
+			free (s1);
+		if (s2)
+			free (s2);
+		return (NULL);
+	}
+	temp = ft_strjoin(s1, s2);
+	free(s1);
+	free(s2);
+	return (temp);
 }
